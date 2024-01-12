@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class EditCstmrWindow extends JFrame {
 
     public EditCstmrWindow() {
-        setTitle("Rechnung Bearbeiten");
+        setTitle("Kunde Bearbeiten");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -28,7 +28,6 @@ public class EditCstmrWindow extends JFrame {
 
         /*  Benutzerdefinierte Daten für die Tabelle aus der Datenbank "SHEMA DisTool
         TABLE user" */
-        /*  TODO FIX THIS DATUM UND BETRAG EINFÜGEN */
         Object[][] data = {
                 { 1, "K&N", "Heykenaukamp", "10", "21149", "Hamburg", "AuV", "Mustermann", "012 123456", "blha@blha.de"},
                 { 2, "Tesa", "Heykenaukamp", "10", "21149", "Hamburg", "AuV", "Mustermann", "012 123456", "blha@blha.de"},
