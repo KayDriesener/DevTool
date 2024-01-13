@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EditCstmrWindow extends JFrame {
+public class EditCustomerWindow extends JFrame {
 
-    public EditCstmrWindow() {
+    public EditCustomerWindow() {
         setTitle("Kunde Bearbeiten");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -106,6 +106,6 @@ public class EditCstmrWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EditCstmrWindow());
+        SwingUtilities.invokeLater(() -> new EditCustomerWindow());
     }
 }

@@ -8,24 +8,24 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel toppanel = new JPanel(new GridBagLayout());
+        JPanel topPanel = new JPanel(new GridBagLayout());
 
         // Usermanagement
-        addSection(toppanel, "Usermanagement", "Neuer User", "User Bearbeiten");
+        addSection(topPanel, "Usermanagement", "Neuer User", "User Bearbeiten");
 
         // Fahrzeugmanagement
-        addSection(toppanel, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
+        addSection(topPanel, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
 
         // Transportmanagement
-        addSection(toppanel, "Transportmanagement", "Neuer Transport", "Transport Bearbeiten");
+        addSection(topPanel, "Transportmanagement", "Neuer Transport", "Transport Bearbeiten");
 
         // Rechnungswesen
-        addSection(toppanel, "Rechnungswesen", "Rechnung Erstellen", "Rechnung Bearbeiten");
+        addSection(topPanel, "Rechnungswesen", "Rechnung Erstellen", "Rechnung Bearbeiten");
 
         // Kundenmanagement
-        addSection(toppanel, "Kundenmanagement", "Kunden Anlegen", "Kundendaten Bearbeiten");
+        addSection(topPanel, "Kundenmanagement", "Kunden Anlegen", "Kundendaten Bearbeiten");
 
-        add(toppanel);
+        add(topPanel);
         setVisible(true);
     }
 
@@ -56,45 +56,36 @@ public class MainWindow extends JFrame {
         switch (buttonText) {
             case "Neuer User":
                 openUserWindow();
-                setVisible(false);
                 break;
             case "User Bearbeiten":
                 openEditUserWindow();
-                setVisible(false);
                 break;
             case "Neues Fahrzeug":
                 openFahrzeugWindow();
-                setVisible(false);
                 break;
             case "Fahrzeug Bearbeiten":
-                openEditFahrzeugWindnow();
-                setVisible(false);
+                openEditFahrzeugWindow();
                 break;
             case "Neuer Transport":
                 openTransportWindow();
-                setVisible(false);
                 break;
             case "Transport Bearbeiten":
                 openEditTransportWindow();
-                setVisible(false);
                 break;
             case "Rechnung Erstellen":
-                openNewBillingWidnow();
-                setVisible(false);
+                openNewBillingWindow();
                 break;
             case "Rechnung Bearbeiten":
                 openEditBillingWindow();
-                setVisible(false);
                 break;
             case "Kunden Anlegen":
-                openNewCstmrWindow();
-                setVisible(false);
+                openNewCustomerWindow();
                 break;
             case "Kundendaten Bearbeiten":
-                openEditCstmrWindow();
-                setVisible(false);
+                openEditCustomerWindow();
                 break;
         }
+        setVisible(false);
     }
 
     private void openUserWindow() {
@@ -109,7 +100,7 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(() -> new NewFahrzeugWindow());
     }
 
-    private void openEditFahrzeugWindnow() {
+    private void openEditFahrzeugWindow() {
         SwingUtilities.invokeLater(() -> new EditFahrzeugWindow());
     }
 
@@ -121,7 +112,7 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(() -> new EditTransportWindow());
     }
 
-    private void openNewBillingWidnow() {
+    private void openNewBillingWindow() {
         SwingUtilities.invokeLater(() -> new NewBillingWindow());
     }
 
@@ -129,17 +120,17 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(() -> new EditBilllingWindow());
     }
 
-    private void openNewCstmrWindow() {
-        SwingUtilities.invokeLater(() -> new NewCstmrWindow());
+    private void openNewCustomerWindow() {
+        SwingUtilities.invokeLater(() -> new NewCustomerWindow());
     }
 
-    private void openEditCstmrWindow() {
-        SwingUtilities.invokeLater(() -> new EditCstmrWindow());
+    private void openEditCustomerWindow() {
+        SwingUtilities.invokeLater(() -> new EditCustomerWindow());
     }
 
     //TODO Nur zu Testzwecken. Im Liveprogramm aus allen Fenstern entfernen.
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainWindow::new);
+        SwingUtilities.invokeLater(() -> new MainWindow());
     }
 }
 // TODO LOGOUTBUTTON -> con.close() && openLoginWindow() && dispose()

@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class NewTransportWindow extends JFrame {
 
-        Lieferscheinnummerngenerator manager = new Lieferscheinnummerngenerator();
-        String kNlieferscheinnummer = Lieferscheinnummerngenerator.nummernGenerator();
+        LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
+        String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
 
         public NewTransportWindow() {
                 setTitle("Neuer Transport");

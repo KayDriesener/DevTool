@@ -1,3 +1,5 @@
+import sql.MySqlConnector;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,11 +8,9 @@ import javax.swing.*;
 public class LoginWindow extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
-    public static MySqlconnector mySqlconnector;
 
-    public LoginWindow(MySqlconnector mySqlconnector) {
+    public LoginWindow() {
         super("Login");
-        LoginWindow.mySqlconnector = mySqlconnector;
         initializeUI();
     }
 
@@ -32,11 +32,11 @@ public class LoginWindow extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = getUsername();
-                String password = getPassword();
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
 
                 try {
-                    mySqlconnector.connect(username, password);
+                    MySqlConnector.connect(username, password);
                     openMainWindow();
                     dispose();
                 } catch (Exception ex) {
@@ -62,30 +62,10 @@ public class LoginWindow extends JFrame {
         new MainWindow();
     }
 
-    public String getUsername() {
-        return usernameField.getText();
-    }
-
-    public void setUsername(String username) {
-        usernameField.setText(username);
-    }
-
-    public String getPassword() {
-        return new String(passwordField.getPassword());
-    }
-
-    public void setPassword(String password) {
-        passwordField.setText(password);
-    }
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            MySqlconnector mySqlconnector = new MySqlconnector("jdbc:mysql://localhost:3306/test");
+        // Den logger initialiseren. Er könnte bei Bedarf so konfiguriert werden, dass er ein Logfile ins Dateisystem schreibt.
+        System.setProperty(org.slf4j.simple.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
 
-            @Override
-            public void run() {
-                new LoginWindow(mySqlconnector);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new LoginWindow());
     }
 }

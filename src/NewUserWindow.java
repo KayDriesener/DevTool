@@ -1,7 +1,18 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sql.DbStatements;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class NewUserWindow extends JFrame {
+
+    Logger log = LoggerFactory.getLogger(this.getClass());
+    JTextField tfName;
+    JTextField tsName;
+    JTextField tEMail;
+    JTextField tUName;
 
     public NewUserWindow() {
         setTitle("Neuer User");
@@ -22,25 +33,25 @@ public class NewUserWindow extends JFrame {
 
         // Feld für den Namen
         JLabel fname = new JLabel("Name");
-        JTextField tfName = new JTextField();
+        tfName = new JTextField();
         panel.add(fname);
         panel.add(tfName);
 
         // Feld für den Nachnamen
         JLabel sName = new JLabel("Nachname");
-        JTextField tsName = new JTextField();
+        tsName = new JTextField();
         panel.add(sName);
         panel.add(tsName);
 
         // Feld für die E-Mail
         JLabel email = new JLabel("EMail");
-        JTextField tEMail = new JTextField();
+        tEMail = new JTextField();
         panel.add(email);
         panel.add(tEMail);
 
         // Feld für den Benutzernamen
         JLabel uName = new JLabel("Username");
-        JTextField tUName = new JTextField();
+        tUName = new JTextField();
         panel.add(uName);
         panel.add(tUName);
 
@@ -87,8 +98,13 @@ public class NewUserWindow extends JFrame {
     }
 
     private void saveUser() {
-        // Prep.Statement User
-        JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
+        try {
+            new DbStatements().addUser(tfName.getText(), tsName.getText(), tEMail.getText(), tUName.getText());
+            JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Beim Anlegen eines neuen Benutzers ist ein Fehler aufgetreten.");
+            log.error(e.getMessage());
+        }
     }
     private void goMainMenue(){
         new MainWindow();
