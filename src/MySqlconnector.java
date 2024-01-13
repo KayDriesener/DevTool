@@ -9,7 +9,8 @@ public class MySqlconnector {
         this.url = url;
     }
 
-    public Connection connect(String username, String password) throws SQLException {
+    public Connection connect(String username, String password) throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(url, username, password);
     }
 }
