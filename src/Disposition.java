@@ -75,8 +75,8 @@ public class Disposition extends JFrame {
 
     // Methode zum Speichern der Disposition
     private void saveDispo() {
-        Lieferscheinnummerngenerator manager = new Lieferscheinnummerngenerator();
-        String kNlieferscheinnummer = Lieferscheinnummerngenerator.nummernGenerator();
+        LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
+        String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
         // Prep.Statement Transport speichern
         JOptionPane.showMessageDialog(this, "Transport Angelegt mit der Referenz " + kNlieferscheinnummer +"!");
     }

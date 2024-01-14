@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class NewCstmrWindow extends JFrame {
-    public NewCstmrWindow() {
+public class NewCustomerWindow extends JFrame {
+    public NewCustomerWindow() {
         setTitle("Kunden Anlegen");
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -105,6 +105,6 @@ public class NewCstmrWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new NewCstmrWindow());
+        SwingUtilities.invokeLater(() -> new NewCustomerWindow());
     }
 }

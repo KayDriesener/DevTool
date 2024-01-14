@@ -1,9 +1,18 @@
+import dto.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sql.DbQueries;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EditUserWindow extends JFrame {
+
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     public EditUserWindow() {
         setTitle("Edit User");
@@ -26,17 +35,37 @@ public class EditUserWindow extends JFrame {
         // Mittleres Panel mit GridLayout für die Tabelle
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        // Benutzerdefinierte Daten für die Tabelle aus der Datenbank "SHEMA DisTool TABLE user"
-        Object[][] data = {
-                {1, "Max", "Mustermann", "max@example.com", "max123"},
-                {2, "Anna", "Musterfrau", "anna@example.com", "anna456"},
-                // Anbindung an die Datenbank. Get Text.
-        };
+        // Benutzer aus der Datenbank abrufen
+        ArrayList<User> userList = null;
+        try {
+            userList = new DbQueries().getUsers();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Beim Abrufen aller Benutzers ist ein Fehler aufgetreten.");
+            log.error(e.getMessage());
+        }
 
-        // Benutzerdefinierte Spaltenüberschriften
+        // Benutzerdaten in das TableModel übertragen
+        Object[][] tableData = null;
+        if(userList != null) {
+            // Die Anzahl der Attribute muss mit der Spaltenanzahl des TableModels übereinstimmen!
+            int attributeCount = new User().getClass().getDeclaredFields().length;
+            tableData = new Object[userList.size()][attributeCount];
+            int cnt = 0;
+            for (User user : userList) {
+                tableData[cnt][0] = user.getId();
+                tableData[cnt][1] = user.getVorname();
+                tableData[cnt][2] = user.getName();
+                tableData[cnt][3] = user.getEmail();
+                tableData[cnt][4] = user.getUserName();
+                cnt++;
+            }
+        }
+
+        // Benutzerdefinierte Spaltenüberschriften -> Anzahl der Überschriften,
+        // muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
         Object[] columnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
 
-        JTable table = new JTable(data, columnNames);
+        JTable table = new JTable(tableData, columnNames);
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
