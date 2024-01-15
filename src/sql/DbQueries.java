@@ -1,5 +1,7 @@
 package sql;
 
+import dto.Fahrzeug;
+import dto.Kunde;
 import dto.User;
 
 import java.sql.PreparedStatement;
@@ -11,8 +13,8 @@ import java.util.List;
 public class DbQueries {
 
     /**
-     * Holt alle Benutzer aus der Datenbank und gibt sie in einer Liste zurück. Im Fehlerfall wird eine SQLException geworfen.
-     * @return Liste von Benutzern
+     * Holt die Datensaetze aus der Datenbank und gibt sie in einer Liste zurück. Im Fehlerfall wird eine SQLException geworfen.
+     * @return Liste von Datensaetzen
      * @throws SQLException
      */
     public ArrayList<User> getUsers() throws SQLException {
@@ -32,4 +34,48 @@ public class DbQueries {
 
         return userList;
     }
+    public ArrayList<Kunde> getKunden() throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, firma, strasse, nummer, postleitzahl, ort, abteilung, ansprechpartner, telefonnummer, email, bemerkungen");
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Kunde> kundenList = new ArrayList<>();
+        while (rs.next()) {
+            Kunde kunde = new Kunde();
+            kunde.setId(rs.getInt(1));
+            kunde.setFirma(rs.getString(2));
+            kunde.setStrasse(rs.getString(3));
+            kunde.setNummer(rs.getInt(4));
+            kunde.setPostleitzahl(rs.getInt(5));
+            kunde.setOrt(rs.getString(6));
+            kunde.setAbteilung(rs.getString(7));
+            kunde.setAnsprechpartner(rs.getString(8));
+            kunde.setTelefonnummer(rs.getInt(9));
+            kunde.seteMail(rs.getString(10));
+            kunde.setBemerkungen(rs.getString(11));
+            kundenList.add(kunde);
+        }
+
+        return kundenList;
+    }
+    public ArrayList<Fahrzeug> getFahrzeug() throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle");
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Fahrzeug> fahrzeugList = new ArrayList<>();
+        while (rs.next()) {
+            Fahrzeug fahrzeug = new Fahrzeug();
+            fahrzeug.setId(rs.getInt(1));
+            fahrzeug.setAnbieter(rs.getString(2));
+            fahrzeug.setKennzeichen(rs.getString(3));
+            fahrzeug.setArt(rs.getString(4));
+            fahrzeug.setMiete(rs.getFloat(5));
+            fahrzeug.setPruefungen(rs.getDate(6));
+            fahrzeug.setTuef(rs.getDate(7));
+            fahrzeug.setKostenstelle(rs.getInt(8));
+            fahrzeugList.add(fahrzeug);
+        }
+
+        return fahrzeugList;
+    }
+
 }

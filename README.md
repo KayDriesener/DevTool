@@ -2,10 +2,28 @@
 Disposition Tool
 
 TODO abarbeiten
+-> K: Umgebung angepasst. Jetzt IntelliJ. Etwas ungewohnt aber sollte nicht lange dauern sich daran zu gewöhnen.
 
-in ein projekt überführen -> am besten IntelliJ benutzen, ist Branchenstandard. Visual Studio wird idR für die .net-Welt verwendet
-
+Frontend abschließen.
 
 backend erstellen
-- mapping
-- prep.statements -> Für das grundsätzliche Verständnis kann in diesem Sinne vorgegangen werden -> https://javabeginners.de/Datenbanken/Prepared_Statement.php
+- mapping & prep.statements -> Für das grundsätzliche Verständnis kann in diesem Sinne vorgegangen werden -> https://javabeginners.de/Datenbanken/Prepared_Statement.php
+  1. [ ] User
+     - [x] Insert
+     - [ ] Alter
+     - [ ] Delete
+  2. [ ] Kunde
+     - [x] Insert
+     - [ ] Alter
+     - [ ] Delete
+  3. [ ] Fahrzeug
+     - [x] Insert
+     - [ ] Alter
+     - [ ] Delete
+  4. [ ] Transport
+     - [ ] Insert
+     - [ ] Alter
+     - [ ] Delete
+ 
+
+- Auswertung der Transporte

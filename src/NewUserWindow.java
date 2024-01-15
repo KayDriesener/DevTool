@@ -110,8 +110,4 @@ public class NewUserWindow extends JFrame {
         new MainWindow();
         dispose();
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new NewUserWindow());
-    }
 }
