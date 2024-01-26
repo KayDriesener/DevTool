@@ -57,11 +57,11 @@ public class DbQueries {
 
         return kundenList;
     }
-    public ArrayList<Fahrzeug> getFahrzeug() throws SQLException {
+    public ArrayList<Fahrzeug> getFahrzeugZm() throws SQLException {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle");
         ResultSet rs = ps.executeQuery();
 
-        ArrayList<Fahrzeug> fahrzeugList = new ArrayList<>();
+        ArrayList<Fahrzeug> fahrzeugListZm = new ArrayList<>();
         while (rs.next()) {
             Fahrzeug fahrzeug = new Fahrzeug();
             fahrzeug.setId(rs.getInt(1));
@@ -72,10 +72,30 @@ public class DbQueries {
             fahrzeug.setPruefungen(rs.getDate(6));
             fahrzeug.setTuef(rs.getDate(7));
             fahrzeug.setKostenstelle(rs.getInt(8));
-            fahrzeugList.add(fahrzeug);
+            fahrzeugListZm.add(fahrzeug);
         }
 
-        return fahrzeugList;
+        return fahrzeugListZm;
+    }
+    public ArrayList<Fahrzeug> getFahrzeugT() throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle");
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Fahrzeug> fahrzeugListT = new ArrayList<>();
+        while (rs.next()) {
+            Fahrzeug fahrzeug = new Fahrzeug();
+            fahrzeug.setId(rs.getInt(1));
+            fahrzeug.setAnbieter(rs.getString(2));
+            fahrzeug.setKennzeichen(rs.getString(3));
+            fahrzeug.setArt(rs.getString(4));
+            fahrzeug.setMiete(rs.getFloat(5));
+            fahrzeug.setPruefungen(rs.getDate(6));
+            fahrzeug.setTuef(rs.getDate(7));
+            fahrzeug.setKostenstelle(rs.getInt(8));
+            fahrzeugListT.add(fahrzeug);
+        }
+
+        return fahrzeugListT;
     }
 
 }

@@ -1,7 +1,22 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sql.DbStatements;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class NewFahrzeugWindow extends JFrame {
+    private JComboBox<String> artComboBox;
+    Logger log = LoggerFactory.getLogger(this.getClass());
+    JTextField tAnbieter;
+    JTextField tRegPlate;
+    JTextField tFine;
+    JTextField tSp;
+    JTextField tTuev;
+    JTextField tKst;
+
+
+
     public NewFahrzeugWindow() {
         setTitle("Neues Fahrzeug");
         setSize(600, 300);
@@ -25,31 +40,33 @@ public class NewFahrzeugWindow extends JFrame {
         JPanel middlePanel = new JPanel(new GridLayout(0, 2, 5, 5));
         
         JLabel anbieter = new JLabel("Anbieter");
-        JTextField tanbieter = new JTextField();
+        tAnbieter = new JTextField();
         middlePanel.add(anbieter);
-        middlePanel.add(tanbieter);
+        middlePanel.add(tAnbieter);
         JLabel regPlate = new JLabel("Kennzeichen");
-        JTextField tRegPlate = new JTextField();
+        tRegPlate = new JTextField();
         middlePanel.add(regPlate);
         middlePanel.add(tRegPlate);
         JLabel art = new JLabel("ZM/ Trailer");
-        JTextField tArt = new JTextField();
+        // Combobox statt Textfield
+        String[] options = {"Bitte auswählen", "Zugmaschine", "Trailer"};
+        artComboBox = new JComboBox<>(options);
         middlePanel.add(art);
-        middlePanel.add(tArt);
+        middlePanel.add(artComboBox);
         JLabel fine = new JLabel("Miete/ Tag");
-        JTextField tfine = new JTextField();
+        tFine = new JTextField();
         middlePanel.add(fine);
-        middlePanel.add(tfine);  
+        middlePanel.add(tFine);
         JLabel sp = new JLabel("Sicherheitsprüfung fällig am");
-        JTextField tSp = new JTextField();
+        tSp = new JTextField();
         middlePanel.add(sp);
         middlePanel.add(tSp);
         JLabel tuev = new JLabel("TÜV gültig bis");
-        JTextField tTuev = new JTextField();
+        tTuev = new JTextField();
         middlePanel.add(tuev);
         middlePanel.add(tTuev);
         JLabel kst = new JLabel("Kostenstelle");
-        JTextField tKst = new JTextField();
+        tKst = new JTextField();
         middlePanel.add(kst);
         middlePanel.add(tKst); 
 
@@ -77,16 +94,19 @@ public class NewFahrzeugWindow extends JFrame {
     }
 
     private void saveFahrzeug() {
-        // Prep.Statement Fahrzeug Neu
-        JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
+        String selectedOption = (String) artComboBox.getSelectedItem();
+
+        if ("Zugmaschine".equals(selectedOption)) {
+            // Prep.Statement & Parsing tSP, tTuev von String -> Datetime.simpleDatetime(dd-MM-yyyy)
+            JOptionPane.showMessageDialog(this, "Zugmaschine wurde gespeichert!");
+        } else if ("Trailer".equals(selectedOption)) {
+            // Prep.Statement & Parsing tSP, tTuev von String -> Datetime.simpleDatetime(dd-MM-yyyy)
+            JOptionPane.showMessageDialog(this, "Trailer wurde gespeichert!");
+        }
     }
 
     private void goMainMenue() {
         new MainWindow();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new NewFahrzeugWindow());
     }
 }

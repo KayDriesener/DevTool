@@ -32,8 +32,19 @@ public class DbStatements {
         ps.setString(10, bemerkungen);
         ps.execute();
     }
-    public void addFahrzeug(String anbieter, String kennzeichen, String art, Float miete, Date pruefungen, Date tuef, Integer kostenstelle) throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeug (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
+    public void addFahrzeugZm(String anbieter, String kennzeichen, String art, Float miete, Date pruefungen, Date tuef, Integer kostenstelle) throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeugzm (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        ps.setString(1, anbieter);
+        ps.setString(2, kennzeichen);
+        ps.setString(3, art);
+        ps.setFloat(4, miete);
+        ps.setDate(5, (java.sql.Date) pruefungen);
+        ps.setDate(6, (java.sql.Date) tuef);
+        ps.setInt(7, kostenstelle);
+        ps.execute();
+    }
+    public void addFahrzeugT(String anbieter, String kennzeichen, String art, Float miete, Date pruefungen, Date tuef, Integer kostenstelle) throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeugt (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
         ps.setString(1, anbieter);
         ps.setString(2, kennzeichen);
         ps.setString(3, art);

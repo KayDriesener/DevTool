@@ -23,8 +23,8 @@ public class NewUserWindow extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5)); // Unbegrenzte Zeilen, 2 Spalten, Abstand zwischen den Zellen: 5 Pixel
 
-        // Titel für das Usermanagement
-        JLabel headline = new JLabel("USERMANAGEMENT");
+        // Titel für das User management
+        JLabel headline = new JLabel("USER MANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 18));
         JLabel subHeadline = new JLabel("Neuer Benutzer");
         subHeadline.setFont(new Font("Arial", Font.BOLD, 18));

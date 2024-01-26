@@ -23,8 +23,8 @@ public class EditUserWindow extends JFrame {
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Titel für das Usermanagement
-        JLabel newUser = new JLabel("USERMANAGEMENT");
+        // Titel für das User management
+        JLabel newUser = new JLabel("USER MANAGEMENT");
         newUser.setFont(new Font("Arial", Font.BOLD, 20));
         JLabel newUserEdit = new JLabel("Benutzer Bearbeiten");
         newUserEdit.setFont(new Font("Arial", Font.BOLD, 18));
@@ -40,7 +40,7 @@ public class EditUserWindow extends JFrame {
         try {
             userList = new DbQueries().getUsers();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Beim Abrufen aller Benutzers ist ein Fehler aufgetreten.");
+            JOptionPane.showMessageDialog(this, "Beim Abrufen aller Benutzer ist ein Fehler aufgetreten.");
             log.error(e.getMessage());
         }
 
@@ -61,7 +61,7 @@ public class EditUserWindow extends JFrame {
             }
         }
 
-        // Benutzerdefinierte Spaltenüberschriften -> Anzahl der Überschriften,
+        // Benutzerdefinierte Spaltenüberschriften → Anzahl der Überschriften,
         // muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
         Object[] columnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
 
@@ -107,7 +107,7 @@ public class EditUserWindow extends JFrame {
         bottomPanel.add(saveButton);
         bottomPanel.add(mainMenuButton);
 
-        // Hauptpanel mit BorderLayout
+        // Haupt panel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
@@ -131,9 +131,5 @@ public class EditUserWindow extends JFrame {
     private void goMainMenu() {
         new MainWindow();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EditUserWindow());
     }
 }
