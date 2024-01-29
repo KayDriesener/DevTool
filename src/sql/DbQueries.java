@@ -35,7 +35,7 @@ public class DbQueries {
         return userList;
     }
     public ArrayList<Kunde> getKunden() throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, firma, strasse, nummer, postleitzahl, ort, abteilung, ansprechpartner, telefonnummer, email, bemerkungen");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, firma, strasse, nummer, postleitzahl, ort, abteilung, ansprechpartner, telefonnummer, email, bemerkungen FROM kunde;");
         ResultSet rs = ps.executeQuery();
 
         ArrayList<Kunde> kundenList = new ArrayList<>();
@@ -58,7 +58,7 @@ public class DbQueries {
         return kundenList;
     }
     public ArrayList<Fahrzeug> getFahrzeugZm() throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle FROM fahrzeugzm;");
         ResultSet rs = ps.executeQuery();
 
         ArrayList<Fahrzeug> fahrzeugListZm = new ArrayList<>();
@@ -78,7 +78,7 @@ public class DbQueries {
         return fahrzeugListZm;
     }
     public ArrayList<Fahrzeug> getFahrzeugT() throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle FROM fahrzeugt;");
         ResultSet rs = ps.executeQuery();
 
         ArrayList<Fahrzeug> fahrzeugListT = new ArrayList<>();

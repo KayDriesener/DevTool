@@ -48,7 +48,7 @@ public class EditUserWindow extends JFrame {
         Object[][] tableData = null;
         if(userList != null) {
             // Die Anzahl der Attribute muss mit der Spaltenanzahl des TableModels übereinstimmen!
-            int attributeCount = new User().getClass().getDeclaredFields().length;
+            int attributeCount = User.class.getDeclaredFields().length;
             tableData = new Object[userList.size()][attributeCount];
             int cnt = 0;
             for (User user : userList) {
@@ -65,6 +65,7 @@ public class EditUserWindow extends JFrame {
         // muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
         Object[] columnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
 
+        assert tableData != null;
         JTable table = new JTable(tableData, columnNames);
 
         // Tabelle auf die Spalten aufteilen

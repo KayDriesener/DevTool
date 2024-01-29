@@ -1,9 +1,17 @@
+import dto.Kunde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sql.DbQueries;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EditCustomerWindow extends JFrame {
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     public EditCustomerWindow() {
         setTitle("Kunde Bearbeiten");
@@ -26,19 +34,40 @@ public class EditCustomerWindow extends JFrame {
         // Mittleres Panel mit GridLayout für die Tabelle
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        /*  Benutzerdefinierte Daten für die Tabelle aus der Datenbank "SHEMA DisTool
-        TABLE user" */
-        Object[][] data = {
-                { 1, "K&N", "Heykenaukamp", "10", "21149", "Hamburg", "AuV", "Mustermann", "012 123456", "blha@blha.de"},
-                { 2, "Tesa", "Heykenaukamp", "10", "21149", "Hamburg", "AuV", "Mustermann", "012 123456", "blha@blha.de"},
-                { 3, "Beiersdorf", "Heykenaukamp", "10", "21149", "Hamburg", "AuV", "Mustermann", "012 123456", "blha@blha.de"},
-                // Anbindung an die Datenbank. Get Text.
-        };
+        ArrayList<Kunde> kundenList = null;
+        try {
+            kundenList = new DbQueries().getKunden();
+        } catch (SQLException e){
+            JOptionPane.showMessageDialog(this, "Beim Abrufen aller Kunden ist ein Fehler aufgetreten.");
+            log.error(e.getMessage());
+        }
+
+        Object[][] kundenData = null;
+        if(kundenList != null) {
+            int attributeCount = Kunde.class.getDeclaredFields().length;
+            kundenData = new Object[kundenList.size()][attributeCount];
+            int cnt = 0;
+            for (Kunde kunde : kundenList) {
+                kundenData[cnt][0] = kunde.getId();
+                kundenData[cnt][1] = kunde.getFirma();
+                kundenData[cnt][2] = kunde.getStrasse();
+                kundenData[cnt][3] = kunde.getNummer();
+                kundenData[cnt][4] = kunde.getPostleitzahl();
+                kundenData[cnt][5] = kunde.getOrt();
+                kundenData[cnt][6] = kunde.getAbteilung();
+                kundenData[cnt][7] = kunde.getAnsprechpartner();
+                kundenData[cnt][8] = kunde.getTelefonnummer();
+                kundenData[cnt][9] = kunde.geteMail();
+                kundenData[cnt][10] = kunde.getBemerkungen();
+                cnt++;
+            }
+        }
 
         // Benutzerdefinierte Spaltenüberschriften
-        Object[] columnNames = { "ID", "Firma", "Straße", "Nr.", "PlZ", "Ort", "Abteilung", "Ansprechpartner", "Telefon", "EMail"};
+        Object[] columnNames = { "ID", "Firma", "Straße", "Nr.", "PlZ", "Ort", "Abteilung", "Ansprechpartner", "Telefon", "EMail", "Bemerkungen"};
 
-        JTable table = new JTable(data, columnNames);
+        assert kundenData != null;
+        JTable table = new JTable(kundenData, columnNames);
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);

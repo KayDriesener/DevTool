@@ -18,16 +18,16 @@ public class DbStatements {
         ps.setString(4, username);
         ps.execute();
     }
-    public void addKunde(String firma, String strasse, Integer nummer, Integer postleitzahl, String ort, String abteilung, String ansprechpartner, Integer telefonnummer, String email, String bemerkungen) throws SQLException {
+    public void addKunde(String firma, String strasse, String nummer, String postleitzahl, String ort, String abteilung, String ansprechpartner, String telefonnummer, String email, String bemerkungen) throws SQLException {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO kunde (firma, strasse, nummer, postleitzahl, ort, abteilung, ansprechpartner, telefonnummer, email, bemerkungen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         ps.setString(1, firma);
         ps.setString(2, strasse);
-        ps.setInt(3, nummer);
-        ps.setInt(4, postleitzahl);
+        ps.setInt(3, Integer.parseInt(nummer));
+        ps.setInt(4, Integer.parseInt(postleitzahl));
         ps.setString(5, ort);
         ps.setString(6, abteilung);
         ps.setString(7, ansprechpartner);
-        ps.setInt(8, telefonnummer);
+        ps.setInt(8, Integer.parseInt(telefonnummer));
         ps.setString(9, email);
         ps.setString(10, bemerkungen);
         ps.execute();

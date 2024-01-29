@@ -1,9 +1,9 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
+
 
 public class NewFahrzeugWindow extends JFrame {
     private JComboBox<String> artComboBox;
@@ -97,11 +97,9 @@ public class NewFahrzeugWindow extends JFrame {
         String selectedOption = (String) artComboBox.getSelectedItem();
 
         if ("Zugmaschine".equals(selectedOption)) {
-            // Prep.Statement & Parsing tSP, tTuev von String -> Datetime.simpleDatetime(dd-MM-yyyy)
-            JOptionPane.showMessageDialog(this, "Zugmaschine wurde gespeichert!");
+
         } else if ("Trailer".equals(selectedOption)) {
-            // Prep.Statement & Parsing tSP, tTuev von String -> Datetime.simpleDatetime(dd-MM-yyyy)
-            JOptionPane.showMessageDialog(this, "Trailer wurde gespeichert!");
+
         }
     }
 
