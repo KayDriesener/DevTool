@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class NewTransportWindow extends JFrame {
 
-        LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
         String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
 
         public NewTransportWindow() {
@@ -36,12 +35,15 @@ public class NewTransportWindow extends JFrame {
 
                 // MiddlePannel
                 JPanel middlePanel = new JPanel();
+
                 // GroupLayout
                 GroupLayout middleGroup = new GroupLayout(middlePanel);
                 middlePanel.setLayout(middleGroup);
+
                 // AutoGap
                 middleGroup.setAutoCreateGaps(true);
                 middleGroup.setAutoCreateContainerGaps(true);
+
                 // Erste Group (Reihe)
                 JLabel knReferenz = new JLabel("K&N Referenz:");
                 JTextField knReferenzText = new JTextField(kNlieferscheinnummer);
@@ -76,9 +78,9 @@ public class NewTransportWindow extends JFrame {
                 JCheckBox roundtrip = new JCheckBox("Rundlauf");
 
                 // Vierte Group (Reihe (Tabelle))
-                Object[][] dataTableTransport = { { "Beim Anlegen NICHT Update", "Kommt aus der Dispo", "Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag" } };
-                Object[] collumNamesTransport = { "Datum", "K&N Referenz", "BDF Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf" };
-                JTable tableDataTransport = new JTable(dataTableTransport, collumNamesTransport);
+                Object[][] dataTableTransport = { { "Beim Anlegen NICHT Update", "int", "int","string","string","datetime","datetime","datetime","datetime","int","int","bool","bool","bool", "bool" } };
+                Object[] columnNamesTransport = { "Datum", "K&N Referenz", "BDF Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Disponiert" };
+                JTable tableDataTransport = new JTable(dataTableTransport, columnNamesTransport);
                 JScrollPane scrollPaneDataTransport = new JScrollPane(tableDataTransport);
                 // Größe anpassen
                 scrollPaneDataTransport.setPreferredSize(new Dimension(400, 200));
@@ -166,6 +168,7 @@ public class NewTransportWindow extends JFrame {
 
                 // Unteres Panel mit FlowLayout für die Buttons
                 JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
                 // Erstellen der Buttons und Zuweisung der ActionListner
                 JButton saveButton = new JButton("Anlegen");
                 JButton backButton = new JButton("Hauptmenü");
@@ -173,16 +176,19 @@ public class NewTransportWindow extends JFrame {
                 backButton.addActionListener(f -> goMainMenue());
                 saveButton.addActionListener(e -> saveTransport());
                 dispoButton.addActionListener(g -> goDisposition());
+
                 // Dem bottomPannel zuweisen
                 bottomPanel.add(saveButton);
-                bottomPanel.add(backButton);
                 bottomPanel.add(dispoButton);
+                bottomPanel.add(backButton);
+
                 // Erstellung des Hauptpanel mit BorderLayout
                 JPanel mainPanel = new JPanel(new BorderLayout());
                 // Zuweisung der anderen Pannels zum mainPanel
                 mainPanel.add(topPanel, BorderLayout.NORTH);
                 mainPanel.add(middlePanel);
                 mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+
                 // mainPannel dem Femster zuweisen und anzeigen lassen
                 add(mainPanel);
                 setVisible(true);

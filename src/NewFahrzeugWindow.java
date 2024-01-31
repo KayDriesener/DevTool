@@ -1,12 +1,19 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
+
 
 
 public class NewFahrzeugWindow extends JFrame {
-    private JComboBox<String> artComboBox;
+    private final JComboBox<String> artComboBox;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField tAnbieter;
     JTextField tRegPlate;
@@ -53,7 +60,7 @@ public class NewFahrzeugWindow extends JFrame {
         artComboBox = new JComboBox<>(options);
         middlePanel.add(art);
         middlePanel.add(artComboBox);
-        JLabel fine = new JLabel("Miete/ Tag");
+        JLabel fine = new JLabel("Miete/ Tag in Euro");
         tFine = new JTextField();
         middlePanel.add(fine);
         middlePanel.add(tFine);
@@ -96,11 +103,46 @@ public class NewFahrzeugWindow extends JFrame {
     private void saveFahrzeug() {
         String selectedOption = (String) artComboBox.getSelectedItem();
 
-        if ("Zugmaschine".equals(selectedOption)) {
+        try {
+            // Parsen der Datentypen
+            String anbieter = tAnbieter.getText();
+            String regPlate = tRegPlate.getText();
+            float fine = Float.parseFloat(tFine.getText());
+            java.sql.Date spDate = parseDate(tSp.getText());
+            java.sql.Date tuevDate = parseDate(tTuev.getText());
+            Integer kst = Integer.parseInt(tKst.getText());
 
-        } else if ("Trailer".equals(selectedOption)) {
 
+            if ("Zugmaschine".equals(selectedOption)) {
+                // Prep.Statement
+                try {
+                    new DbStatements().addFahrzeugZm(anbieter, regPlate, selectedOption, fine, spDate, tuevDate, kst);
+                    JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
+                }catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Beim Anlegen der Zugmaschine ist ein Fehler aufgetreten.");
+                    log.error(e.getMessage());
+                }
+            } else if ("Trailer".equals(selectedOption)) {
+                //Prep.Statement
+                try {
+                    new DbStatements().addFahrzeugT(anbieter, regPlate, selectedOption, fine, spDate, tuevDate, kst);
+                    JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
+                }catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Beim Anlegen des Trailers ist ein Fehler aufgetreten.");
+                    log.error(e.getMessage());
+                }
+            }
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Ungültiges Zahlenformat!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Ungültiges Datumsformat! dd.MM.yyyy", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    //Hilfsmethode zum Parsen von Date
+    private Date parseDate(String dateString) throws ParseException{
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        java.util.Date utilDate = dateFormat.parse(dateString);
+        return new Date(utilDate.getTime());
     }
 
     private void goMainMenue() {

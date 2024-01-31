@@ -33,7 +33,7 @@ public class DbStatements {
         ps.execute();
     }
     public void addFahrzeugZm(String anbieter, String kennzeichen, String art, Float miete, Date pruefungen, Date tuef, Integer kostenstelle) throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeugzm (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeug_zm (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
         ps.setString(1, anbieter);
         ps.setString(2, kennzeichen);
         ps.setString(3, art);
@@ -44,7 +44,7 @@ public class DbStatements {
         ps.execute();
     }
     public void addFahrzeugT(String anbieter, String kennzeichen, String art, Float miete, Date pruefungen, Date tuef, Integer kostenstelle) throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeugt (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO fahrzeug_t (anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle) VALUES (?, ?, ?, ?, ?, ?, ?);");
         ps.setString(1, anbieter);
         ps.setString(2, kennzeichen);
         ps.setString(3, art);

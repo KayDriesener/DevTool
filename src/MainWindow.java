@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class MainWindow extends JFrame {
     public MainWindow() {
-        setTitle("Übersicht");
+        setTitle("Hauptmenü");
         setSize(900, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -11,7 +11,7 @@ public class MainWindow extends JFrame {
         JPanel topPanel = new JPanel(new GridBagLayout());
 
         // Usermanagement
-        addSection(topPanel, "Usermanagement", "Neuer User", "User Bearbeiten");
+        addSection(topPanel, "User management", "Neuer User", "User Bearbeiten");
 
         // Fahrzeugmanagement
         addSection(topPanel, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
@@ -89,48 +89,48 @@ public class MainWindow extends JFrame {
     }
 
     private void openUserWindow() {
-        SwingUtilities.invokeLater(() -> new NewUserWindow());
+        SwingUtilities.invokeLater(NewUserWindow::new);
     }
 
     private void openEditUserWindow() {
-        SwingUtilities.invokeLater(() -> new EditUserWindow());
+        SwingUtilities.invokeLater(EditUserWindow::new);
     }
 
     private void openFahrzeugWindow() {
-        SwingUtilities.invokeLater(() -> new NewFahrzeugWindow());
+        SwingUtilities.invokeLater(NewFahrzeugWindow::new);
     }
 
     private void openEditFahrzeugWindow() {
-        SwingUtilities.invokeLater(() -> new EditFahrzeugWindow());
+        SwingUtilities.invokeLater(EditFahrzeugWindow::new);
     }
 
     private void openTransportWindow() {
-        SwingUtilities.invokeLater(() -> new NewTransportWindow());
+        SwingUtilities.invokeLater(NewTransportWindow::new);
     }
 
     private void openEditTransportWindow() {
-        SwingUtilities.invokeLater(() -> new EditTransportWindow());
+        SwingUtilities.invokeLater(EditTransportWindow::new);
     }
 
     private void openNewBillingWindow() {
-        SwingUtilities.invokeLater(() -> new NewBillingWindow());
+        SwingUtilities.invokeLater(NewBillingWindow::new);
     }
 
     private void openEditBillingWindow() {
-        SwingUtilities.invokeLater(() -> new EditBilllingWindow());
+        SwingUtilities.invokeLater(EditBilllingWindow::new);
     }
 
     private void openNewCustomerWindow() {
-        SwingUtilities.invokeLater(() -> new NewCustomerWindow());
+        SwingUtilities.invokeLater(NewCustomerWindow::new);
     }
 
     private void openEditCustomerWindow() {
-        SwingUtilities.invokeLater(() -> new EditCustomerWindow());
+        SwingUtilities.invokeLater(EditCustomerWindow::new);
     }
 
     //TODO Nur zu Testzwecken. Im Liveprogramm aus allen Fenstern entfernen.
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MainWindow());
+        SwingUtilities.invokeLater(MainWindow::new);
     }
 }
 // TODO LOGOUTBUTTON -> con.close() && openLoginWindow() && dispose()

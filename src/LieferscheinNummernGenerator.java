@@ -8,7 +8,7 @@ public class LieferscheinNummernGenerator {
     public static String generiereNummer() {
         // Aktuelles Jahr abrufen
         SimpleDateFormat jahFormat = new SimpleDateFormat("yyyy");
-        Integer aktuellesJahr = Integer.parseInt(jahFormat.format(new Date()));
+        int aktuellesJahr = Integer.parseInt(jahFormat.format(new Date()));
 
         //Zurücksetzen der fortlaufenden Nummer bei Jahreswechsel
         if (aktuellesJahr > letztesJahr) {
@@ -21,8 +21,6 @@ public class LieferscheinNummernGenerator {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMyyyy");
         String datumsTeil = dateFormat.format(new Date());
 
-        String lieferscheinnummer = nummerAuftrag + datumsTeil;
-
-        return lieferscheinnummer;
+        return nummerAuftrag + datumsTeil;
     }
 }
