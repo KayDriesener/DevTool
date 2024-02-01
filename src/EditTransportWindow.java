@@ -10,6 +10,7 @@ public class EditTransportWindow extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5)); // Unbegrenzte Zeilen, 2 Spalten, Abstand zwischen den Zellen: 5 Pixel
 
+
         JButton saveButton = new JButton("Speichern");
         JButton backButton = new JButton("Hauptmenü");
         backButton.addActionListener(f -> goMainMenue());
@@ -31,7 +32,4 @@ public class EditTransportWindow extends JFrame {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EditTransportWindow());
-    }
 }

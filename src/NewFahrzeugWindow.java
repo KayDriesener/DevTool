@@ -34,7 +34,7 @@ public class NewFahrzeugWindow extends JFrame {
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Titel für das Usermanagement
+        // Titel für das User management
         JLabel headline = new JLabel("FAHRZEUGMANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 20));
         JLabel subHeadline = new JLabel("Fahrzeug Anlegen");
@@ -55,7 +55,7 @@ public class NewFahrzeugWindow extends JFrame {
         middlePanel.add(regPlate);
         middlePanel.add(tRegPlate);
         JLabel art = new JLabel("ZM/ Trailer");
-        // Combobox statt Textfield
+        // Combo box statt Textfield
         String[] options = {"Bitte auswählen", "Zugmaschine", "Trailer"};
         artComboBox = new JComboBox<>(options);
         middlePanel.add(art);
@@ -89,7 +89,7 @@ public class NewFahrzeugWindow extends JFrame {
         bottomPanel.add(backButton);
          
 
-        // Hauptpanel mit BorderLayout
+        // Haupt panel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);

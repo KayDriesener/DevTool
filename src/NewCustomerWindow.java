@@ -97,7 +97,7 @@ public class NewCustomerWindow extends JFrame {
         panel.add(tEMail);
 
         // Textfeld für Bemerkungen
-        //TODO Scrollbar machen und die Textfelxer schmaler
+        //TODO Scrollbar machen und die Textfelder schmaler
         JLabel note = new JLabel("Bemerkungen");
         tNote = new JTextArea();
         panel.add(note);

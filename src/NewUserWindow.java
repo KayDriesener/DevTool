@@ -104,8 +104,7 @@ public class NewUserWindow extends JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Beim Anlegen eines neuen Benutzers ist ein Fehler aufgetreten.");
             log.error(e.getMessage());
-        }
-    }
+        }    }
     private void goMainMenue(){
         new MainWindow();
         dispose();

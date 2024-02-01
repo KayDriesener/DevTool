@@ -3,17 +3,18 @@ package sql;
 import dto.Fahrzeug;
 import dto.Kunde;
 import dto.User;
+import dto.Shipping;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DbQueries {
 
     /**
      * Holt die Datensaetze aus der Datenbank und gibt sie in einer Liste zurück. Im Fehlerfall wird eine SQLException geworfen.
+     *
      * @return Liste von Datensaetzen
      * @throws SQLException
      */
@@ -34,6 +35,7 @@ public class DbQueries {
 
         return userList;
     }
+
     public ArrayList<Kunde> getKunden() throws SQLException {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, firma, strasse, nummer, postleitzahl, ort, abteilung, ansprechpartner, telefonnummer, email, bemerkungen FROM kunde;");
         ResultSet rs = ps.executeQuery();
@@ -57,6 +59,7 @@ public class DbQueries {
 
         return kundenList;
     }
+
     public ArrayList<Fahrzeug> getFahrzeugZm() throws SQLException {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle FROM fahrzeug_zm;");
         ResultSet rs = ps.executeQuery();
@@ -77,6 +80,7 @@ public class DbQueries {
 
         return fahrzeugListZm;
     }
+
     public ArrayList<Fahrzeug> getFahrzeugT() throws SQLException {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT id, anbieter, kennzeichen, art, miete, pruefungen, tuef, kostenstelle FROM fahrzeug_t;");
         ResultSet rs = ps.executeQuery();
@@ -98,4 +102,29 @@ public class DbQueries {
         return fahrzeugListT;
     }
 
+    public ArrayList<Shipping> getShipping() throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT bdf_referenz, datum, kn_referenz, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung FROM transport;");
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Shipping> shippingList = new ArrayList<>();
+        while (rs.next()) {
+            Shipping shipping = new Shipping();
+            shipping.setBdf_referenz(rs.getInt(1));
+            shipping.setDatum(rs.getDate(2));
+            shipping.setKn_referenz(rs.getInt(3));
+            shipping.setAbsender(rs.getString(4));
+            shipping.setEmpfaenger(rs.getString(5));
+            shipping.setBeladung_s(rs.getDate(6));
+            shipping.setBeladung_e(rs.getDate(7));
+            shipping.setEntladen_s(rs.getDate(8));
+            shipping.setEntladen_e(rs.getDate(9));
+            shipping.setStellplaetze(rs.getInt(10));
+            shipping.setAnzahl(rs.getInt(11));
+            shipping.setLiquid(rs.getBoolean(12));
+            shipping.setAdr(rs.getBoolean(13));
+            shipping.setRundlauf(rs.getBoolean(14));
+            shipping.setBemerkung(rs.getString(15));
+        }
+        return shippingList;
+    }
 }

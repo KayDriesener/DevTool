@@ -1,8 +1,6 @@
 import sql.MySqlConnector;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class LoginWindow extends JFrame {
@@ -16,46 +14,52 @@ public class LoginWindow extends JFrame {
 
     private void initializeUI() {
         setTitle("Login");
-        setSize(400, 100);
+        setSize(400, 150);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JPanel panel = new JPanel(new GridLayout(5, 2));
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password");
 
         usernameField = new JTextField();
         passwordField = new JPasswordField();
 
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
+        JButton loginButton = getLoginButton();
 
-                try {
-                    MySqlConnector.connect(username, password);
-                    openMainWindow();
-                    dispose();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(LoginWindow.this, "Login failed!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    ex.printStackTrace();
-                }
-            }
-        });
-
+        // Leere JLabel als Spacer
+        panel.add(new JLabel());
+        panel.add(new JLabel());
         panel.add(usernameLabel);
         panel.add(usernameField);
         panel.add(passwordLabel);
         panel.add(passwordField);
-        panel.add(new JLabel()); // Abstandshalter
+        panel.add(new JLabel());
         panel.add(loginButton);
+        panel.add(new JLabel());
 
         add(panel);
         setVisible(true);
+    }
+
+    private JButton getLoginButton() {
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+
+            try {
+                MySqlConnector.connect(username, password);
+                openMainWindow();
+                dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(LoginWindow.this, "Login failed!", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        });
+        return loginButton;
     }
 
     private void openMainWindow() {
@@ -63,9 +67,9 @@ public class LoginWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Den logger initialiseren. Er könnte bei Bedarf so konfiguriert werden, dass er ein Logfile ins Dateisystem schreibt.
+        // Den logger initialisieren. Er könnte bei Bedarf so konfiguriert werden, dass er ein Logfile ins Dateisystem schreibt.
         System.setProperty(org.slf4j.simple.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
 
-        SwingUtilities.invokeLater(() -> new LoginWindow());
+        SwingUtilities.invokeLater(LoginWindow::new);
     }
 }

@@ -29,11 +29,11 @@ public class Disposition extends JFrame {
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
         // Daten für die JTable und Spaltennamen
-        Object[][] dataTableDispo = { { false, "Beim Anlegen NICHT Update", "Kommt aus der Dispo", "Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag" } };
-        Object[] collumNamesDispo = { "Auswahl", "Datum", "K&N Referenz", "BDF Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf" };
+        Object[][] dataTableDispo = { { false, "Beim Anlegen NICHT Update", "Kommt aus der Dispo", "Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag", "Testeintrag" } };
+        Object[] columnNamesDispo = { "Auswahl", "Datum", "K&N Referenz", "BDF Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Testeintrag" };
 
         // Erstellen des TableModels mit Checkbox-Renderer
-        DefaultTableModel model = new DefaultTableModel(dataTableDispo, collumNamesDispo) {
+        DefaultTableModel model = new DefaultTableModel(dataTableDispo, columnNamesDispo) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnIndex == 0 ? Boolean.class : Object.class;
@@ -60,7 +60,7 @@ public class Disposition extends JFrame {
         bottomPanel.add(dispoBtn);
         bottomPanel.add(backButton);
 
-        // Erstellung des Hauptpanels mit BorderLayout
+        // Erstellung des Haupt panels mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // Zuweisung der anderen Panels zum mainPanel
@@ -75,7 +75,7 @@ public class Disposition extends JFrame {
 
     // Methode zum Speichern der Disposition
     private void saveDispo() {
-        LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
+        // LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
         String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
         // Prep.Statement Transport speichern
         JOptionPane.showMessageDialog(this, "Transport Angelegt mit der Referenz " + kNlieferscheinnummer +"!");

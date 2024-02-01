@@ -54,4 +54,24 @@ public class DbStatements {
         ps.setInt(7, kostenstelle);
         ps.execute();
     }
+    public  void  addShipping(int bdf_referenz, Date datum, String absender, String empfaenger, Date beladung_s, Date beladung_e, Date entladen_s, Date entladen_e, int stellplaetze, int anzahl, boolean liquid, boolean adr, boolean rundlauf, String bemerkung) throws SQLException {
+        PreparedStatement ps =MySqlConnector.dbConnection.prepareStatement("INSERT INTO transport (bdf_referenz, datum, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        ps.setInt(1, bdf_referenz);
+        ps.setDate(2, (java.sql.Date) datum);
+        ps.setString(3, absender);
+        ps.setString(4, empfaenger);
+        ps.setDate(5, (java.sql.Date) beladung_s);
+        ps.setDate(6, (java.sql.Date) beladung_e);
+        ps.setDate(7, (java.sql.Date) entladen_s);
+        ps.setDate(8, (java.sql.Date) entladen_e);
+        ps.setInt(9, stellplaetze);
+        ps.setInt(10, anzahl);
+        ps.setBoolean(11, liquid);
+        ps.setBoolean(12, adr);
+        ps.setBoolean(13, rundlauf);
+        ps.setString(14, bemerkung);
+        //ps.setInt(15, kn_referenz);
+
+        ps.execute();
+    }
 }
