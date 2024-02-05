@@ -1,4 +1,5 @@
 import dto.Shipping;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
@@ -11,18 +12,19 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class NewTransportWindow extends JFrame {
+    private final JComboBox<String> shipperComboBox;
+    private final JComboBox<String> recipientComboBox;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField knReferenceText;
-    JTextField shipperText;
     JTextField loadBeginTime;
     JTextField loadEndTime;
     JTextField pitchesText;
     JCheckBox liquid;
-    JTextField referenceText;
-    JTextField recipientText;
+    JTextField bdf_referenceText;
     JTextField dischargeBeginText;
     JTextField dischargeEndText;
     JTextField epalText;
@@ -65,7 +67,8 @@ public class NewTransportWindow extends JFrame {
         knReferenceText = new JTextField();
         knReferenceText.setEditable(false);
         JLabel shipperLabel = new JLabel("Absender:");
-        shipperText = new JTextField();
+        String[] shipperOptions = {"Absender wählen"};
+        shipperComboBox = new JComboBox<>(shipperOptions);
         JLabel loadBegin = new JLabel("Beladung Start:");
         loadBeginTime = new JTextField();
         JLabel loadEnd = new JLabel("bis:");
@@ -77,10 +80,11 @@ public class NewTransportWindow extends JFrame {
         // Zweite Gruppe (Reihe)
         JLabel date = new JLabel("Datum:");
         printDate = new JTextField();
-        JLabel reference = new JLabel("BDF Referenz:");
-        referenceText = new JTextField();
+        JLabel bdf_reference = new JLabel("BDF Referenz:");
+        bdf_referenceText = new JTextField();
         JLabel recipient = new JLabel("Empfänger:");
-        recipientText = new JTextField();
+        String[] recipientOptions = {"Empfänger wählen"};
+        recipientComboBox = new JComboBox<>(recipientOptions);
         JLabel dischargeBegin = new JLabel("Entladen Start:");
         dischargeBeginText = new JTextField();
         JLabel dischargeEnd = new JLabel("bis:");
@@ -94,7 +98,10 @@ public class NewTransportWindow extends JFrame {
         commentText = new JTextField();
         roundtrip = new JCheckBox("Rundlauf");
 
-        // Vierte Gruppe (Reihe (Tabelle))
+        /*
+        * Vierte Gruppe (Reihe (Tabelle))
+        * Anlegen einer ArrayList<> aus der Klasse "Shipping" mit var. Bezeichnung "transportList".
+        */
         ArrayList<Shipping> transportList = null;
         try {
             transportList = new DbQueries().getShipping();
@@ -109,9 +116,9 @@ public class NewTransportWindow extends JFrame {
             dataTransport = new Object[transportList.size()][attributeCount];
             int cnt = 0;
             for (Shipping shipping : transportList) {
-                dataTransport[cnt][0] = shipping.getDatum();
-                dataTransport[cnt][1] = shipping.getKn_referenz();
-                dataTransport[cnt][2] = shipping.getBdf_referenz();
+                dataTransport[cnt][0] = shipping.getBdf_referenz();
+                dataTransport[cnt][1] = shipping.getDatum();
+                dataTransport[cnt][2] = shipping.getKn_referenz();
                 dataTransport[cnt][3] = shipping.getAbsender();
                 dataTransport[cnt][4] = shipping.getEmpfaenger();
                 dataTransport[cnt][5] = shipping.getBeladung_s();
@@ -127,7 +134,7 @@ public class NewTransportWindow extends JFrame {
                 cnt++;
             }
         }
-        Object[] columnNamesTransport = {"Datum", "K&N Referenz", "BDF Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
+        Object[] columnNamesTransport = {"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
         JTable transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
 
@@ -140,7 +147,7 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(knReferenz)
                                 .addComponent(knReferenceText)
                                 .addComponent(shipperLabel)
-                                .addComponent(shipperText)
+                                .addComponent(shipperComboBox)
                                 .addComponent(loadBegin)
                                 .addComponent(loadBeginTime)
                                 .addComponent(loadEnd)
@@ -149,10 +156,10 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(pitchesText)
                                 .addComponent(liquid))
                         .addGroup(middleGroup.createSequentialGroup()
-                                .addComponent(reference)
-                                .addComponent(referenceText)
+                                .addComponent(bdf_reference)
+                                .addComponent(bdf_referenceText)
                                 .addComponent(recipient)
-                                .addComponent(recipientText)
+                                .addComponent(recipientComboBox)
                                 .addComponent(dischargeBegin)
                                 .addComponent(dischargeBeginText)
                                 .addComponent(dischargeEnd)
@@ -176,7 +183,7 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(knReferenz)
                                 .addComponent(knReferenceText)
                                 .addComponent(shipperLabel)
-                                .addComponent(shipperText)
+                                .addComponent(shipperComboBox)
                                 .addComponent(loadBegin)
                                 .addComponent(loadBeginTime)
                                 .addComponent(loadEnd)
@@ -186,10 +193,10 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(liquid))
                         .addGroup(middleGroup
                                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(reference)
-                                .addComponent(referenceText)
+                                .addComponent(bdf_reference)
+                                .addComponent(bdf_referenceText)
                                 .addComponent(recipient)
-                                .addComponent(recipientText)
+                                .addComponent(recipientComboBox)
                                 .addComponent(dischargeBegin)
                                 .addComponent(dischargeBeginText)
                                 .addComponent(dischargeEnd)
@@ -245,16 +252,17 @@ public class NewTransportWindow extends JFrame {
 
     }
 
+
     private void saveTransport() {
+        String selectedOptionShipper = (String) shipperComboBox.getSelectedItem();
+        String selectedOptionRecipient = (String) recipientComboBox.getSelectedItem();
+
         try {
-            //int knRef = Integer.parseInt(knReferenceText.getText());
-            String shipper = shipperText.getText();
             java.sql.Date lBegin = parseDateTime(loadBeginTime.getText());
             java.sql.Date lEnd = parseDateTime(loadEndTime.getText());
             int pitches = Integer.parseInt(pitchesText.getText());
             boolean isliquid = liquid.isSelected();
-            int bdfRef = Integer.parseInt(referenceText.getText());
-            String recipient = recipientText.getText();
+            int bdfRef = Integer.parseInt(bdf_referenceText.getText());
             java.sql.Date dcBegin = parseDateTime(dischargeBeginText.getText());
             java.sql.Date dcEnd = parseDateTime(dischargeEndText.getText());
             int epal = Integer.parseInt(epalText.getText());
@@ -263,7 +271,7 @@ public class NewTransportWindow extends JFrame {
             boolean isRoundtrip = roundtrip.isSelected();
             java.sql.Date date = parseDate(printDate.getText());
 
-            new DbStatements().addShipping(bdfRef, date, shipper, recipient, lBegin, lEnd, dcBegin, dcEnd, pitches, epal, isliquid, isAdr, isRoundtrip, comment);
+            new DbStatements().addShipping(bdfRef, date, selectedOptionShipper, selectedOptionRecipient, lBegin, lEnd, dcBegin, dcEnd, pitches, epal, isliquid, isAdr, isRoundtrip, comment);
             JOptionPane.showMessageDialog(this, "Transport angelegt!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Ein unerwarteter Fehler ist aufgetreten!");

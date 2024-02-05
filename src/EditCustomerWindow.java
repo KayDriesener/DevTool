@@ -5,8 +5,6 @@ import sql.DbQueries;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -71,7 +69,9 @@ public class EditCustomerWindow extends JFrame {
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(400, 200)); // Größe anpassen
+
+        // Größe anpassen
+        scrollPane.setPreferredSize(new Dimension(400, 200));
 
         middlePanel.add(scrollPane);
 
@@ -84,26 +84,11 @@ public class EditCustomerWindow extends JFrame {
         JButton mainMenuButton = new JButton("Hauptmenü");
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveUser();
-            }
-        });
+        saveButton.addActionListener(e -> saveUser());
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent d){
-                deleteUser();
-            }
-        });
+        deleteButton.addActionListener(d -> deleteUser());
 
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                goMainMenu();
-            }
-        });
+        mainMenuButton.addActionListener(e -> goMainMenu());
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(mainMenuButton);
@@ -134,7 +119,4 @@ public class EditCustomerWindow extends JFrame {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EditCustomerWindow());
-    }
 }

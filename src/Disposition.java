@@ -1,9 +1,14 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 public class Disposition extends JFrame {
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Konstruktor für die Disposition-Klasse
     public Disposition() {
@@ -28,9 +33,10 @@ public class Disposition extends JFrame {
         // Mittleres Panel mit GridLayout für die JTable
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        // Daten für die JTable und Spaltennamen
+        // Daten für die Tabelle und Spaltennamen
         Object[][] dataTableDispo = { { false, "Beim Anlegen NICHT Update", "Kommt aus der Dispo", "Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag", "Testeintrag" } };
-        Object[] columnNamesDispo = { "Auswahl", "Datum", "K&N Referenz", "BDF Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Testeintrag" };
+        Object[] columnNamesDispo = {"Auswahl", "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
+
 
         // Erstellen des TableModels mit Checkbox-Renderer
         DefaultTableModel model = new DefaultTableModel(dataTableDispo, columnNamesDispo) {
@@ -78,7 +84,7 @@ public class Disposition extends JFrame {
         // LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
         String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
         // Prep.Statement Transport speichern
-        JOptionPane.showMessageDialog(this, "Transport Angelegt mit der Referenz " + kNlieferscheinnummer +"!");
+        JOptionPane.showMessageDialog(this, "Transport Angelegt mit der Referenz " + kNlieferscheinnummer + "!");
     }
 
     // Methode zum Zurückkehren
@@ -100,8 +106,4 @@ public class Disposition extends JFrame {
         }
     }
 
-    // TODO Live entfernen
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Disposition::new);
-    }
 }

@@ -21,9 +21,14 @@ backend erstellen
      - [ ] Alter
      - [ ] Delete
   4. [ ] Transport
-     - [ ] Insert
+     - [x] Insert (Datumsformat (Uhrzeit anzeigen))
      - [ ] Alter
      - [ ] Delete
+  5. [ ] Dispo
+    - 
  
 
 - Auswertung der Transporte
+- Drucken
+- Tooltips für die Eingabefelder & Felder der Tabellen, wenn der Text nicht richtig angezeigt wird
+- 

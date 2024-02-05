@@ -4,7 +4,7 @@ import javax.swing.*;
 public class MainWindow extends JFrame {
     public MainWindow() {
         setTitle("Hauptmenü");
-        setSize(900, 300);
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -24,6 +24,12 @@ public class MainWindow extends JFrame {
 
         // Kundenmanagement
         addSection(topPanel, "Kundenmanagement", "Kunden Anlegen", "Kundendaten Bearbeiten");
+
+        //Configuration
+        addSection(topPanel, "Configuration", "Preise Paletten", "Entfernungen");
+
+        //Auswertungen
+        addSection(topPanel, "Auswertung");
 
         add(topPanel);
         setVisible(true);

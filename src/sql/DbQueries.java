@@ -124,6 +124,7 @@ public class DbQueries {
             shipping.setAdr(rs.getBoolean(13));
             shipping.setRundlauf(rs.getBoolean(14));
             shipping.setBemerkung(rs.getString(15));
+            shippingList.add(shipping);
         }
         return shippingList;
     }
