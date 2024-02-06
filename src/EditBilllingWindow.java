@@ -2,8 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 public class EditBilllingWindow extends JFrame {
+
+    JTable table;
 
     public EditBilllingWindow() {
         setTitle("Rechnung Bearbeiten");
@@ -41,7 +44,20 @@ public class EditBilllingWindow extends JFrame {
         // Benutzerdefinierte Spaltenüberschriften
         Object[] columnNames = { "RechnungsNr.", "Datum", "Firma", "Betrag" };
 
-        JTable table = new JTable(data, columnNames);
+        table =  new JTable(data, columnNames){
+            public String getToolTipText(MouseEvent e) {
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+                String valueAtMousePointer = getValueAt(rowIndex, colIndex).toString();
+
+                if(colIndex == 1 && valueAtMousePointer.isEmpty()) {
+                    return "Wert in Spalte 2 fehlerhaft: Der eingegebene Wert darf nicht leer sein!";
+                }
+
+                return null;
+            }
+        };
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
