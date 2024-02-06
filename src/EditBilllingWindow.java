@@ -1,9 +1,16 @@
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.OrientationRequested;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 
 public class EditBilllingWindow extends JFrame {
+
+    JTable table;
 
     public EditBilllingWindow() {
         setTitle("Rechnung Bearbeiten");
@@ -41,7 +48,7 @@ public class EditBilllingWindow extends JFrame {
         // Benutzerdefinierte Spaltenüberschriften
         Object[] columnNames = { "RechnungsNr.", "Datum", "Firma", "Betrag" };
 
-        JTable table = new JTable(data, columnNames);
+        table = new JTable(data, columnNames);
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
@@ -114,8 +121,17 @@ public class EditBilllingWindow extends JFrame {
     }
 
     private void printBill() {
-        // TODO PrepStatement
-        JOptionPane.showMessageDialog(this, "Datensatz GEDRUCKT!");
+        MessageFormat header = new MessageFormat("Rechnungen");
+        MessageFormat footer = new MessageFormat("Seite 1");
+        PrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
+        // Querformat
+        set.add(OrientationRequested.LANDSCAPE);
+        try {
+            table.print(JTable.PrintMode.FIT_WIDTH, header, footer, true, set, false);
+            JOptionPane.showMessageDialog(this, "Datensatz GEDRUCKT!");
+        } catch (PrinterException e) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Drucken des Datensatzes");
+        }
     }
 
     private void goMainMenu() {
