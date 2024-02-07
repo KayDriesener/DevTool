@@ -51,13 +51,14 @@ create table if not exists transport (
     kn_referenz int,
     absender varchar(255),
     empfaenger varchar(255),
-    beladung_s datetime,
-    beladung_e datetime,
-    entladen_s datetime,
-    entladen_e datetime,
+    beladung_s date,
+    beladung_e date,
+    entladen_s date,
+    entladen_e date,
     stellplaetze integer,
     anzahl integer,
     liquid boolean,
     adr boolean,
-    rundlauf boolean
+    rundlauf boolean,
+    bemerkung varchar(255)
 );

@@ -61,7 +61,7 @@ public class NewUserWindow extends JFrame {
         panel.add(pwd);
         panel.add(uPwd);
 
-        // Checkboxen für die verschiedenen Admin-Rollen
+        // Checkboxen für die verschiedenen Rollen
         JCheckBox dba = new JCheckBox("DBA", false);
         JCheckBox mta = new JCheckBox("Maintenance Admin", false);
         JCheckBox pa = new JCheckBox("Process Admin", false);
@@ -73,7 +73,7 @@ public class NewUserWindow extends JFrame {
         JCheckBox rm = new JCheckBox("Replication Manager", false);
         JCheckBox ba = new JCheckBox("Backup Admin", false);
 
-        // Fügt Checkboxen zum Panel hinzu
+        // Fügt Checkboxen dem Panel hinzu
         panel.add(dba);
         panel.add(mta);
         panel.add(pa);
@@ -85,7 +85,7 @@ public class NewUserWindow extends JFrame {
         panel.add(rm);
         panel.add(ba);
 
-        // Button zum Speichern des neuen Benutzers
+        // Button erstellen und dem panel zuweisen
         JButton saveButton = new JButton("Speichern");
         JButton backButton = new JButton("Hauptmenü");
         saveButton.addActionListener(e -> saveUser());
@@ -97,6 +97,7 @@ public class NewUserWindow extends JFrame {
         setVisible(true);
     }
 
+    // Übermitteln der Daten an die Datenbank und Fehlerbehandlung
     private void saveUser() {
         try {
             new DbStatements().addUser(tfName.getText(), tsName.getText(), tEMail.getText(), tUName.getText());

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class EditFahrzeugWindow extends JFrame {
     Logger log = LoggerFactory.getLogger(this.getClass());
+
     public EditFahrzeugWindow() {
         setTitle("Fahrzeug Bearbeiten");
         setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -31,6 +32,7 @@ public class EditFahrzeugWindow extends JFrame {
         // Mittleres Panel mit GridLayout für die Tabelle
         JPanel middlePanel = new JPanel(new GridLayout(0, 1, 5, 5));
 
+        // Erstellen des Arrays für die "Zugmaschinen" und Fehlerbehandlung
         ArrayList<Fahrzeug> zmList = null;
         try {
             zmList = new DbQueries().getFahrzeugZm();
@@ -39,6 +41,7 @@ public class EditFahrzeugWindow extends JFrame {
             log.error(e.getMessage());
         }
 
+        // Daten aus der Datenbank abrufen
         Object[][] zmData = null;
         if (zmList != null) {
             int attributeCount = Fahrzeug.class.getDeclaredFields().length;
@@ -57,6 +60,7 @@ public class EditFahrzeugWindow extends JFrame {
             }
         }
 
+        // Erstellen des Arrays für die "Trailer" und Fehlerbehandlung
         ArrayList<Fahrzeug> tList = null;
         try {
             tList = new DbQueries().getFahrzeugT();
@@ -65,6 +69,7 @@ public class EditFahrzeugWindow extends JFrame {
             log.error(e.getMessage());
         }
 
+        // Daten aus der Datenbank abrufen
         Object[][] dataTrailer = null;
         if (tList != null) {
             int attributeCount = Fahrzeug.class.getDeclaredFields().length;
@@ -87,6 +92,7 @@ public class EditFahrzeugWindow extends JFrame {
         Object[] columnNamesZm = {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "Tüv", "Kostenstelle"};
         Object[] columnNamesTrailer = {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "Tüv", "Kostenstelle"};
 
+        // Erstellen der Tabellen für die Zugmaschinen und die Trailer
         JTable tableZm = new JTable(zmData, columnNamesZm);
         JTable tableTrailer = new JTable(dataTrailer, columnNamesTrailer);
 
@@ -95,6 +101,7 @@ public class EditFahrzeugWindow extends JFrame {
         JScrollPane scrollPaneTrailer = new JScrollPane(tableTrailer);
         scrollPaneZm.setPreferredSize(new Dimension(400, 200)); // Größe anpassen
 
+        // Tabellen dem panel zuweisen
         middlePanel.add(scrollPaneZm);
         middlePanel.add(scrollPaneTrailer);
 
@@ -110,12 +117,12 @@ public class EditFahrzeugWindow extends JFrame {
         deleteButton.addActionListener(b -> deleteFahrzeug());
         mainMenuButton.addActionListener(g -> goMainMenue());
 
-
+        // Buttons dem Panel zuweisen
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(mainMenuButton);
 
-        // Haupt panel mit BorderLayout
+        // Haupt panel mit BorderLayout und zuweisung zum main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
@@ -128,7 +135,7 @@ public class EditFahrzeugWindow extends JFrame {
     }
 
     private void saveFahrzeug() {
-        // Prep.Statement Rechnung
+        // Prep. Statement Rechnung
         JOptionPane.showMessageDialog(this, "Datensatz GESPEICHERT!");
     }
 
@@ -141,7 +148,4 @@ public class EditFahrzeugWindow extends JFrame {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(EditFahrzeugWindow::new);
-    }
 }

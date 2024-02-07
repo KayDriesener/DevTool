@@ -134,9 +134,5 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(EditCustomerWindow::new);
     }
 
-    //TODO Nur zu Testzwecken. Im Liveprogramm aus allen Fenstern entfernen.
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainWindow::new);
-    }
 }
-// TODO LOGOUTBUTTON -> con.close() && openLoginWindow() && dispose()
+// TODO LOGOUT BUTTON -> con.close() && openLoginWindow() && dispose()

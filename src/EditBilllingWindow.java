@@ -32,14 +32,14 @@ public class EditBilllingWindow extends JFrame {
          */
         /* TODO DATUM UND BETRAG EINFÜGEN */
         Object[][] data = {
-                { 100101, "DD-MM-YYYY", "K&N", "21,149" },
-                { 100102, "DD-MM-YYYY", "Tesa", "31,149" },
-                { 100103, "DD-MM-YYYY", "Beiersdorf", "11,149" },
+                {100101, "DD-MM-YYYY", "K&N", "21,149"},
+                {100102, "DD-MM-YYYY", "Tesa", "31,149"},
+                {100103, "DD-MM-YYYY", "Beiersdorf", "11,149"},
                 // Anbindung an die Datenbank. Get Text.
         };
 
         // Benutzerdefinierte Spaltenüberschriften
-        Object[] columnNames = { "RechnungsNr.", "Datum", "Firma", "Betrag" };
+        Object[] columnNames = {"RechnungsNr.", "Datum", "Firma", "Betrag"};
 
         JTable table = new JTable(data, columnNames);
 
@@ -59,34 +59,12 @@ public class EditBilllingWindow extends JFrame {
         JButton printButton = new JButton("Drucken");
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveBill();
-            }
-        });
+        saveButton.addActionListener(e -> saveBill());
+        deleteButton.addActionListener(d -> deleteBill());
+        printButton.addActionListener(f -> printBill());
+        mainMenuButton.addActionListener(g -> goMainMenu());
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent d) {
-                deleteBill();
-            }
-        });
-
-        printButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent f) {
-                printBill();
-            }
-        });
-
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent g) {
-                goMainMenu();
-            }
-        });
-
+        // Hinzufügen der Buttons zum bottom panel
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(printButton);
@@ -95,6 +73,7 @@ public class EditBilllingWindow extends JFrame {
         // Hauptpanel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
 
+        // Hinzufügen der panel's zum main panel
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -121,9 +100,5 @@ public class EditBilllingWindow extends JFrame {
     private void goMainMenu() {
         new MainWindow();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EditBilllingWindow());
     }
 }
