@@ -32,14 +32,16 @@ public class EditCustomerWindow extends JFrame {
         // Mittleres Panel mit GridLayout für die Tabelle
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
+        // Kundenliste aus der Datenbank abrufen
         ArrayList<Kunde> kundenList = null;
         try {
             kundenList = new DbQueries().getKunden();
         } catch (SQLException e){
-            JOptionPane.showMessageDialog(this, "Beim Abrufen aller Kunden ist ein Fehler aufgetreten.");
+            JOptionPane.showMessageDialog(this, "Beim Abrufen der Kundendaten ist ein Fehler aufgetreten.");
             log.error(e.getMessage());
         }
 
+        //
         Object[][] kundenData = null;
         if(kundenList != null) {
             int attributeCount = Kunde.class.getDeclaredFields().length;
@@ -61,7 +63,7 @@ public class EditCustomerWindow extends JFrame {
             }
         }
 
-        // Benutzerdefinierte Spaltenüberschriften
+        // Benutzerdefinierte Spaltenüberschriften für die Tabelle
         Object[] columnNames = { "ID", "Firma", "Straße", "Nr.", "PlZ", "Ort", "Abteilung", "Ansprechpartner", "Telefon", "EMail", "Bemerkungen"};
 
         assert kundenData != null;
@@ -85,10 +87,10 @@ public class EditCustomerWindow extends JFrame {
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
         saveButton.addActionListener(e -> saveUser());
-
         deleteButton.addActionListener(d -> deleteUser());
-
         mainMenuButton.addActionListener(e -> goMainMenu());
+
+        // Buttons dem bottom panel zuweisen
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(mainMenuButton);
@@ -96,6 +98,7 @@ public class EditCustomerWindow extends JFrame {
         // Hauptpanel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
 
+        // Alle Panels dem main panel zuweisen
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);

@@ -55,7 +55,7 @@ public class NewFahrzeugWindow extends JFrame {
         middlePanel.add(regPlate);
         middlePanel.add(tRegPlate);
         JLabel art = new JLabel("ZM/ Trailer");
-        // Combo box statt Textfield
+        // Combo box statt Text field. Vorgaben für eine einfachere Nutzbarkeit. (Fehler minimieren)
         String[] options = {"Bitte auswählen", "Zugmaschine", "Trailer"};
         artComboBox = new JComboBox<>(options);
         middlePanel.add(art);
@@ -80,6 +80,7 @@ public class NewFahrzeugWindow extends JFrame {
         // Unteres Panel mit FlowLayout für die Buttons
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
+        // Erstellen der Buttons und Zuweisung des bottom panels
         JButton saveButton = new JButton("Speichern");
         JButton backButton = new JButton("Hauptmenü");
         backButton.addActionListener(f -> goMainMenue());
@@ -100,6 +101,7 @@ public class NewFahrzeugWindow extends JFrame {
 
     }
 
+    // Übergeben der Daten an die Datenbank.
     private void saveFahrzeug() {
         String selectedOption = (String) artComboBox.getSelectedItem();
 
@@ -112,9 +114,13 @@ public class NewFahrzeugWindow extends JFrame {
             java.sql.Date tuevDate = parseDate(tTuev.getText());
             Integer kst = Integer.parseInt(tKst.getText());
 
-
+            /*
+            * Abfrage was in der ComboBox ausgewählt wurde.
+            * Zuweisung der Daten zu der entsprechenden Datenbank, nach Ergebnis der Kontrollstruktur
+            * Fehlerbehandlung
+            */
             if ("Zugmaschine".equals(selectedOption)) {
-                // Prep.Statement
+                // Prep. Statement
                 try {
                     new DbStatements().addFahrzeugZm(anbieter, regPlate, selectedOption, fine, spDate, tuevDate, kst);
                     JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");

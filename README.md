@@ -8,7 +8,7 @@ Frontend abschließen.
 
 backend erstellen
 - mapping & prep.statements -> Für das grundsätzliche Verständnis kann in diesem Sinne vorgegangen werden -> https://javabeginners.de/Datenbanken/Prepared_Statement.php
-  1. [ ] User
+  1. [ ] User !Layout überarbeiten!
      - [x] Insert
      - [ ] Alter
      - [ ] Delete
@@ -21,7 +21,7 @@ backend erstellen
      - [ ] Alter
      - [ ] Delete
   4. [ ] Transport
-     - [x] Insert (Datumsformat (Uhrzeit anzeigen))
+     - [x] Insert (Datumsformat (Uhrzeit anzeigen) Absender & Empfänger abrufen)
      - [ ] Alter
      - [ ] Delete
   5. [ ] Dispo
@@ -31,4 +31,4 @@ backend erstellen
 - Auswertung der Transporte
 - Drucken
 - Tooltips für die Eingabefelder & Felder der Tabellen, wenn der Text nicht richtig angezeigt wird
-- 
+- Passwort vergessen & Change Password für das login fenster

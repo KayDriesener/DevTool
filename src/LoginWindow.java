@@ -19,16 +19,17 @@ public class LoginWindow extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
+        // Erstellen des panels
         JPanel panel = new JPanel(new GridLayout(5, 2));
+
+        // Erstellen der Komponenten
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password");
-
         usernameField = new JTextField();
         passwordField = new JPasswordField();
-
         JButton loginButton = getLoginButton();
 
-        // Leere JLabel als Spacer
+        // Komponenten dem panel zuweisen. Leere JLabel dienen als Spacer
         panel.add(new JLabel());
         panel.add(new JLabel());
         panel.add(usernameLabel);

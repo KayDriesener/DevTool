@@ -15,7 +15,7 @@ INSERT INTO fahrzeug_t (anbieter, kennzeichen, art, miete, pruefungen, tuef, kos
 VALUES
     ('Stadt Autovermietung', 'DEF456', 'Trailer', 40.00, '2024-02-10', '2024-03-10', 103),
     ('Logistik AG', 'GHI789', 'Trailer', 80.00, '2024-02-20', '2024-03-20', 104);
-INSERT INTO transport (bdf_referenz, datum, kn_referenz, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf)
+INSERT INTO transport (bdf_referenz, datum, kn_referenz, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung)
 VALUES
-    (1, '2024-02-05', 201, 'Absender A', 'Empfänger X', '2024-02-05 08:00:00', '2024-02-05 10:00:00', '2024-02-05 15:00:00', '2024-02-05 18:00:00', 5, 100, TRUE, FALSE, TRUE),
-    (2, '2024-02-12', 202, 'Absender B', 'Empfänger Y', '2024-02-12 09:00:00', '2024-02-12 11:00:00', '2024-02-12 16:00:00', '2024-02-12 19:00:00', 8, 150, FALSE, TRUE, FALSE);
+    (1, '2024-02-05', 201, 'Absender A', 'Empfänger X', '2024-01-02 08:00:00', '2024-01-02 10:00:00', '2024-01-03 15:00:00', '2024-01-03 18:00:00', 5, 100, TRUE, FALSE, TRUE, 'eintrag1'),
+    (2, '2024-02-12', 202, 'Absender B', 'Empfänger Y', '2024-01-04 09:00:00', '2024-01-04 11:00:00', '2024-01-05 16:00:00', '2024-01-05 19:00:00', 8, 150, FALSE, TRUE, FALSE, 'eintrag2');

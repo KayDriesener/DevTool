@@ -5,8 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+/* feature/nsc/drucken
 import java.awt.print.PrinterException;
 import java.text.MessageFormat;
+import java.awt.event.MouseEvent;
+main*/
 
 public class EditBilllingWindow extends JFrame {
 
@@ -39,16 +42,32 @@ public class EditBilllingWindow extends JFrame {
          */
         /* TODO DATUM UND BETRAG EINFÜGEN */
         Object[][] data = {
-                { 100101, "DD-MM-YYYY", "K&N", "21,149" },
-                { 100102, "DD-MM-YYYY", "Tesa", "31,149" },
-                { 100103, "DD-MM-YYYY", "Beiersdorf", "11,149" },
+                {100101, "DD-MM-YYYY", "K&N", "21,149"},
+                {100102, "DD-MM-YYYY", "Tesa", "31,149"},
+                {100103, "DD-MM-YYYY", "Beiersdorf", "11,149"},
                 // Anbindung an die Datenbank. Get Text.
         };
 
         // Benutzerdefinierte Spaltenüberschriften
-        Object[] columnNames = { "RechnungsNr.", "Datum", "Firma", "Betrag" };
+        Object[] columnNames = {"RechnungsNr.", "Datum", "Firma", "Betrag"};
 
+        table =  new JTable(data, columnNames){
+            public String getToolTipText(MouseEvent e) {
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+                String valueAtMousePointer = getValueAt(rowIndex, colIndex).toString();
+
+/* feature/nsc/drucken
         table = new JTable(data, columnNames);
+                if(colIndex == 1 && valueAtMousePointer.isEmpty()) {
+                    return "Wert in Spalte 2 fehlerhaft: Der eingegebene Wert darf nicht leer sein!";
+                }
+
+                return null;
+            }
+        };
+ main*/
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
@@ -66,34 +85,12 @@ public class EditBilllingWindow extends JFrame {
         JButton printButton = new JButton("Drucken");
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveBill();
-            }
-        });
+        saveButton.addActionListener(e -> saveBill());
+        deleteButton.addActionListener(d -> deleteBill());
+        printButton.addActionListener(f -> printBill());
+        mainMenuButton.addActionListener(g -> goMainMenu());
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent d) {
-                deleteBill();
-            }
-        });
-
-        printButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent f) {
-                printBill();
-            }
-        });
-
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent g) {
-                goMainMenu();
-            }
-        });
-
+        // Hinzufügen der Buttons zum bottom panel
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(printButton);
@@ -102,6 +99,7 @@ public class EditBilllingWindow extends JFrame {
         // Hauptpanel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
 
+        // Hinzufügen der panel's zum main panel
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -137,9 +135,5 @@ public class EditBilllingWindow extends JFrame {
     private void goMainMenu() {
         new MainWindow();
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EditBilllingWindow());
     }
 }

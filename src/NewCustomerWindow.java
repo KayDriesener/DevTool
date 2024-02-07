@@ -26,10 +26,10 @@ public class NewCustomerWindow extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Unbegrenzte Zeilen, 2 Spalten, Abstand zwischen den Zellen: 5 Pixel
+        // Unbegrenzte Zeilen -----, 2 Spalten |||, Abstand zwischen den Zellen: 5 Pixel ↔
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
-        // Titel für das Usermanagement
+        // Titel für das User management
         JLabel headline = new JLabel("KUNDENMANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 18));
         JLabel subHeadline = new JLabel("Neuer Kunde");
@@ -90,7 +90,7 @@ public class NewCustomerWindow extends JFrame {
         panel.add(fon);
         panel.add(tFon);
 
-        // Feld für die Erreichbarkeit EMail
+        // Feld für die Erreichbarkeit E-Mail
         JLabel eMail = new JLabel("EMail");
         tEMail = new JTextField();
         panel.add(eMail);

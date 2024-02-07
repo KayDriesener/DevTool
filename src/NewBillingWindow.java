@@ -22,7 +22,7 @@ public class NewBillingWindow extends JFrame {
     }
 
     private void saveBill() {
-        // Prep.Statement Rechnung Neu
+        // Prep. Statement Rechnung Neu
         JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
     }
 
@@ -31,7 +31,4 @@ public class NewBillingWindow extends JFrame {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new NewBillingWindow());
-    }
 }

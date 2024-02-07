@@ -46,7 +46,7 @@ public class EditUserWindow extends JFrame {
 
         // Benutzerdaten in das TableModel übertragen
         Object[][] tableData = null;
-        if(userList != null) {
+        if (userList != null) {
             // Die Anzahl der Attribute muss mit der Spaltenanzahl des TableModels übereinstimmen!
             int attributeCount = User.class.getDeclaredFields().length;
             tableData = new Object[userList.size()][attributeCount];
@@ -82,33 +82,16 @@ public class EditUserWindow extends JFrame {
         JButton saveButton = new JButton("Speichern");
         JButton mainMenuButton = new JButton("Hauptmenü");
 
-        // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveUser();
-            }
-        });
-
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent m) {
-                goMainMenu();
-            }
-        });
-
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent d) {
-                deleteUser();
-            }
-        });
+        // Aktion listener den Buttons zuweisen
+        saveButton.addActionListener(e -> saveUser());
+        mainMenuButton.addActionListener(m -> goMainMenu());
+        deleteButton.addActionListener(d -> deleteUser());
 
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(mainMenuButton);
 
-        // Haupt panel mit BorderLayout
+        // Haupt panel mit BorderLayout und zuweisen der anderen panels
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(topPanel, BorderLayout.NORTH);

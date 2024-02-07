@@ -12,8 +12,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 public class NewTransportWindow extends JFrame {
     private final JComboBox<String> shipperComboBox;
@@ -61,6 +59,7 @@ public class NewTransportWindow extends JFrame {
         // AutoGap
         middleGroup.setAutoCreateGaps(true);
         middleGroup.setAutoCreateContainerGaps(true);
+
 
         // Erste Gruppe (Reihe)
         JLabel knReferenz = new JLabel("K&N Referenz:");
@@ -110,6 +109,7 @@ public class NewTransportWindow extends JFrame {
             log.error(e.getMessage());
         }
 
+        // Tabelle erstellen und die Daten aus der Tabelle abfragen
         Object[][] dataTransport = null;
         if (transportList != null) {
             int attributeCount = Shipping.class.getDeclaredFields().length;
@@ -141,6 +141,7 @@ public class NewTransportWindow extends JFrame {
         // Größe anpassen
         scrollPaneDataTransport.setPreferredSize(new Dimension(400, 200));
 
+        //Erstellen des GroupLayouts
         middleGroup.setHorizontalGroup(
                 middleGroup.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(middleGroup.createSequentialGroup()
@@ -252,7 +253,7 @@ public class NewTransportWindow extends JFrame {
 
     }
 
-
+    // Parsen und speichern der eingegebenen Daten
     private void saveTransport() {
         String selectedOptionShipper = (String) shipperComboBox.getSelectedItem();
         String selectedOptionRecipient = (String) recipientComboBox.getSelectedItem();
@@ -282,12 +283,14 @@ public class NewTransportWindow extends JFrame {
 
     }
 
+    // Methoden zum Parsen des Datums von java.util.Date -> java.sql.Date
     private java.sql.Date parseDateTime(String dateString) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
         java.util.Date utilDate = dateFormat.parse(dateString);
         return new java.sql.Date(utilDate.getTime());
     }
 
+    // Methoden zum Parsen des Datums von java.util.Date -> java.sql.Date
     private java.sql.Date parseDate(String dateString) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         java.util.Date utilDate = dateFormat.parse(dateString);
