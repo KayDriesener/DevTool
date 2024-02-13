@@ -22,7 +22,11 @@ public class Disposition extends JFrame {
         // Oberstes Panel mit BorderLayout für den Titel
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Titel für das Dispositionsmanagement
+        /*
+        * Titel für das Dispositionsmanagement
+        * Labels dem "topPanel" hinzufügen
+        * Beim Hinzufügen wird das Layout mit übergeben
+         */
         JLabel headline = new JLabel("DISPOSITIONSMANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 20));
         JLabel subHeadline = new JLabel("Disposition Anlegen");
@@ -59,7 +63,7 @@ public class Disposition extends JFrame {
         // Erstellen der Buttons und Zuweisung der ActionListener
         JButton dispoBtn = new JButton("Disponieren");
         JButton backButton = new JButton("Zurück");
-        backButton.addActionListener(f -> goBack());
+        backButton.addActionListener(e -> goBack());
         dispoBtn.addActionListener(e -> saveDispo());
 
         // Dem bottomPanel zuweisen
@@ -83,7 +87,7 @@ public class Disposition extends JFrame {
     private void saveDispo() {
         // LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
         String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
-        // Prep.Statement Transport speichern
+        // Prep. Statement Transport speichern
         JOptionPane.showMessageDialog(this, "Transport Angelegt mit der Referenz " + kNlieferscheinnummer + "!");
     }
 

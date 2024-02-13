@@ -3,13 +3,10 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.OrientationRequested;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-/* feature/nsc/drucken
 import java.awt.print.PrinterException;
 import java.text.MessageFormat;
 import java.awt.event.MouseEvent;
-main*/
+
 
 public class EditBilllingWindow extends JFrame {
 
@@ -25,7 +22,7 @@ public class EditBilllingWindow extends JFrame {
         JPanel topPanel = new JPanel(new BorderLayout());
 
         // Titel für das Usermanagement
-        JLabel headline = new JLabel("USERMANAGEMENT");
+        JLabel headline = new JLabel("RECHNUNGSMANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 20));
         JLabel subHeadline = new JLabel("Rechnung Bearbeiten");
         subHeadline.setFont(new Font("Arial", Font.BOLD, 18));
@@ -37,19 +34,17 @@ public class EditBilllingWindow extends JFrame {
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
         /*
-         * Benutzerdefinierte Daten für die Tabelle aus der Datenbank "SHEMA DisTool
-         * TABLE user"
+         * Benutzerdefinierte Daten für die Tabelle aus der Datenbank
+         * TODO Datensatz aus der Datenbank abrufen
          */
-        /* TODO DATUM UND BETRAG EINFÜGEN */
         Object[][] data = {
                 {100101, "DD-MM-YYYY", "K&N", "21,149"},
                 {100102, "DD-MM-YYYY", "Tesa", "31,149"},
                 {100103, "DD-MM-YYYY", "Beiersdorf", "11,149"},
-                // Anbindung an die Datenbank. Get Text.
         };
 
         // Benutzerdefinierte Spaltenüberschriften
-        Object[] columnNames = {"RechnungsNr.", "Datum", "Firma", "Betrag"};
+        Object[] columnNames = {"RechnungsNr.", "Datum", "Firma", "Betrag in €"};
 
         table =  new JTable(data, columnNames){
             public String getToolTipText(MouseEvent e) {
@@ -58,7 +53,7 @@ public class EditBilllingWindow extends JFrame {
                 int colIndex = columnAtPoint(p);
                 String valueAtMousePointer = getValueAt(rowIndex, colIndex).toString();
 
-/* feature/nsc/drucken
+
         table = new JTable(data, columnNames);
                 if(colIndex == 1 && valueAtMousePointer.isEmpty()) {
                     return "Wert in Spalte 2 fehlerhaft: Der eingegebene Wert darf nicht leer sein!";
@@ -67,7 +62,7 @@ public class EditBilllingWindow extends JFrame {
                 return null;
             }
         };
- main*/
+
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
@@ -126,7 +121,6 @@ public class EditBilllingWindow extends JFrame {
         set.add(OrientationRequested.LANDSCAPE);
         try {
             table.print(JTable.PrintMode.FIT_WIDTH, header, footer, true, set, false);
-            JOptionPane.showMessageDialog(this, "Datensatz GEDRUCKT!");
         } catch (PrinterException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Drucken des Datensatzes");
         }

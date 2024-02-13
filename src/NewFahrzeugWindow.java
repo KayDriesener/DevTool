@@ -83,7 +83,7 @@ public class NewFahrzeugWindow extends JFrame {
         // Erstellen der Buttons und Zuweisung des bottom panels
         JButton saveButton = new JButton("Speichern");
         JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(f -> goMainMenue());
+        backButton.addActionListener(e -> goMainMenue());
         saveButton.addActionListener(e -> saveFahrzeug());
 
         bottomPanel.add(saveButton);
@@ -117,7 +117,7 @@ public class NewFahrzeugWindow extends JFrame {
             /*
             * Abfrage was in der ComboBox ausgewählt wurde.
             * Zuweisung der Daten zu der entsprechenden Datenbank, nach Ergebnis der Kontrollstruktur
-            * Fehlerbehandlung
+            * und Fehlerbehandlung
             */
             if ("Zugmaschine".equals(selectedOption)) {
                 // Prep. Statement

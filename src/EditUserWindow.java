@@ -61,8 +61,11 @@ public class EditUserWindow extends JFrame {
             }
         }
 
-        // Benutzerdefinierte Spaltenüberschriften → Anzahl der Überschriften,
-        // muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
+        /*
+        * Benutzerdefinierte Spaltenüberschriften → Anzahl der Überschriften,
+        * muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
+         */
+
         Object[] columnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
 
         assert tableData != null;
@@ -84,8 +87,8 @@ public class EditUserWindow extends JFrame {
 
         // Aktion listener den Buttons zuweisen
         saveButton.addActionListener(e -> saveUser());
-        mainMenuButton.addActionListener(m -> goMainMenu());
-        deleteButton.addActionListener(d -> deleteUser());
+        mainMenuButton.addActionListener(e -> goMainMenu());
+        deleteButton.addActionListener(e -> deleteUser());
 
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);

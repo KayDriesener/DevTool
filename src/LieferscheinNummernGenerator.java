@@ -16,11 +16,14 @@ public class LieferscheinNummernGenerator {
             auftragsnummer = 1;
         }
 
+        // Formatierung des String
         String nummerAuftrag = String.format("%04d", auftragsnummer++);
 
+        // Formatierung des Datums
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMyyyy");
         String datumsTeil = dateFormat.format(new Date());
 
+        // Zusammenfügen der Lieferscheinnummer
         return nummerAuftrag + datumsTeil;
     }
 }

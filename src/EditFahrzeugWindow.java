@@ -113,9 +113,9 @@ public class EditFahrzeugWindow extends JFrame {
         JButton deleteButton = new JButton("Löschen");
         JButton mainMenuButton = new JButton("Hauptmenü");
 
-        saveButton.addActionListener(a -> saveFahrzeug());
-        deleteButton.addActionListener(b -> deleteFahrzeug());
-        mainMenuButton.addActionListener(g -> goMainMenue());
+        saveButton.addActionListener(e -> saveFahrzeug());
+        deleteButton.addActionListener(e -> deleteFahrzeug());
+        mainMenuButton.addActionListener(e -> goMainMenue());
 
         // Buttons dem Panel zuweisen
         bottomPanel.add(deleteButton);

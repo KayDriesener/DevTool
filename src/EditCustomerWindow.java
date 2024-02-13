@@ -20,7 +20,7 @@ public class EditCustomerWindow extends JFrame {
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Titel für das Usermanagement
+        // Titel für das User management
         JLabel headline = new JLabel("KUNDENMANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 20));
         JLabel subHeadline = new JLabel("Kunde Bearbeiten");
@@ -32,7 +32,11 @@ public class EditCustomerWindow extends JFrame {
         // Mittleres Panel mit GridLayout für die Tabelle
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        // Kundenliste aus der Datenbank abrufen
+        /*
+        * Kundenliste aus der Datenbank abrufen
+        * Erstellen eines leeren Arrays "kundenList"
+        * Neue Abfrage der Tabelle mittels eines Prepares Statements aus der "DbQueries.java"
+         */
         ArrayList<Kunde> kundenList = null;
         try {
             kundenList = new DbQueries().getKunden();
@@ -41,7 +45,9 @@ public class EditCustomerWindow extends JFrame {
             log.error(e.getMessage());
         }
 
-        //
+        /*
+        * Befüllen der Zellen mit den Daten aus der Datenbanktabelle
+         */
         Object[][] kundenData = null;
         if(kundenList != null) {
             int attributeCount = Kunde.class.getDeclaredFields().length;
@@ -72,7 +78,7 @@ public class EditCustomerWindow extends JFrame {
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
 
-        // Größe anpassen
+        // Größe der Tabelle anpassen und dem "middlePanel" hinzufügen
         scrollPane.setPreferredSize(new Dimension(400, 200));
 
         middlePanel.add(scrollPane);
@@ -87,7 +93,7 @@ public class EditCustomerWindow extends JFrame {
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
         saveButton.addActionListener(e -> saveUser());
-        deleteButton.addActionListener(d -> deleteUser());
+        deleteButton.addActionListener(e -> deleteUser());
         mainMenuButton.addActionListener(e -> goMainMenu());
 
         // Buttons dem bottom panel zuweisen
@@ -95,7 +101,7 @@ public class EditCustomerWindow extends JFrame {
         bottomPanel.add(saveButton);
         bottomPanel.add(mainMenuButton);
 
-        // Hauptpanel mit BorderLayout
+        // Haupt panel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // Alle Panels dem main panel zuweisen

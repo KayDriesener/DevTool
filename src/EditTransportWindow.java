@@ -13,7 +13,7 @@ public class EditTransportWindow extends JFrame {
 
         JButton saveButton = new JButton("Speichern");
         JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(f -> goMainMenue());
+        backButton.addActionListener(e -> goMainMenue());
         saveButton.addActionListener(e -> saveTransport());
 
         add(panel);
@@ -23,7 +23,7 @@ public class EditTransportWindow extends JFrame {
     }
 
     private void saveTransport() {
-        // Prep.Statement Transport Bearbeiten
+        // Prep. Statement Transport Bearbeiten
         JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
     }
 

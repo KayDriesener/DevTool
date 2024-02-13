@@ -7,6 +7,8 @@ import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -98,9 +100,9 @@ public class NewTransportWindow extends JFrame {
         roundtrip = new JCheckBox("Rundlauf");
 
         /*
-        * Vierte Gruppe (Reihe (Tabelle))
-        * Anlegen einer ArrayList<> aus der Klasse "Shipping" mit var. Bezeichnung "transportList".
-        */
+         * Vierte Gruppe (Reihe (Tabelle))
+         * Anlegen einer ArrayList<> aus der Klasse "Shipping" mit var. Bezeichnung "transportList".
+         */
         ArrayList<Shipping> transportList = null;
         try {
             transportList = new DbQueries().getShipping();
@@ -137,6 +139,27 @@ public class NewTransportWindow extends JFrame {
         Object[] columnNamesTransport = {"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
         JTable transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
+
+        // Tooltip bei Mouseover
+        transportTable.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = transportTable.rowAtPoint(point);
+                int col = transportTable.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = transportTable.getValueAt(row, col);
+                    transportTable.setToolTipText((value != null ? value.toString() : null));
+
+                }
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+
+            }
+        });
 
         // Größe anpassen
         scrollPaneDataTransport.setPreferredSize(new Dimension(400, 200));
@@ -230,9 +253,9 @@ public class NewTransportWindow extends JFrame {
         JButton saveButton = new JButton("Anlegen");
         JButton backButton = new JButton("Hauptmenü");
         JButton dispoButton = new JButton("Disposition");
-        backButton.addActionListener(f -> goMainMenue());
+        backButton.addActionListener(e -> goMainMenue());
         saveButton.addActionListener(e -> saveTransport());
-        dispoButton.addActionListener(g -> goDisposition());
+        dispoButton.addActionListener(e -> goDisposition());
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(saveButton);
@@ -259,6 +282,9 @@ public class NewTransportWindow extends JFrame {
         String selectedOptionRecipient = (String) recipientComboBox.getSelectedItem();
 
         try {
+            /*
+             * Parsen der eingegebenen Daten, um diese mit der Datenbank zu verarbeiten.
+             */
             java.sql.Date lBegin = parseDateTime(loadBeginTime.getText());
             java.sql.Date lEnd = parseDateTime(loadEndTime.getText());
             int pitches = Integer.parseInt(pitchesText.getText());
@@ -272,6 +298,7 @@ public class NewTransportWindow extends JFrame {
             boolean isRoundtrip = roundtrip.isSelected();
             java.sql.Date date = parseDate(printDate.getText());
 
+            // Aufrufen des Statements zum Übergeben der Daten an die Datenbank incl. Fehlerbehandlung
             new DbStatements().addShipping(bdfRef, date, selectedOptionShipper, selectedOptionRecipient, lBegin, lEnd, dcBegin, dcEnd, pitches, epal, isliquid, isAdr, isRoundtrip, comment);
             JOptionPane.showMessageDialog(this, "Transport angelegt!");
         } catch (SQLException e) {
@@ -285,7 +312,7 @@ public class NewTransportWindow extends JFrame {
 
     // Methoden zum Parsen des Datums von java.util.Date -> java.sql.Date
     private java.sql.Date parseDateTime(String dateString) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         java.util.Date utilDate = dateFormat.parse(dateString);
         return new java.sql.Date(utilDate.getTime());
     }
@@ -302,6 +329,7 @@ public class NewTransportWindow extends JFrame {
         dispose();
     }
 
+    // Öffnet das Hauptmenü und gibt Ressourcen frei.
     private void goMainMenue() {
         new MainWindow();
         dispose();

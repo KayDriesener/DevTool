@@ -39,7 +39,7 @@ public class NewCustomerWindow extends JFrame {
 
         JButton saveButton = new JButton("Speichern");
         JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(f -> goMainMenue());
+        backButton.addActionListener(e -> goMainMenue());
         saveButton.addActionListener(e -> saveCstmr());
 
         // Feld für den Firmennamen
@@ -110,6 +110,10 @@ public class NewCustomerWindow extends JFrame {
 
     }
 
+    /*
+    * Übergeben der eingegebenen Daten an die Datenbanktabelle über ein prepared Statement
+    * in "DbStatements.java"
+     */
     private void saveCstmr() {
         try {
             new DbStatements().addKunde(tfName.getText(), tsStrs.getText(), tHnr.getText(), tPlz.getText(), uOrt.getText(), tAbt.getText(), tResPers.getText(), tFon.getText(), tEMail.getText(), tNote.getText());

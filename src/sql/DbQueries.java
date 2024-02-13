@@ -9,14 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DbQueries {
 
-    /**
-     * Holt die Datensaetze aus der Datenbank und gibt sie in einer Liste zurück. Im Fehlerfall wird eine SQLException geworfen.
+    /*
+     * Holt die Datensätze aus der Datenbank und gibt sie in einer Liste zurück. Im Fehlerfall wird eine SQLException geworfen.
      *
-     * @return Liste von Datensaetzen
+     * @return Liste von Datensetzen
      * @throws SQLException
      */
     public ArrayList<User> getUsers() throws SQLException {

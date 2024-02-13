@@ -14,12 +14,12 @@ public class LoginWindow extends JFrame {
 
     private void initializeUI() {
         setTitle("Login");
-        setSize(400, 150);
+        setSize(350, 150);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Erstellen des panels
+        // Erstellen des panels mit Gridlayout( 5 Reihen, 2 Spalten)
         JPanel panel = new JPanel(new GridLayout(5, 2));
 
         // Erstellen der Komponenten
@@ -29,7 +29,7 @@ public class LoginWindow extends JFrame {
         passwordField = new JPasswordField();
         JButton loginButton = getLoginButton();
 
-        // Komponenten dem panel zuweisen. Leere JLabel dienen als Spacer
+        // Komponenten dem panel zuweisen. Leere JLabel dienen als Abstandshalter um das Layout zu ordnen.
         panel.add(new JLabel());
         panel.add(new JLabel());
         panel.add(usernameLabel);
@@ -44,6 +44,11 @@ public class LoginWindow extends JFrame {
         setVisible(true);
     }
 
+    /*
+    * "Login" Button Objekt erstellen mit der Prüfung auf Richtigkeit der eingegebenen Parameter.
+    * Parameter werden mit den Datenbankusern abgeglichen.
+    * Bei falschen Eingaben wird eine Fehlerbehandlung ausgeführt.
+     */
     private JButton getLoginButton() {
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(e -> {

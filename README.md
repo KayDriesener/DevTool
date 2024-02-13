@@ -21,7 +21,7 @@ backend erstellen
      - [ ] Alter
      - [ ] Delete
   4. [ ] Transport
-     - [x] Insert (Datumsformat (Uhrzeit anzeigen) Absender & Empfänger abrufen)
+     - [x] Insert (Datumsformat (Uhrzeit anzeigen) Absender & Empfänger abrufen, Fahrzeug hinzufügen)
      - [ ] Alter
      - [ ] Delete
   5. [ ] Dispo
@@ -29,6 +29,5 @@ backend erstellen
  
 
 - Auswertung der Transporte
-- Drucken
 - Tooltips für die Eingabefelder & Felder der Tabellen, wenn der Text nicht richtig angezeigt wird
 - Passwort vergessen & Change Password für das login fenster

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class DbStatements {
 
-    /**
+    /*
      * Fügt einen neue Datensaetze der Datenbank hinzu. Im Fehlerfall wird eine SQLException geworfen.
      * @throws SQLException
      */
