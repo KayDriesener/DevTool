@@ -1,5 +1,8 @@
+import dto.Kunde;
 import dto.Shipping;
 
+import helpers.Parsing;
+import helpers.Updates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
@@ -9,15 +12,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class NewTransportWindow extends JFrame {
     private final JComboBox<String> shipperComboBox;
     private final JComboBox<String> recipientComboBox;
+    private JTable transportTable;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField knReferenceText;
     JTextField loadBeginTime;
@@ -68,8 +70,8 @@ public class NewTransportWindow extends JFrame {
         knReferenceText = new JTextField();
         knReferenceText.setEditable(false);
         JLabel shipperLabel = new JLabel("Absender:");
-        String[] shipperOptions = {"Absender wählen"};
-        shipperComboBox = new JComboBox<>(shipperOptions);
+        shipperComboBox = new JComboBox<>();
+        populateShipperComboBox();
         JLabel loadBegin = new JLabel("Beladung Start:");
         loadBeginTime = new JTextField();
         JLabel loadEnd = new JLabel("bis:");
@@ -84,8 +86,8 @@ public class NewTransportWindow extends JFrame {
         JLabel bdf_reference = new JLabel("BDF Referenz:");
         bdf_referenceText = new JTextField();
         JLabel recipient = new JLabel("Empfänger:");
-        String[] recipientOptions = {"Empfänger wählen"};
-        recipientComboBox = new JComboBox<>(recipientOptions);
+        recipientComboBox = new JComboBox<>();
+        populateRecipientComboBox();
         JLabel dischargeBegin = new JLabel("Entladen Start:");
         dischargeBeginText = new JTextField();
         JLabel dischargeEnd = new JLabel("bis:");
@@ -151,7 +153,6 @@ public class NewTransportWindow extends JFrame {
                 if (row >= 0) {
                     Object value = transportTable.getValueAt(row, col);
                     transportTable.setToolTipText((value != null ? value.toString() : null));
-
                 }
             }
 
@@ -253,12 +254,18 @@ public class NewTransportWindow extends JFrame {
         JButton saveButton = new JButton("Anlegen");
         JButton backButton = new JButton("Hauptmenü");
         JButton dispoButton = new JButton("Disposition");
-        backButton.addActionListener(e -> goMainMenue());
-        saveButton.addActionListener(e -> saveTransport());
-        dispoButton.addActionListener(e -> goDisposition());
+        JButton deleteButton = new JButton("Löschen");
+        JButton editButton = new JButton("Bearbeiten");
+        backButton.addActionListener(_ -> goMainMenue());
+        saveButton.addActionListener(_ -> saveTransport());
+        dispoButton.addActionListener(_ -> goDisposition());
+        deleteButton.addActionListener(_ -> deleteTransport());
+        editButton.addActionListener(_ -> editTransport());
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(saveButton);
+        bottomPanel.add(editButton);
+        bottomPanel.add(deleteButton);
         bottomPanel.add(dispoButton);
         bottomPanel.add(backButton);
 
@@ -284,44 +291,76 @@ public class NewTransportWindow extends JFrame {
         try {
             /*
              * Parsen der eingegebenen Daten, um diese mit der Datenbank zu verarbeiten.
+             * Methoden zum Parsen wurden in helpers.Parsing ausgelagert, um den Code übersichtlicher zu gestalten.
              */
-            java.sql.Date lBegin = parseDateTime(loadBeginTime.getText());
-            java.sql.Date lEnd = parseDateTime(loadEndTime.getText());
+            Date lBegin = Parsing.parseDateTime(loadBeginTime.getText());
+            Date lEnd = Parsing.parseDateTime(loadEndTime.getText());
             int pitches = Integer.parseInt(pitchesText.getText());
             boolean isliquid = liquid.isSelected();
             int bdfRef = Integer.parseInt(bdf_referenceText.getText());
-            java.sql.Date dcBegin = parseDateTime(dischargeBeginText.getText());
-            java.sql.Date dcEnd = parseDateTime(dischargeEndText.getText());
+            Date dcBegin = Parsing.parseDateTime(dischargeBeginText.getText());
+            Date dcEnd = Parsing.parseDateTime(dischargeEndText.getText());
             int epal = Integer.parseInt(epalText.getText());
             boolean isAdr = adrBox.isSelected();
             String comment = commentText.getText();
             boolean isRoundtrip = roundtrip.isSelected();
-            java.sql.Date date = parseDate(printDate.getText());
+            Date date = Parsing.parseDate(printDate.getText());
 
-            // Aufrufen des Statements zum Übergeben der Daten an die Datenbank incl. Fehlerbehandlung
+            // Aufrufen des Statements zum Übergeben der Daten an die Datenbank incl. Update funktion und Fehlerbehandlung
             new DbStatements().addShipping(bdfRef, date, selectedOptionShipper, selectedOptionRecipient, lBegin, lEnd, dcBegin, dcEnd, pitches, epal, isliquid, isAdr, isRoundtrip, comment);
+            Updates.updateTransportTable(transportTable);
             JOptionPane.showMessageDialog(this, "Transport angelegt!");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Ein unerwarteter Fehler ist aufgetreten!");
-            log.error(e.getMessage());
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this, "Ungültiges Datumsformat! dd.MM.yyyy hh:mm", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, STR."Ein unerwarteter Fehler ist aufgetreten!\{ex.getMessage()}");
+            log.error(STR."Ein unerwarteter Fehler ist aufgetreten!\{ex.getMessage()}");
         }
+    }
+    private void editTransport(){
 
     }
 
-    // Methoden zum Parsen des Datums von java.util.Date -> java.sql.Date
-    private java.sql.Date parseDateTime(String dateString) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        java.util.Date utilDate = dateFormat.parse(dateString);
-        return new java.sql.Date(utilDate.getTime());
+    private void deleteTransport(){
+
     }
 
-    // Methoden zum Parsen des Datums von java.util.Date -> java.sql.Date
-    private java.sql.Date parseDate(String dateString) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        java.util.Date utilDate = dateFormat.parse(dateString);
-        return new java.sql.Date(utilDate.getTime());
+    /*
+     *Abrufen der Kundendaten um die Combobox zu füllen.
+     *In der dto.Kunde wurde die Methode toString eingefügt mit return firma umd die Firmennamen anzuzeigen.
+     *Bei einem Fehler wird eine Fehlermeldung ausgegeben und das Programm wird weiter ausgeführt.
+     *Gleiches für die Methode populateShipperBox.
+     */
+    private void populateRecipientComboBox(){
+        try {
+            ArrayList<Kunde> recipientList = new DbQueries().getKunden();
+            if (recipientList != null && !recipientList.isEmpty()){
+                recipientComboBox.removeAllItems();
+                recipientComboBox.addItem("Empfänger wählen");
+
+                for (Kunde shipper : recipientList){
+                    recipientComboBox.addItem(String.valueOf(shipper));
+                }
+            }
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, STR."Fehler beim abrufen der Datensätze Empfänger!\n\{ex.getMessage()}");
+            log.error(STR."Fehler beim abrufen der Datensätze für Empfänger!\{ex.getMessage()}");
+        }
+    }
+
+    private void populateShipperComboBox(){
+        try {
+            ArrayList<Kunde> shipperList = new DbQueries().getKunden();
+            if (shipperList != null && !shipperList.isEmpty()){
+                shipperComboBox.removeAllItems();
+                shipperComboBox.addItem("Absender wählen");
+
+                for (Kunde shipper : shipperList){
+                    shipperComboBox.addItem(String.valueOf(shipper));
+                }
+            }
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, STR."Fehler beim abrufen der Datensätze für Absender!\n\{ex.getMessage()}");
+            log.error(STR."Fehler beim abrufen der Datensätze für Absender!\{ex.getMessage()}");
+        }
     }
 
     private void goDisposition() {

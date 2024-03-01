@@ -100,4 +100,9 @@ public class Kunde {
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
     }
+
+    @Override
+    public String toString() {
+        return firma;
+    }
 }
