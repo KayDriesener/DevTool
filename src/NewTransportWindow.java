@@ -9,6 +9,7 @@ import sql.DbQueries;
 import sql.DbStatements;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class NewTransportWindow extends JFrame {
     private final JComboBox<String> shipperComboBox;
     private final JComboBox<String> recipientComboBox;
-    private JTable transportTable;
+    private final JTable transportTable;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField knReferenceText;
     JTextField loadBeginTime;
@@ -139,7 +140,7 @@ public class NewTransportWindow extends JFrame {
             }
         }
         Object[] columnNamesTransport = {"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
-        JTable transportTable = new JTable(dataTransport, columnNamesTransport);
+        transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
 
         // Tooltip bei Mouseover
@@ -254,18 +255,13 @@ public class NewTransportWindow extends JFrame {
         JButton saveButton = new JButton("Anlegen");
         JButton backButton = new JButton("Hauptmenü");
         JButton dispoButton = new JButton("Disposition");
-        JButton deleteButton = new JButton("Löschen");
-        JButton editButton = new JButton("Bearbeiten");
         backButton.addActionListener(_ -> goMainMenue());
         saveButton.addActionListener(_ -> saveTransport());
         dispoButton.addActionListener(_ -> goDisposition());
-        deleteButton.addActionListener(_ -> deleteTransport());
-        editButton.addActionListener(_ -> editTransport());
+
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(saveButton);
-        bottomPanel.add(editButton);
-        bottomPanel.add(deleteButton);
         bottomPanel.add(dispoButton);
         bottomPanel.add(backButton);
 
@@ -292,6 +288,7 @@ public class NewTransportWindow extends JFrame {
             /*
              * Parsen der eingegebenen Daten, um diese mit der Datenbank zu verarbeiten.
              * Methoden zum Parsen wurden in helpers.Parsing ausgelagert, um den Code übersichtlicher zu gestalten.
+             * Die Methode zum Aktualisieren der Tabelle nach dem Hinzufügen eines Datensatzes wurde in die helpers.Updates ausgelagert.
              */
             Date lBegin = Parsing.parseDateTime(loadBeginTime.getText());
             Date lEnd = Parsing.parseDateTime(loadEndTime.getText());
@@ -315,17 +312,11 @@ public class NewTransportWindow extends JFrame {
             log.error(STR."Ein unerwarteter Fehler ist aufgetreten!\{ex.getMessage()}");
         }
     }
-    private void editTransport(){
 
-    }
-
-    private void deleteTransport(){
-
-    }
 
     /*
-     *Abrufen der Kundendaten um die Combobox zu füllen.
-     *In der dto.Kunde wurde die Methode toString eingefügt mit return firma umd die Firmennamen anzuzeigen.
+     *Abrufen der Kundendaten um die ComboBox zu füllen.
+     *In der dto.Kunde wurde die Methode toString mit return firma eingefügt um die Firmennamen anzuzeigen.
      *Bei einem Fehler wird eine Fehlermeldung ausgegeben und das Programm wird weiter ausgeführt.
      *Gleiches für die Methode populateShipperBox.
      */
@@ -368,7 +359,7 @@ public class NewTransportWindow extends JFrame {
         dispose();
     }
 
-    // Öffnet das Hauptmenü und gibt Ressourcen frei.
+    // Öffnet das Hauptmenü und schließt das aktuelle Fenster um Ressourcen freizugeben.
     private void goMainMenue() {
         new MainWindow();
         dispose();

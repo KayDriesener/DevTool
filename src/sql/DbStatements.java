@@ -8,8 +8,19 @@ import java.util.Date;
 public class DbStatements {
 
     /*
+     *
      * Fügt einen neue Datensaetze der Datenbank hinzu. Im Fehlerfall wird eine SQLException geworfen.
      * @throws SQLException
+     *
+     * Gliederung:
+     *  -Add
+     *  -Edit
+     *  -Delete
+     *
+     */
+
+    /*
+     *  ADD
      */
     public void addUser(String vorname, String nachname, String email, String username) throws SQLException {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO user (vorname, nachname, email, username) VALUES (?, ?, ?, ?);");
@@ -56,7 +67,7 @@ public class DbStatements {
         ps.execute();
     }
     public  void  addShipping(int bdf_referenz, Date datum, String absender, String empfaenger, Date beladung_s, Date beladung_e, Date entladen_s, Date entladen_e, int stellplaetze, int anzahl, boolean liquid, boolean adr, boolean rundlauf, String bemerkung) throws SQLException {
-        PreparedStatement ps =MySqlConnector.dbConnection.prepareStatement("INSERT INTO transport (bdf_referenz, datum, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO transport (bdf_referenz, datum, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         ps.setInt(1, bdf_referenz);
         ps.setDate(2, (java.sql.Date) datum);
         ps.setString(3, absender);
@@ -71,8 +82,26 @@ public class DbStatements {
         ps.setBoolean(12, adr);
         ps.setBoolean(13, rundlauf);
         ps.setString(14, bemerkung);
-        //ps.setInt(15, kn_referenz);
-
         ps.execute();
     }
+    /*
+     *  EDIT
+     */
+
+    public void editBdfReferenz(int bdf_referenz) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("UPDATE transport SET bdf_referenz =? WHERE bdf_referenz =?");
+        ps.setInt(1, bdf_referenz);
+        ps.execute();
+    }
+
+    /*
+     *  DELETE
+     */
+
+    public void deleteShipping(int bdf_reference) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM transport WHERE bdf_referenz = ?");
+        ps.setInt(1, bdf_reference);
+        ps.executeUpdate();
+    }
 }
+

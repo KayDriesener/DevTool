@@ -1,6 +1,8 @@
 package helpers;
 
 import dto.Shipping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sql.DbQueries;
 
 import javax.swing.*;
@@ -37,8 +39,8 @@ public class Updates {
                     updatedDataTransport[cnt][14] = shipping.getBemerkung();
                     cnt++;
                 }
-                DefaultTableModel model = (DefaultTableModel) transportTable.getModel();
-                model.setDataVector(updatedDataTransport, getColumnNames());
+                DefaultTableModel model = new DefaultTableModel(updatedDataTransport, getColumnNames());
+                transportTable.setModel(model);
                 model.fireTableDataChanged();
             }
         } catch (SQLException e) {
@@ -46,9 +48,7 @@ public class Updates {
 
         }
     }
-
     private static Object[] getColumnNames() {
         return new Object[]{"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
     }
 }
-

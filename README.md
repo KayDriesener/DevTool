@@ -23,11 +23,11 @@ backend erstellen
   4. [ ] Transport
      - [x] Insert (Datumsformat (Uhrzeit anzeigen) Absender & Empfänger abrufen, Fahrzeug hinzufügen)
      - [ ] Alter
-     - [ ] Delete
+     - [x] Delete 
   5. [ ] Dispo
     - 
  
-
+- Tabellen nach Eingabe oder Löschen von Datensätzen automatisch aktualisieren. [x]
 - Auswertung der Transporte
-- Tooltips für die Eingabefelder & Felder der Tabellen, wenn der Text nicht richtig angezeigt wird
+- Tooltips für die Eingabefelder & Felder der Tabellen, wenn der Text nicht richtig angezeigt wird (wird nicht angezeigt!)
 - Passwort vergessen & Change Password für das login fenster

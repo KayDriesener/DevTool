@@ -89,8 +89,8 @@ public class EditFahrzeugWindow extends JFrame {
         }
 
         // Benutzerdefinierte Spaltenüberschriften
-        Object[] columnNamesZm = {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "Tüv", "Kostenstelle"};
-        Object[] columnNamesTrailer = {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "Tüv", "Kostenstelle"};
+        Object[] columnNamesZm = {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "TüV", "Kostenstelle"};
+        Object[] columnNamesTrailer = {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "TüV", "Kostenstelle"};
 
         // Erstellen der Tabellen für die Zugmaschinen und die Trailer
         JTable tableZm = new JTable(zmData, columnNamesZm);
@@ -113,9 +113,9 @@ public class EditFahrzeugWindow extends JFrame {
         JButton deleteButton = new JButton("Löschen");
         JButton mainMenuButton = new JButton("Hauptmenü");
 
-        saveButton.addActionListener(e -> saveFahrzeug());
-        deleteButton.addActionListener(e -> deleteFahrzeug());
-        mainMenuButton.addActionListener(e -> goMainMenue());
+        saveButton.addActionListener(_ -> saveFahrzeug());
+        deleteButton.addActionListener(_ -> deleteFahrzeug());
+        mainMenuButton.addActionListener(_ -> goMainMenue());
 
         // Buttons dem Panel zuweisen
         bottomPanel.add(deleteButton);
