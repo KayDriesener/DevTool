@@ -38,9 +38,9 @@ public class NewCustomerWindow extends JFrame {
         panel.add(subHeadline);
 
         JButton saveButton = new JButton("Speichern");
-        JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(e -> goMainMenue());
-        saveButton.addActionListener(e -> saveCstmr());
+        JButton closeButton = new JButton("Schließen");
+        closeButton.addActionListener(_ -> close());
+        saveButton.addActionListener(_ -> saveCstmr());
 
         // Feld für den Firmennamen
         JLabel fname = new JLabel("Firma");
@@ -105,7 +105,7 @@ public class NewCustomerWindow extends JFrame {
 
         add(panel);
         panel.add(saveButton);
-        panel.add(backButton);
+        panel.add(closeButton);
         setVisible(true);
 
     }
@@ -124,8 +124,7 @@ public class NewCustomerWindow extends JFrame {
         }
     }
 
-    private void goMainMenue() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 

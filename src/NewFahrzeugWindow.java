@@ -1,3 +1,4 @@
+import helpers.Parsing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbStatements;
@@ -82,12 +83,12 @@ public class NewFahrzeugWindow extends JFrame {
 
         // Erstellen der Buttons und Zuweisung des bottom panels
         JButton saveButton = new JButton("Speichern");
-        JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(e -> goMainMenue());
-        saveButton.addActionListener(e -> saveFahrzeug());
+        JButton closeButton = new JButton("Schließen");
+        closeButton.addActionListener(_ -> close());
+        saveButton.addActionListener(_ -> saveFahrzeug());
 
         bottomPanel.add(saveButton);
-        bottomPanel.add(backButton);
+        bottomPanel.add(closeButton);
          
 
         // Haupt panel mit BorderLayout
@@ -106,21 +107,24 @@ public class NewFahrzeugWindow extends JFrame {
         String selectedOption = (String) artComboBox.getSelectedItem();
 
         try {
-            // Parsen der Datentypen
+            /*
+             * Parsen der Datentypen um eine fehlerfreie Datenverarbeitung zu gewährleisten.
+             * Date parser sind ausgelagert, um den Code lesbarer und kleiner zu halten.
+             */
             String anbieter = tAnbieter.getText();
             String regPlate = tRegPlate.getText();
             float fine = Float.parseFloat(tFine.getText());
-            java.sql.Date spDate = parseDate(tSp.getText());
-            java.sql.Date tuevDate = parseDate(tTuev.getText());
+            java.sql.Date spDate = Parsing.parseDate(tSp.getText());
+            java.sql.Date tuevDate = Parsing.parseDate(tTuev.getText());
             Integer kst = Integer.parseInt(tKst.getText());
 
             /*
             * Abfrage was in der ComboBox ausgewählt wurde.
+            * Je nach Ergebnis der Abfrage (equals(selectedOption)) wird der Datensatz an die entsprechende Tabelle übertragen.
             * Zuweisung der Daten zu der entsprechenden Datenbank, nach Ergebnis der Kontrollstruktur
-            * und Fehlerbehandlung
+            * und Fehlerbehandlung.
             */
             if ("Zugmaschine".equals(selectedOption)) {
-                // Prep. Statement
                 try {
                     new DbStatements().addFahrzeugZm(anbieter, regPlate, selectedOption, fine, spDate, tuevDate, kst);
                     JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
@@ -129,7 +133,6 @@ public class NewFahrzeugWindow extends JFrame {
                     log.error(e.getMessage());
                 }
             } else if ("Trailer".equals(selectedOption)) {
-                //Prep.Statement
                 try {
                     new DbStatements().addFahrzeugT(anbieter, regPlate, selectedOption, fine, spDate, tuevDate, kst);
                     JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
@@ -144,15 +147,7 @@ public class NewFahrzeugWindow extends JFrame {
             JOptionPane.showMessageDialog(this, "Ungültiges Datumsformat! dd.MM.yyyy", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
-    //Hilfsmethode zum Parsen von Date
-    private Date parseDate(String dateString) throws ParseException{
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        java.util.Date utilDate = dateFormat.parse(dateString);
-        return new Date(utilDate.getTime());
-    }
-
-    private void goMainMenue() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 }

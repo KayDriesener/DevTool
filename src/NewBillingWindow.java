@@ -20,12 +20,12 @@ public class NewBillingWindow extends JFrame {
          */
 
         JButton saveButton = new JButton("Speichern");
-        JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(e -> goMainMenue());
-        saveButton.addActionListener(e -> saveBill());
+        JButton closeButton = new JButton("Schließen");
+        closeButton.addActionListener(_ -> close());
+        saveButton.addActionListener(_ -> saveBill());
 
         add(panel);
-        panel.add(backButton);
+        panel.add(closeButton);
         setVisible(true);
 
     }
@@ -35,8 +35,7 @@ public class NewBillingWindow extends JFrame {
         JOptionPane.showMessageDialog(this, "Datensatz gespeichert!");
     }
 
-    private void goMainMenue() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 

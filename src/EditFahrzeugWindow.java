@@ -111,16 +111,16 @@ public class EditFahrzeugWindow extends JFrame {
         // Buttons für Aktionen
         JButton saveButton = new JButton("Speichern");
         JButton deleteButton = new JButton("Löschen");
-        JButton mainMenuButton = new JButton("Hauptmenü");
+        JButton closeButton = new JButton("Schließen");
 
         saveButton.addActionListener(_ -> saveFahrzeug());
         deleteButton.addActionListener(_ -> deleteFahrzeug());
-        mainMenuButton.addActionListener(_ -> goMainMenue());
+        closeButton.addActionListener(_ -> close());
 
         // Buttons dem Panel zuweisen
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
-        bottomPanel.add(mainMenuButton);
+        bottomPanel.add(closeButton);
 
         // Haupt panel mit BorderLayout und zuweisung zum main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -143,8 +143,7 @@ public class EditFahrzeugWindow extends JFrame {
         JOptionPane.showMessageDialog(this, "Datensatz GELÖSCHT");
     }
 
-    private void goMainMenue() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 

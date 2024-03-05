@@ -83,16 +83,16 @@ public class EditUserWindow extends JFrame {
         // Buttons für Aktionen
         JButton deleteButton = new JButton("Löschen");
         JButton saveButton = new JButton("Speichern");
-        JButton mainMenuButton = new JButton("Hauptmenü");
+        JButton closeButton = new JButton("Schließen");
 
         // Aktion listener den Buttons zuweisen
         saveButton.addActionListener(e -> saveUser());
-        mainMenuButton.addActionListener(e -> goMainMenu());
+        closeButton.addActionListener(e -> close());
         deleteButton.addActionListener(e -> deleteUser());
 
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
-        bottomPanel.add(mainMenuButton);
+        bottomPanel.add(closeButton);
 
         // Haupt panel mit BorderLayout und zuweisen der anderen panels
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -115,8 +115,7 @@ public class EditUserWindow extends JFrame {
         JOptionPane.showMessageDialog(this, "Datensatz GESPEICHERT!");
     }
 
-    private void goMainMenu() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 }

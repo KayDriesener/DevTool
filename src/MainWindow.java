@@ -1,97 +1,139 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public class MainWindow extends JFrame {
+    private JTree tree;
+
     public MainWindow() {
         setTitle("Hauptmenü");
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel topPanel = new JPanel(new GridBagLayout());
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Hauptmenü");
+        addCategory(rootNode, "User management", "Neuer User", "User bearbeiten");
+        addCategory(rootNode, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
+        addCategory(rootNode, "Transportmanagement", "Neuer Transport", "Transport Bearbeiten");
+        addCategory(rootNode, "Rechnungswesen", "Rechnung Erstellen", "Rechnung Bearbeiten");
+        addCategory(rootNode, "Kundenmanagement", "Kunde Anlegen", "Kunde Bearbeiten");
+        addCategory(rootNode, "Konfiguration", "Preise Paletten", "Entfernungen");
+        addCategory(rootNode, "Auswertungen", "Fahrzeuge", "Kunden");
 
-        // Usermanagement
-        addSection(topPanel, "User management", "Neuer User", "User Bearbeiten");
+        tree = new JTree(rootNode);
+        JScrollPane treeScrollPane = new JScrollPane(tree);
 
-        // Fahrzeugmanagement
-        addSection(topPanel, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, createRightPanel());
+        splitPane.setResizeWeight(0.25);
 
-        // Transportmanagement
-        addSection(topPanel, "Transportmanagement", "Neuer Transport", "Transport Bearbeiten");
+        add(splitPane);
 
-        // Rechnungswesen
-        addSection(topPanel, "Rechnungswesen", "Rechnung Erstellen", "Rechnung Bearbeiten");
+        // Hinzufügen des TreeSelectionListeners
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (selectedNode != null && selectedNode.isLeaf()) {
+                    String category = selectedNode.getParent().toString();
+                    openWindow(category, selectedNode.toString());
+                    tree.clearSelection();
+                }
+            }
+        });
 
-        // Kundenmanagement
-        addSection(topPanel, "Kundenmanagement", "Kunden Anlegen", "Kundendaten Bearbeiten");
-
-        //Configuration
-        addSection(topPanel, "Configuration", "Preise Paletten", "Entfernungen");
-
-        //Auswertungen
-        addSection(topPanel, "Auswertung");
-
-        add(topPanel);
         setVisible(true);
     }
 
-    private void addSection(JPanel panel, String label, String... buttons) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.insets = new Insets(5, 5, 5, 5);
+    private JPanel createRightPanel() {
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
 
-        JLabel sectionLabel = new JLabel(label);
-        gbc.gridy++;
-        panel.add(sectionLabel, gbc);
+        // Fügen Sie hier das Bild oder andere Komponenten auf der rechten Seite hinzu
+        ImageIcon imageIcon = new ImageIcon("knt.jpg");
+        JLabel imageLabel = new JLabel(imageIcon);
+        rightPanel.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
+        rightPanel.add(imageLabel, BorderLayout.CENTER);
 
+        return rightPanel;
+    }
+
+    private void addCategory(DefaultMutableTreeNode parent, String categoryName, String... buttons) {
+        DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(categoryName);
+        parent.add(categoryNode);
         for (String buttonText : buttons) {
-            JButton button = createButton(buttonText);
-            button.addActionListener(e -> buttonClicked(buttonText));
-            gbc.gridy++;
-            panel.add(button, gbc);
+            DefaultMutableTreeNode buttonNode = new DefaultMutableTreeNode(buttonText);
+            categoryNode.add(buttonNode);
         }
     }
 
-    private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(150, 30));
-        return button;
-    }
-
-    private void buttonClicked(String buttonText) {
-        switch (buttonText) {
-            case "Neuer User":
-                openUserWindow();
-                break;
-            case "User Bearbeiten":
-                openEditUserWindow();
-                break;
-            case "Neues Fahrzeug":
-                openFahrzeugWindow();
-                break;
-            case "Fahrzeug Bearbeiten":
-                openEditFahrzeugWindow();
-                break;
-            case "Neuer Transport":
-                openTransportWindow();
-                break;
-            case "Transport Bearbeiten":
-                openEditTransportWindow();
-                break;
-            case "Rechnung Erstellen":
-                openNewBillingWindow();
-                break;
-            case "Rechnung Bearbeiten":
-                openEditBillingWindow();
-                break;
-            case "Kunden Anlegen":
-                openNewCustomerWindow();
-                break;
-            case "Kundendaten Bearbeiten":
-                openEditCustomerWindow();
-                break;
+    private void openWindow(String category, String buttonText){
+        switch (category){
+            case "User management":
+                switch (buttonText){
+                    case "Neuer User":
+                        openUserWindow();
+                        break;
+                    case "User bearbeiten":
+                        openEditUserWindow();
+                        break;
+                } break;
+            case "Fahrzeugmanagement":
+                switch (buttonText){
+                    case "Neues Fahrzeug":
+                        openFahrzeugWindow();
+                        break;
+                    case "Fahrzeug Bearbeiten":
+                        openEditFahrzeugWindow();
+                        break;
+                } break;
+            case "Transportmanagement":
+                switch (buttonText){
+                    case "Neuer Transport":
+                        openTransportWindow();
+                        break;
+                    case "Transport Bearbeiten":
+                        openEditTransportWindow();
+                        break;
+                } break;
+            case "Rechnungswesen":
+                switch (buttonText){
+                    case "Rechnung Erstellen":
+                        openNewBillingWindow();
+                        break;
+                    case "Rechnung Bearbeiten":
+                        openEditBillingWindow();
+                        break;
+                } break;
+            case "Kundenmanagement":
+                switch (buttonText){
+                    case "Kunde Anlegen":
+                        openNewCustomerWindow();
+                        break;
+                    case "Kunde Bearbeiten":
+                        openEditCustomerWindow();
+                        break;
+                } break;
+            case "Konfiguration":
+                switch(buttonText){
+                    case "Preise Paletten":
+                        //Platzhalter für das Fenster mit den Paletten preisen
+                        break;
+                    case "Entfernungen":
+                        //Platzhalter für das Fenster mit den Entfernungen
+                        break;
+                } break;
+            case "Auswertungen":
+                switch (buttonText){
+                    case "Fahrzeuge":
+                        //Platzhalter für das Auswertungsfenster "Fahrzeuge"
+                        break;
+                    case "Kunden":
+                        //Platzhalter für das Auswertungsfenster "Kunden"
+                        break;
+                } break;
         }
-        setVisible(false);
     }
 
     private void openUserWindow() {

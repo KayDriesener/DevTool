@@ -76,20 +76,20 @@ public class EditBilllingWindow extends JFrame {
         // Buttons für Aktionen
         JButton saveButton = new JButton("Speichern");
         JButton deleteButton = new JButton("Löschen");
-        JButton mainMenuButton = new JButton("Hauptmenü");
+        JButton closeButton = new JButton("Schließen");
         JButton printButton = new JButton("Drucken");
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(e -> saveBill());
-        deleteButton.addActionListener(d -> deleteBill());
-        printButton.addActionListener(f -> printBill());
-        mainMenuButton.addActionListener(g -> goMainMenu());
+        saveButton.addActionListener(_ -> saveBill());
+        deleteButton.addActionListener(_ -> deleteBill());
+        printButton.addActionListener(_ -> printBill());
+        closeButton.addActionListener(_ -> close());
 
         // Hinzufügen der Buttons zum bottom panel
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
         bottomPanel.add(printButton);
-        bottomPanel.add(mainMenuButton);
+        bottomPanel.add(closeButton);
 
         // Hauptpanel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -126,8 +126,7 @@ public class EditBilllingWindow extends JFrame {
         }
     }
 
-    private void goMainMenu() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 }

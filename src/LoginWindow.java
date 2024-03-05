@@ -42,12 +42,15 @@ public class LoginWindow extends JFrame {
 
         add(panel);
         setVisible(true);
+
+        passwordField.addActionListener(_ -> login());
+        usernameField.addActionListener(_-> login());
     }
 
     /*
-    * "Login" Button Objekt erstellen mit der Prüfung auf Richtigkeit der eingegebenen Parameter.
-    * Parameter werden mit den Datenbankusern abgeglichen.
-    * Bei falschen Eingaben wird eine Fehlerbehandlung ausgeführt.
+     * "Login" Button Objekt erstellen mit der Prüfung auf Richtigkeit der eingegebenen Parameter.
+     * Parameter werden mit den Datenbankusern abgeglichen.
+     * Bei falschen Eingaben wird eine Fehlerbehandlung ausgeführt.
      */
     private JButton getLoginButton() {
         JButton loginButton = new JButton("Login");
@@ -62,10 +65,24 @@ public class LoginWindow extends JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(LoginWindow.this, "Login failed!", "Error",
                         JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                ex.getMessage();
             }
         });
         return loginButton;
+    }
+    private void login(){
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        try {
+            MySqlConnector.connect(username, password);
+            openMainWindow();
+            dispose();
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(LoginWindow.this, "Login failed!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            ex.getMessage();
+        }
     }
 
     private void openMainWindow() {

@@ -77,13 +77,13 @@ public class EditTransportWindow extends JFrame {
 
         JButton editButton = new JButton("Bearbeiten");
         JButton deleteButton = new JButton("Löschen");
-        JButton backButton = new JButton("Hauptmenü");
-        backButton.addActionListener(_ -> goMainMenue());
+        JButton closeButton = new JButton("Schließen");
+        closeButton.addActionListener(_ -> close());
         deleteButton.addActionListener(_ -> deleteTransport());
 
         bottomPanel.add(editButton);
         bottomPanel.add(deleteButton);
-        bottomPanel.add(backButton);
+        bottomPanel.add(closeButton);
 
 
         add(mainPanel);
@@ -123,8 +123,7 @@ public class EditTransportWindow extends JFrame {
         return new Object[]{"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
     }
 
-    private void goMainMenue() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 

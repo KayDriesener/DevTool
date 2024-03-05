@@ -87,11 +87,11 @@ public class NewUserWindow extends JFrame {
 
         // Button erstellen und dem panel zuweisen
         JButton saveButton = new JButton("Speichern");
-        JButton backButton = new JButton("Hauptmenü");
+        JButton closeButton = new JButton("Schließen");
         saveButton.addActionListener(e -> saveUser());
-        backButton.addActionListener(f -> goMainMenue());
+        closeButton.addActionListener(f -> close());
         panel.add(saveButton);
-        panel.add(backButton);
+        panel.add(closeButton);
 
         add(panel);
         setVisible(true);
@@ -106,8 +106,7 @@ public class NewUserWindow extends JFrame {
             JOptionPane.showMessageDialog(this, "Beim Anlegen eines neuen Benutzers ist ein Fehler aufgetreten.");
             log.error(e.getMessage());
         }    }
-    private void goMainMenue(){
-        new MainWindow();
+    private void close(){
         dispose();
     }
 }

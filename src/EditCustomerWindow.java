@@ -89,17 +89,17 @@ public class EditCustomerWindow extends JFrame {
         // Buttons für Aktionen
         JButton saveButton = new JButton("Speichern");
         JButton deleteButton = new JButton("Löschen");
-        JButton mainMenuButton = new JButton("Hauptmenü");
+        JButton closeButton = new JButton("Schließen");
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(e -> saveUser());
-        deleteButton.addActionListener(e -> deleteUser());
-        mainMenuButton.addActionListener(e -> goMainMenu());
+        saveButton.addActionListener(_ -> saveUser());
+        deleteButton.addActionListener(_ -> deleteUser());
+        closeButton.addActionListener(_ -> close());
 
         // Buttons dem bottom panel zuweisen
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);
-        bottomPanel.add(mainMenuButton);
+        bottomPanel.add(closeButton);
 
         // Haupt panel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -123,8 +123,7 @@ public class EditCustomerWindow extends JFrame {
         JOptionPane.showMessageDialog(this, "Datensatz GESPEICHERT!");
     }
 
-    private void goMainMenu() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 

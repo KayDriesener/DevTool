@@ -253,9 +253,9 @@ public class NewTransportWindow extends JFrame {
 
         // Erstellen der Buttons und Zuweisung der ActionListener
         JButton saveButton = new JButton("Anlegen");
-        JButton backButton = new JButton("Hauptmenü");
+        JButton closeButton = new JButton("Schließen");
         JButton dispoButton = new JButton("Disposition");
-        backButton.addActionListener(_ -> goMainMenue());
+        closeButton.addActionListener(_ -> close());
         saveButton.addActionListener(_ -> saveTransport());
         dispoButton.addActionListener(_ -> goDisposition());
 
@@ -263,7 +263,7 @@ public class NewTransportWindow extends JFrame {
         // Dem bottomPanel zuweisen
         bottomPanel.add(saveButton);
         bottomPanel.add(dispoButton);
-        bottomPanel.add(backButton);
+        bottomPanel.add(closeButton);
 
         // Erstellung des Haupt panel mit BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -360,8 +360,7 @@ public class NewTransportWindow extends JFrame {
     }
 
     // Öffnet das Hauptmenü und schließt das aktuelle Fenster um Ressourcen freizugeben.
-    private void goMainMenue() {
-        new MainWindow();
+    private void close() {
         dispose();
     }
 
