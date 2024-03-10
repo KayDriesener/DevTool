@@ -2,7 +2,6 @@ package sql;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.Date;
 
 public class DbStatements {
@@ -98,9 +97,34 @@ public class DbStatements {
      *  DELETE
      */
 
+    // Benutzer
+    public void deleteUser(int id) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM user WHERE id = ?");
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+    // Fahrzeuge
+    public void deleteFahrzeugZm(int id) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM fahrzeug_zm WHERE id = ?");
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+    public void deleteFahrzeugT(int id) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM fahrzeug_t WHERE id = ?");
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+    // Transporte
     public void deleteShipping(int bdf_reference) throws SQLException{
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM transport WHERE bdf_referenz = ?");
         ps.setInt(1, bdf_reference);
+        ps.executeUpdate();
+    }
+    // Rechnungen
+
+    // Kunde
+    public void deleteCustomer(int id) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM kunde WHERE id = ?");
         ps.executeUpdate();
     }
 }

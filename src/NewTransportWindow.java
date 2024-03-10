@@ -18,9 +18,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class NewTransportWindow extends JFrame {
-    private final JComboBox<String> shipperComboBox;
-    private final JComboBox<String> recipientComboBox;
-    private final JTable transportTable;
+    JComboBox<String> shipperComboBox;
+    JComboBox<String> recipientComboBox;
+    JTable transportTable;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField knReferenceText;
     JTextField loadBeginTime;

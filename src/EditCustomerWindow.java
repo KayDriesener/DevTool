@@ -1,7 +1,9 @@
 import dto.Kunde;
+import helpers.Updates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
+import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EditCustomerWindow extends JFrame {
+    JTable kundenTable = new JTable();
     Logger log = LoggerFactory.getLogger(this.getClass());
 
     public EditCustomerWindow() {
@@ -72,11 +75,10 @@ public class EditCustomerWindow extends JFrame {
         // Benutzerdefinierte Spaltenüberschriften für die Tabelle
         Object[] columnNames = { "ID", "Firma", "Straße", "Nr.", "PlZ", "Ort", "Abteilung", "Ansprechpartner", "Telefon", "EMail", "Bemerkungen"};
 
-        assert kundenData != null;
-        JTable table = new JTable(kundenData, columnNames);
+        kundenTable = new JTable(kundenData, columnNames);
 
         // Tabelle auf die Spalten aufteilen
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(kundenTable);
 
         // Größe der Tabelle anpassen und dem "middlePanel" hinzufügen
         scrollPane.setPreferredSize(new Dimension(400, 200));
@@ -93,7 +95,7 @@ public class EditCustomerWindow extends JFrame {
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
         saveButton.addActionListener(_ -> saveUser());
-        deleteButton.addActionListener(_ -> deleteUser());
+        deleteButton.addActionListener(_ -> deleteCustomer());
         closeButton.addActionListener(_ -> close());
 
         // Buttons dem bottom panel zuweisen
@@ -113,9 +115,24 @@ public class EditCustomerWindow extends JFrame {
         setVisible(true);
     }
 
-    private void deleteUser(){
-        //TODO PrepStatement
-        JOptionPane.showMessageDialog(this, "Datensatz GELÖSCHT!");
+    public void deleteCustomer() {
+        int selectedRow = kundenTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Bitte einen Kunden zum Löschen auswählen!");
+            return;
+        }
+        int option = JOptionPane.showConfirmDialog(this, "Möchten Sie diesen Kunden wirklich löschen?");
+        if (option == JOptionPane.YES_OPTION) {
+            try {
+                int bdfReference = (int) kundenTable.getValueAt(selectedRow, 0);
+                new DbStatements().deleteCustomer(bdfReference);
+                Updates.updateCustomerTable(kundenTable);
+                JOptionPane.showMessageDialog(this, "Kundendaten erfolgreich gelöscht!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Ein Fehler ist beim Löschen der Kundendaten aufgetreten");
+                log.error(STR."Fehler beim Löschen der Kundendaten!\{ex.getMessage()}");
+            }
+        }
     }
 
     private void saveUser() {

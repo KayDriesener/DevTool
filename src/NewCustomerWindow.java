@@ -111,8 +111,8 @@ public class NewCustomerWindow extends JFrame {
     }
 
     /*
-    * Übergeben der eingegebenen Daten an die Datenbanktabelle über ein prepared Statement
-    * in "DbStatements.java"
+     * Übergeben der eingegebenen Daten an die Datenbanktabelle über ein prepared Statement
+     * in "DbStatements.java"
      */
     private void saveCstmr() {
         try {

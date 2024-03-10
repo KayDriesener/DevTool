@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EditTransportWindow extends JFrame {
-    private final JTable transportTable;
+    JTable transportTable;
     Logger log = LoggerFactory.getLogger(this.getClass());
 
     public EditTransportWindow() {
@@ -117,10 +117,6 @@ public class EditTransportWindow extends JFrame {
                 log.error(STR."Fehler beim Löschen des Transportes!\{ex.getMessage()}");
             }
         }
-    }
-
-    private static Object[] getColumnNames() {
-        return new Object[]{"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
     }
 
     private void close() {

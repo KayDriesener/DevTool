@@ -1,12 +1,12 @@
+import sql.MySqlConnector;
+
 import java.awt.*;
+import java.sql.SQLException;
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 public class MainWindow extends JFrame {
-    private JTree tree;
+    private final JTree tree;
 
     public MainWindow() {
         setTitle("Hauptmenü");
@@ -14,6 +14,9 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        /*
+         * Erstellen des Menüs in der JTree Variante um die Übersicht und Usability für den Nutzer zu gewährleisten.
+         */
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Hauptmenü");
         addCategory(rootNode, "User management", "Neuer User", "User bearbeiten");
         addCategory(rootNode, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
@@ -22,31 +25,40 @@ public class MainWindow extends JFrame {
         addCategory(rootNode, "Kundenmanagement", "Kunde Anlegen", "Kunde Bearbeiten");
         addCategory(rootNode, "Konfiguration", "Preise Paletten", "Entfernungen");
         addCategory(rootNode, "Auswertungen", "Fahrzeuge", "Kunden");
+        addCategory(rootNode, "Logout", "Abmelden");
 
         tree = new JTree(rootNode);
         JScrollPane treeScrollPane = new JScrollPane(tree);
 
+        /*
+         * Teilung des Panels um das Aussehen des Fensters durch Hinzufügen eines Bildes in der createRightPanel aufzulockern.
+         */
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, createRightPanel());
         splitPane.setResizeWeight(0.25);
 
         add(splitPane);
 
-        // Hinzufügen des TreeSelectionListeners
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                if (selectedNode != null && selectedNode.isLeaf()) {
-                    String category = selectedNode.getParent().toString();
+        /*
+         * Hinzufügen des TreeSelectionListeners, der das angeklickte Objekt im tree reagiert.
+         * Die RuntimeException fängt den Fehler durch den Logout auf.
+         */
+        tree.addTreeSelectionListener(_ -> {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+            if (selectedNode != null && selectedNode.isLeaf()) {
+                String category = selectedNode.getParent().toString();
+                try {
                     openWindow(category, selectedNode.toString());
-                    tree.clearSelection();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
+                tree.clearSelection();
             }
         });
 
         setVisible(true);
     }
 
+    // TODO BORDERLAYOUT ÜBERARBEITEN!
     private JPanel createRightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
 
@@ -68,7 +80,12 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private void openWindow(String category, String buttonText){
+    /*
+     * Methode, die auf das jeweils angeklickte Objekt die korrekte Methode aufruft.
+     * Die SQLException dient yum auffangen des möglicherweise auftretenden Logout-Fehlers in der Methode openLoginWindow().
+     * (MySqlConnector.dbConnection.close();)
+     */
+    private void openWindow(String category, String buttonText) throws SQLException {
         switch (category){
             case "User management":
                 switch (buttonText){
@@ -133,6 +150,14 @@ public class MainWindow extends JFrame {
                         //Platzhalter für das Auswertungsfenster "Kunden"
                         break;
                 } break;
+            case "Logout":
+                // Es wurde bewusst ein switch gewählt, da es die Erweiterbarkeit vereinfacht. (if-Statement muss nicht umgeschrieben werden)
+                switch (buttonText){
+                    case "Abmelden":
+                        openLoginWindow();
+                        dispose();
+                        break;
+                }break;
         }
     }
 
@@ -176,5 +201,9 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(EditCustomerWindow::new);
     }
 
+    private void openLoginWindow() throws SQLException {
+        MySqlConnector.dbConnection.close();
+        SwingUtilities.invokeLater(LoginWindow::new);
+    }
+
 }
-// TODO LOGOUT BUTTON -> con.close() && openLoginWindow() && dispose()

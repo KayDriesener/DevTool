@@ -135,12 +135,11 @@ public class EditFahrzeugWindow extends JFrame {
     }
 
     private void saveFahrzeug() {
-        // Prep. Statement Rechnung
-        JOptionPane.showMessageDialog(this, "Datensatz GESPEICHERT!");
+        JOptionPane.showMessageDialog(this, "Das Fahrzeug wurde gespeichert.");
     }
 
     private void deleteFahrzeug() {
-        JOptionPane.showMessageDialog(this, "Datensatz GELÖSCHT");
+        JOptionPane.showMessageDialog(this, "Fahrzeug wurde gelöscht.");
     }
 
     private void close() {
