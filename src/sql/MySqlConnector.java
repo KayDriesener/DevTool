@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/*
+ * MySQL Connector.
+ * Übergebene Parameter "Username" und "Password" aus der Klasse LoginWindow.
+ *
+ */
 public class MySqlConnector {
     private static final String JDBC_CONNECTION_STRING = "jdbc:mysql://localhost:3306/test";
     public static Connection dbConnection;

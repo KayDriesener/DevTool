@@ -8,6 +8,8 @@ import sql.DbStatements;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -25,6 +27,8 @@ public class EditTransportWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Titel für das Transportmanagement
         JLabel headline = new JLabel("TRANSPORTMANAGEMENT");
@@ -35,6 +39,9 @@ public class EditTransportWindow extends JFrame {
         topPanel.add(subHeadline, BorderLayout.CENTER);
 
 
+        /*
+         * Abrufen der Datensätze aus der Datenbank.
+         */
         ArrayList<Shipping> transportList = null;
         try {
             transportList = new DbQueries().getShipping();
@@ -43,7 +50,11 @@ public class EditTransportWindow extends JFrame {
             log.error(e.getMessage());
         }
 
-        // Tabelle erstellen und die Daten aus der Tabelle abfragen
+        /*
+         * Tabelle erstellen und die Daten aus der Tabelle abfragen.
+         * TRUE / FALSE-Werte werden mit "? "Ja" : "Nein"" umgeschrieben.
+         */
+
         Object[][] dataTransport = null;
         if (transportList != null) {
             int attributeCount = Shipping.class.getDeclaredFields().length;
@@ -61,18 +72,45 @@ public class EditTransportWindow extends JFrame {
                 dataTransport[cnt][8] = shipping.getEntladen_e();
                 dataTransport[cnt][9] = shipping.getStellplaetze();
                 dataTransport[cnt][10] = shipping.getAnzahl();
-                dataTransport[cnt][11] = shipping.isLiquid();
-                dataTransport[cnt][12] = shipping.isAdr();
-                dataTransport[cnt][13] = shipping.isRundlauf();
+                dataTransport[cnt][11] = shipping.isLiquid() ? "Ja" : "Nein";
+                dataTransport[cnt][12] = shipping.isAdr() ? "Ja" : "Nein";
+                dataTransport[cnt][13] = shipping.isRundlauf() ? "Ja" : "Nein";
                 dataTransport[cnt][14] = shipping.getBemerkung();
                 cnt++;
             }
         }
+        /*
+         * Spaltenüberschriften und Tabelle erstellen.
+         * Übergabe der Transportdaten und den Tabellenüberschriften bei der Generierung der Tabelle.
+         */
         Object[] columnNamesTransport = {"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
         transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
 
-        // Größe anpassen
+        /*
+         * Tooltip für die Zellen in der Tabelle bei Mouseover.
+         */
+        transportTable.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = transportTable.rowAtPoint(point);
+                int col = transportTable.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = transportTable.getValueAt(row, col);
+                    transportTable.setToolTipText((value != null ? value.toString() : null));
+                }
+
+            }
+        });
+
+        // Größe der Tabelle anpassen.
         scrollPaneDataTransport.setPreferredSize(new Dimension(400, 200));
 
         JButton editButton = new JButton("Bearbeiten");
@@ -96,7 +134,7 @@ public class EditTransportWindow extends JFrame {
 
     // Bearbeiten von Transporten.
     private void editTransport() {
-
+        //TODO p.Statement einfügen
     }
     //Löschen von Transporten und Fehlermanagement.
     public void deleteTransport() {

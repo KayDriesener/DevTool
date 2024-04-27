@@ -15,7 +15,8 @@ import java.util.ArrayList;
 public class Updates {
 
     /*
-     * Ausgelagerte Update funktionen um den Code der entsprechenden Klassen lesbarer zu halten.
+     * Ausgelagerte Update funktionen um den Code der entsprechenden Klassen lesbarer zu halten und die Möglichkeit der
+     * Wiederverwertbarkeit zu geben.
      */
 
     /*
@@ -132,7 +133,7 @@ public class Updates {
         return new Object[] {"ID", "Anbieter", "Kennzeichen", "Art", "Miete", "Prüfungen", "TüV", "Kostenstelle"};
     }
     /*
-     * FahrzeugWindow (Fahrzeug_Z(ug)M(aschiene))
+     * FahrzeugWindow (Fahrzeug_Z(eug)M(aschiene))
      */
     public static void updateTableFahrzeugZM(JTable zmList) {
         try {

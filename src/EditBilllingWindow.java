@@ -3,6 +3,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.OrientationRequested;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseMotionListener;
 import java.awt.print.PrinterException;
 import java.text.MessageFormat;
 import java.awt.event.MouseEvent;
@@ -17,6 +18,8 @@ public class EditBilllingWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -45,6 +48,29 @@ public class EditBilllingWindow extends JFrame {
 
         // Benutzerdefinierte Spaltenüberschriften
         Object[] columnNames = {"RechnungsNr.", "Datum", "Firma", "Betrag in €"};
+
+        /*
+         * Tooltip für die Zellen in der Tabelle bei Mouseover.
+         */
+        table.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                int col = table.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = table.getValueAt(row, col);
+                    table.setToolTipText((value != null ? value.toString() : null));
+                }
+
+            }
+        });
 
         table =  new JTable(data, columnNames){
             public String getToolTipText(MouseEvent e) {

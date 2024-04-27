@@ -25,6 +25,8 @@ public class NewCustomerWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Unbegrenzte Zeilen -----, 2 Spalten |||, Abstand zwischen den Zellen: 5 Pixel ↔
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -97,7 +99,6 @@ public class NewCustomerWindow extends JFrame {
         panel.add(tEMail);
 
         // Textfeld für Bemerkungen
-        //TODO Scrollbar machen und die Textfelder schmaler
         JLabel note = new JLabel("Bemerkungen");
         tNote = new JTextArea();
         panel.add(note);

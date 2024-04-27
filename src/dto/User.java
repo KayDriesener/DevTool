@@ -1,5 +1,8 @@
 package dto;
 
+/*
+ * Userklasse mit Parametern.
+ */
 public class User {
     private int id;
     private String vorname;

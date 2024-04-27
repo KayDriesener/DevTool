@@ -2,6 +2,9 @@ package dto;
 
 import java.util.Date;
 
+/*
+ * Fahrzeugklasse mit Parametern.
+ */
 public class Fahrzeug {
     private Integer id;
     private String anbieter;

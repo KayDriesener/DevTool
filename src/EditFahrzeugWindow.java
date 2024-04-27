@@ -1,21 +1,29 @@
 import dto.Fahrzeug;
+import helpers.Updates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
+import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EditFahrzeugWindow extends JFrame {
     Logger log = LoggerFactory.getLogger(this.getClass());
+    JTable tableZm = new JTable();
+    JTable tableTrailer = new JTable();
 
     public EditFahrzeugWindow() {
         setTitle("Fahrzeug Bearbeiten");
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -96,6 +104,51 @@ public class EditFahrzeugWindow extends JFrame {
         JTable tableZm = new JTable(zmData, columnNamesZm);
         JTable tableTrailer = new JTable(dataTrailer, columnNamesTrailer);
 
+        /*
+         * Tooltip für die Zellen in der Tabelle für die Zugmaschinen bei Mouseover.
+         */
+        tableZm.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = tableZm.rowAtPoint(point);
+                int col = tableZm.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = tableZm.getValueAt(row, col);
+                    tableZm.setToolTipText((value != null ? value.toString() : null));
+                }
+
+            }
+        });
+        /*
+         * Tooltip für die Zellen in der Tabelle bei Mouseover.
+         */
+        tableTrailer.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = tableTrailer.rowAtPoint(point);
+                int col = tableTrailer.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = tableTrailer.getValueAt(row, col);
+                    tableTrailer.setToolTipText((value != null ? value.toString() : null));
+                }
+
+            }
+        });
+
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPaneZm = new JScrollPane(tableZm);
         JScrollPane scrollPaneTrailer = new JScrollPane(tableTrailer);
@@ -114,8 +167,16 @@ public class EditFahrzeugWindow extends JFrame {
         JButton closeButton = new JButton("Schließen");
 
         saveButton.addActionListener(_ -> saveFahrzeug());
-        deleteButton.addActionListener(_ -> deleteFahrzeug());
         closeButton.addActionListener(_ -> close());
+        deleteButton.addActionListener(_ -> {
+            if (tableZm.getSelectedRow() != -1){
+                deleteFahrzeug(tableZm);
+            } else if (tableTrailer.getSelectedRow() != -1) {
+                deleteFahrzeug(tableTrailer);
+            } else {
+                JOptionPane.showMessageDialog(this, "Bitte ein Fahrzeug zum löschen auswählen!");
+            }
+        });
 
         // Buttons dem Panel zuweisen
         bottomPanel.add(deleteButton);
@@ -138,8 +199,28 @@ public class EditFahrzeugWindow extends JFrame {
         JOptionPane.showMessageDialog(this, "Das Fahrzeug wurde gespeichert.");
     }
 
-    private void deleteFahrzeug() {
-        JOptionPane.showMessageDialog(this, "Fahrzeug wurde gelöscht.");
+    private void deleteFahrzeug(JTable table) {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1){
+            JOptionPane.showMessageDialog(this, "Bitte ein Fahrzeug zum löschen auswählen!");
+        }
+        int option = JOptionPane.showConfirmDialog(this, "Möchten Sie dieses Fahrzeug löschen?");
+        if (option == JOptionPane.YES_OPTION){
+            try {
+                int fahrzeugId = (int)  table.getValueAt(selectedRow, 0);
+                if (table == tableZm){
+                    new DbStatements().deleteFahrzeugZm(fahrzeugId);
+                } else if (table == tableTrailer) {
+                    new DbStatements().deleteFahrzeugT(fahrzeugId);
+                }
+                Updates.updateTableFahrzeugZM(tableZm);
+                Updates.updateTableFahrzeugZM(tableTrailer);
+                JOptionPane.showMessageDialog(this, "Fahrzeug erfolgreich gelöscht");
+            } catch (Exception ex){
+                JOptionPane.showMessageDialog(this, "Ein Fehler ist beim Löschen des Fahrzeugs aufgetreten");
+                log.error(STR."Fehler beim Löschen des Fahrzeugs!\{ex.getMessage()}");
+            }
+        }
     }
 
     private void close() {

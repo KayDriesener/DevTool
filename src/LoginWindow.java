@@ -18,6 +18,8 @@ public class LoginWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Erstellen des panels mit Gridlayout( 5 Reihen, 2 Spalten)
         JPanel panel = new JPanel(new GridLayout(5, 2));
@@ -28,6 +30,7 @@ public class LoginWindow extends JFrame {
         usernameField = new JTextField();
         passwordField = new JPasswordField();
         JButton loginButton = getLoginButton();
+
 
         // Komponenten dem panel zuweisen. Leere JLabel dienen als Abstandshalter um das Layout zu ordnen.
         panel.add(new JLabel());

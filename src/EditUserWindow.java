@@ -5,8 +5,8 @@ import sql.DbQueries;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -19,6 +19,8 @@ public class EditUserWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -47,7 +49,7 @@ public class EditUserWindow extends JFrame {
         // Benutzerdaten in das TableModel übertragen
         Object[][] tableData = null;
         if (userList != null) {
-            // Die Anzahl der Attribute muss mit der Spaltenanzahl des TableModels übereinstimmen!
+            // Die Anzahl der Attribute muss mit der Spaltenanzahl der collumnNames übereinstimmen!
             int attributeCount = User.class.getDeclaredFields().length;
             tableData = new Object[userList.size()][attributeCount];
             int cnt = 0;
@@ -62,14 +64,37 @@ public class EditUserWindow extends JFrame {
         }
 
         /*
-        * Benutzerdefinierte Spaltenüberschriften → Anzahl der Überschriften,
-        * muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
+         * Benutzerdefinierte Spaltenüberschriften → Anzahl der Überschriften,
+         * muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
          */
 
         Object[] columnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
 
         assert tableData != null;
         JTable table = new JTable(tableData, columnNames);
+
+        /*
+         * Tooltip für die Zellen in der Tabelle bei Mouseover.
+         */
+        table.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                int col = table.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = table.getValueAt(row, col);
+                    table.setToolTipText((value != null ? value.toString() : null));
+                }
+
+            }
+        });
 
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(table);
@@ -86,9 +111,9 @@ public class EditUserWindow extends JFrame {
         JButton closeButton = new JButton("Schließen");
 
         // Aktion listener den Buttons zuweisen
-        saveButton.addActionListener(e -> saveUser());
-        closeButton.addActionListener(e -> close());
-        deleteButton.addActionListener(e -> deleteUser());
+        saveButton.addActionListener(_ -> saveUser());
+        closeButton.addActionListener(_ -> close());
+        deleteButton.addActionListener(_ -> deleteUser());
 
         bottomPanel.add(deleteButton);
         bottomPanel.add(saveButton);

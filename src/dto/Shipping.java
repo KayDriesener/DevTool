@@ -1,17 +1,21 @@
 package dto;
 
 import java.sql.Date;
+import java.sql.Time;
 
+/*
+ * Klasse Shipping mit Parametern.
+ */
 public class Shipping {
     private int bdf_referenz;
     private Date datum;
     private int kn_referenz;
     private String absender;
     private String empfaenger;
-    private Date beladung_s;
-    private Date beladung_e;
-    private Date entladen_s;
-    private Date entladen_e;
+    private Time beladung_s;
+    private Time beladung_e;
+    private Time entladen_s;
+    private Time entladen_e;
     private int stellplaetze;
     private int anzahl;
     private boolean liquid;
@@ -67,35 +71,35 @@ public class Shipping {
         this.empfaenger = empfaenger;
     }
 
-    public Date getBeladung_s() {
+    public Time getBeladung_s() {
         return beladung_s;
     }
 
-    public void setBeladung_s(Date beladung_s) {
+    public void setBeladung_s(Time beladung_s) {
         this.beladung_s = beladung_s;
     }
 
-    public Date getBeladung_e() {
+    public Time getBeladung_e() {
         return beladung_e;
     }
 
-    public void setBeladung_e(Date beladung_e) {
+    public void setBeladung_e(Time beladung_e) {
         this.beladung_e = beladung_e;
     }
 
-    public Date getEntladen_s() {
+    public Time getEntladen_s() {
         return entladen_s;
     }
 
-    public void setEntladen_s(Date entladen_s) {
+    public void setEntladen_s(Time entladen_s) {
         this.entladen_s = entladen_s;
     }
 
-    public Date getEntladen_e() {
+    public Time getEntladen_e() {
         return entladen_e;
     }
 
-    public void setEntladen_e(Date entladen_e) {
+    public void setEntladen_e(Time entladen_e) {
         this.entladen_e = entladen_e;
     }
 

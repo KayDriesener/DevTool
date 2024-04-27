@@ -20,13 +20,15 @@ public class NewUserWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5)); // Unbegrenzte Zeilen, 2 Spalten, Abstand zwischen den Zellen: 5 Pixel
 
         // Titel für das User management
         JLabel headline = new JLabel("USER MANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 18));
-        JLabel subHeadline = new JLabel("Neuer Benutzer");
+        JLabel subHeadline = new JLabel("Neuen Benutzer beantragen.");
         subHeadline.setFont(new Font("Arial", Font.BOLD, 18));
         panel.add(headline);
         panel.add(subHeadline);
@@ -62,28 +64,21 @@ public class NewUserWindow extends JFrame {
         panel.add(uPwd);
 
         // Checkboxen für die verschiedenen Rollen
-        JCheckBox dba = new JCheckBox("DBA", false);
-        JCheckBox mta = new JCheckBox("Maintenance Admin", false);
-        JCheckBox pa = new JCheckBox("Process Admin", false);
-        JCheckBox ua = new JCheckBox("User Admin", false);
-        JCheckBox sa = new JCheckBox("Security Admin", false);
-        JCheckBox ma = new JCheckBox("Monitor Admin", false);
-        JCheckBox dbm = new JCheckBox("DB Admin", false);
-        JCheckBox dbd = new JCheckBox("DB Designer", false);
-        JCheckBox rm = new JCheckBox("Replication Manager", false);
-        JCheckBox ba = new JCheckBox("Backup Admin", false);
+        JCheckBox select = new JCheckBox("Select", false);
+        JCheckBox insert = new JCheckBox("Insert", false);
+        JCheckBox update = new JCheckBox("Update", false);
+        JCheckBox delete = new JCheckBox("Delete", false);
+        JCheckBox execute = new JCheckBox("Execute", false);
+        JCheckBox all = new JCheckBox("Alles auswählen", false);
+
 
         // Fügt Checkboxen dem Panel hinzu
-        panel.add(dba);
-        panel.add(mta);
-        panel.add(pa);
-        panel.add(ua);
-        panel.add(sa);
-        panel.add(ma);
-        panel.add(dbm);
-        panel.add(dbd);
-        panel.add(rm);
-        panel.add(ba);
+        panel.add(select);
+        panel.add(insert);
+        panel.add(update);
+        panel.add(delete);
+        panel.add(execute);
+        panel.add(all);
 
         // Button erstellen und dem panel zuweisen
         JButton saveButton = new JButton("Speichern");

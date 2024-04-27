@@ -31,6 +31,8 @@ public class NewFahrzeugWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());

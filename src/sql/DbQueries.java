@@ -46,7 +46,7 @@ public class DbQueries {
             kunde.setId(rs.getInt(1));
             kunde.setFirma(rs.getString(2));
             kunde.setStrasse(rs.getString(3));
-            kunde.setNummer(rs.getInt(4));
+            kunde.setNummer(rs.getString(4));
             kunde.setPostleitzahl(rs.getInt(5));
             kunde.setOrt(rs.getString(6));
             kunde.setAbteilung(rs.getString(7));
@@ -114,10 +114,10 @@ public class DbQueries {
             shipping.setKn_referenz(rs.getInt(3));
             shipping.setAbsender(rs.getString(4));
             shipping.setEmpfaenger(rs.getString(5));
-            shipping.setBeladung_s(rs.getDate(6));
-            shipping.setBeladung_e(rs.getDate(7));
-            shipping.setEntladen_s(rs.getDate(8));
-            shipping.setEntladen_e(rs.getDate(9));
+            shipping.setBeladung_s(rs.getTime(6));
+            shipping.setBeladung_e(rs.getTime(7));
+            shipping.setEntladen_s(rs.getTime(8));
+            shipping.setEntladen_e(rs.getTime(9));
             shipping.setStellplaetze(rs.getInt(10));
             shipping.setAnzahl(rs.getInt(11));
             shipping.setLiquid(rs.getBoolean(12));

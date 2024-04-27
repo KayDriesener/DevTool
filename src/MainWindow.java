@@ -8,19 +8,22 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class MainWindow extends JFrame {
     private final JTree tree;
 
+
     public MainWindow() {
         setTitle("Hauptmenü");
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         /*
-         * Erstellen des Menüs in der JTree Variante um die Übersicht und Usability für den Nutzer zu gewährleisten.
+         * Erstellen des Menüs in der JTree (BaumStruktur) Variante um die Übersicht und Usability (Look and Feel) für den Nutzer zu gewährleisten.
          */
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Hauptmenü");
         addCategory(rootNode, "User management", "Neuer User", "User bearbeiten");
         addCategory(rootNode, "Fahrzeugmanagement", "Neues Fahrzeug", "Fahrzeug Bearbeiten");
-        addCategory(rootNode, "Transportmanagement", "Neuer Transport", "Transport Bearbeiten");
+        addCategory(rootNode, "Transportmanagement", "Neuer Transport", "Transport Bearbeiten", "Disposition");
         addCategory(rootNode, "Rechnungswesen", "Rechnung Erstellen", "Rechnung Bearbeiten");
         addCategory(rootNode, "Kundenmanagement", "Kunde Anlegen", "Kunde Bearbeiten");
         addCategory(rootNode, "Konfiguration", "Preise Paletten", "Entfernungen");
@@ -39,7 +42,7 @@ public class MainWindow extends JFrame {
         add(splitPane);
 
         /*
-         * Hinzufügen des TreeSelectionListeners, der das angeklickte Objekt im tree reagiert.
+         * Hinzufügen des TreeSelectionListeners, der auf das angeklickte Objekt im tree reagiert.
          * Die RuntimeException fängt den Fehler durch den Logout auf.
          */
         tree.addTreeSelectionListener(_ -> {
@@ -62,8 +65,10 @@ public class MainWindow extends JFrame {
     private JPanel createRightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
 
-        // Fügen Sie hier das Bild oder andere Komponenten auf der rechten Seite hinzu
-        ImageIcon imageIcon = new ImageIcon("knt.jpg");
+        /*
+         * Einfügen eines Bildes in das rechte Splitpane.
+         */
+        ImageIcon imageIcon = new ImageIcon("src/media/knt.jpg");
         JLabel imageLabel = new JLabel(imageIcon);
         rightPanel.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
         rightPanel.add(imageLabel, BorderLayout.CENTER);
@@ -82,7 +87,7 @@ public class MainWindow extends JFrame {
 
     /*
      * Methode, die auf das jeweils angeklickte Objekt die korrekte Methode aufruft.
-     * Die SQLException dient yum auffangen des möglicherweise auftretenden Logout-Fehlers in der Methode openLoginWindow().
+     * Die SQLException dient zum Auffangen des möglicherweise auftretenden Logout-Fehlers in der Methode openLoginWindow().
      * (MySqlConnector.dbConnection.close();)
      */
     private void openWindow(String category, String buttonText) throws SQLException {
@@ -112,6 +117,9 @@ public class MainWindow extends JFrame {
                         break;
                     case "Transport Bearbeiten":
                         openEditTransportWindow();
+                        break;
+                    case "Disposition":
+                        openDisposition();
                         break;
                 } break;
             case "Rechnungswesen":
@@ -161,6 +169,9 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /*
+     * Funktionen zum öffen der entsprechenden Fenster. Lambda-Expression um den Code übersichtlicher zu gestalten.
+     */
     private void openUserWindow() {
         SwingUtilities.invokeLater(NewUserWindow::new);
     }
@@ -204,6 +215,9 @@ public class MainWindow extends JFrame {
     private void openLoginWindow() throws SQLException {
         MySqlConnector.dbConnection.close();
         SwingUtilities.invokeLater(LoginWindow::new);
+    }
+    private void openDisposition() throws  SQLException {
+        SwingUtilities.invokeLater(Disposition::new);
     }
 
 }

@@ -18,6 +18,8 @@ public class Disposition extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout für den Titel
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -37,18 +39,19 @@ public class Disposition extends JFrame {
         // Mittleres Panel mit GridLayout für die JTable
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        // Daten für die Tabelle und Spaltennamen
-        Object[][] dataTableDispo = { { false, "Beim Anlegen NICHT Update", "Kommt aus der Dispo", "Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag","Testeintrag", "Testeintrag" } };
+        // Spaltenüberschriften
+        Object[][] dataTransport = {{false , "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"}};
         Object[] columnNamesDispo = {"Auswahl", "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
 
-
         // Erstellen des TableModels mit Checkbox-Renderer
-        DefaultTableModel model = new DefaultTableModel(dataTableDispo, columnNamesDispo) {
+        DefaultTableModel model = new DefaultTableModel(dataTransport, columnNamesDispo) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnIndex == 0 ? Boolean.class : Object.class;
             }
         };
+
+
 
         // Erstellen der JTable und Zuweisung des Checkbox-Renderers
         JTable tableDataDispo = new JTable(model);
@@ -57,14 +60,19 @@ public class Disposition extends JFrame {
         JScrollPane scrollPaneDataDispo = new JScrollPane(tableDataDispo);
         middlePanel.add(scrollPaneDataDispo);
 
+        // Tabelle aus NewTransportWindow abrufen.
+        NewTransportWindow newTransportWindow = new NewTransportWindow();
+        JTable transportTable = newTransportWindow.getTransportTable();
+        new JScrollPane(transportTable);
+
         // Unteres Panel mit FlowLayout für die Buttons
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         // Erstellen der Buttons und Zuweisung der ActionListener
         JButton dispoBtn = new JButton("Disponieren");
         JButton backButton = new JButton("Zurück");
-        backButton.addActionListener(e -> goBack());
-        dispoBtn.addActionListener(e -> saveDispo());
+        backButton.addActionListener(_ -> goBack());
+        dispoBtn.addActionListener(_ -> saveDispo());
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(dispoBtn);
@@ -88,7 +96,7 @@ public class Disposition extends JFrame {
         // LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
         String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
         // Prep. Statement Transport speichern
-        JOptionPane.showMessageDialog(this, "Transport Angelegt mit der Referenz " + kNlieferscheinnummer + "!");
+        JOptionPane.showMessageDialog(this, STR."Transport Angelegt mit der Referenz \{kNlieferscheinnummer}!");
     }
 
     // Methode zum Zurückkehren

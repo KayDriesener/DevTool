@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class NewTransportWindow extends JFrame {
@@ -42,6 +43,8 @@ public class NewTransportWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -57,42 +60,57 @@ public class NewTransportWindow extends JFrame {
         // MiddlePannel
         JPanel middlePanel = new JPanel();
 
-        // GroupLayout
+        // Layoutmanager. Grouplayout ist ausgewählt.
         GroupLayout middleGroup = new GroupLayout(middlePanel);
         middlePanel.setLayout(middleGroup);
 
-        // AutoGap
+        // Automatische Abstände
         middleGroup.setAutoCreateGaps(true);
         middleGroup.setAutoCreateContainerGaps(true);
 
 
-        // Erste Gruppe (Reihe)
+        /*
+         * Erste Gruppe (Reihe)
+         * Tooltip für Eingabefelder mit einer Formatierung wie Uhrzeit, Datum und gesperrten Eingaben
+         * wurden eingefügt.
+         */
         JLabel knReferenz = new JLabel("K&N Referenz:");
         knReferenceText = new JTextField();
+        knReferenceText.setToolTipText("Wird bei der Disposition vergeben!");
         knReferenceText.setEditable(false);
         JLabel shipperLabel = new JLabel("Absender:");
         shipperComboBox = new JComboBox<>();
         populateShipperComboBox();
         JLabel loadBegin = new JLabel("Beladung Start:");
         loadBeginTime = new JTextField();
+        loadBeginTime.setToolTipText("HH:mm");
         JLabel loadEnd = new JLabel("bis:");
         loadEndTime = new JTextField();
+        loadEndTime.setToolTipText("HH:mm");
         JLabel pitches = new JLabel("Stellplätze (EP):");
         pitchesText = new JTextField();
         liquid = new JCheckBox("LQ");
 
-        // Zweite Gruppe (Reihe)
+        /*
+         * Zweite Gruppe (Reihe)
+         * Tooltip für Eingabefelder mit einer Formatierung wie Uhrzeit und Datum
+         * wurden eingefügt.
+         */
         JLabel date = new JLabel("Datum:");
         printDate = new JTextField();
+        printDate.setToolTipText("Im Format dd.mm.YYYY");
         JLabel bdf_reference = new JLabel("BDF Referenz:");
         bdf_referenceText = new JTextField();
+        bdf_referenceText.setToolTipText("TA-Nummer");
         JLabel recipient = new JLabel("Empfänger:");
         recipientComboBox = new JComboBox<>();
         populateRecipientComboBox();
         JLabel dischargeBegin = new JLabel("Entladen Start:");
         dischargeBeginText = new JTextField();
+        dischargeBeginText.setToolTipText("HH:mm");
         JLabel dischargeEnd = new JLabel("bis:");
         dischargeEndText = new JTextField();
+        dischargeEndText.setToolTipText("HH:mm");
         JLabel eupal = new JLabel("Anzahl EuroPal:");
         epalText = new JTextField();
         adrBox = new JCheckBox("ADR");
@@ -114,7 +132,10 @@ public class NewTransportWindow extends JFrame {
             log.error(e.getMessage());
         }
 
-        // Tabelle erstellen und die Daten aus der Tabelle abfragen
+        /*
+         * Tabelle erstellen und die Daten aus der Tabelle abfragen.
+         * TRUE / FALSE-Werte werden mit ->? "Ja" : "Nein"<- umgeschrieben.
+         */
         Object[][] dataTransport = null;
         if (transportList != null) {
             int attributeCount = Shipping.class.getDeclaredFields().length;
@@ -132,9 +153,9 @@ public class NewTransportWindow extends JFrame {
                 dataTransport[cnt][8] = shipping.getEntladen_e();
                 dataTransport[cnt][9] = shipping.getStellplaetze();
                 dataTransport[cnt][10] = shipping.getAnzahl();
-                dataTransport[cnt][11] = shipping.isLiquid();
-                dataTransport[cnt][12] = shipping.isAdr();
-                dataTransport[cnt][13] = shipping.isRundlauf();
+                dataTransport[cnt][11] = shipping.isLiquid() ? "Ja" : "Nein";
+                dataTransport[cnt][12] = shipping.isAdr() ? "Ja" : "Nein";
+                dataTransport[cnt][13] = shipping.isRundlauf() ? "Ja" : "Nein";
                 dataTransport[cnt][14] = shipping.getBemerkung();
                 cnt++;
             }
@@ -143,10 +164,17 @@ public class NewTransportWindow extends JFrame {
         transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
 
-        // Tooltip bei Mouseover
+        /*
+         * Tooltip für die Zellen in der Tabelle bei Mouseover.
+         */
         transportTable.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
                 Point point = e.getPoint();
                 int row = transportTable.rowAtPoint(point);
                 int col = transportTable.columnAtPoint(point);
@@ -155,10 +183,6 @@ public class NewTransportWindow extends JFrame {
                     Object value = transportTable.getValueAt(row, col);
                     transportTable.setToolTipText((value != null ? value.toString() : null));
                 }
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
 
             }
         });
@@ -290,13 +314,13 @@ public class NewTransportWindow extends JFrame {
              * Methoden zum Parsen wurden in helpers.Parsing ausgelagert, um den Code übersichtlicher zu gestalten.
              * Die Methode zum Aktualisieren der Tabelle nach dem Hinzufügen eines Datensatzes wurde in die helpers.Updates ausgelagert.
              */
-            Date lBegin = Parsing.parseDateTime(loadBeginTime.getText());
-            Date lEnd = Parsing.parseDateTime(loadEndTime.getText());
+            Time lBegin = Parsing.parseTime(loadBeginTime.getText());
+            Time lEnd = Parsing.parseTime(loadEndTime.getText());
             int pitches = Integer.parseInt(pitchesText.getText());
             boolean isliquid = liquid.isSelected();
             int bdfRef = Integer.parseInt(bdf_referenceText.getText());
-            Date dcBegin = Parsing.parseDateTime(dischargeBeginText.getText());
-            Date dcEnd = Parsing.parseDateTime(dischargeEndText.getText());
+            Time dcBegin = Parsing.parseTime(dischargeBeginText.getText());
+            Time dcEnd = Parsing.parseTime(dischargeEndText.getText());
             int epal = Integer.parseInt(epalText.getText());
             boolean isAdr = adrBox.isSelected();
             String comment = commentText.getText();
@@ -337,6 +361,9 @@ public class NewTransportWindow extends JFrame {
         }
     }
 
+    /*
+     * Befüllen der Combo boxen mit Date aus der shipperList, da alle Kunden als Empfänger und Versender fungieren.
+     */
     private void populateShipperComboBox(){
         try {
             ArrayList<Kunde> shipperList = new DbQueries().getKunden();
@@ -364,4 +391,7 @@ public class NewTransportWindow extends JFrame {
         dispose();
     }
 
+    public JTable getTransportTable() {
+        return transportTable;
+    }
 }

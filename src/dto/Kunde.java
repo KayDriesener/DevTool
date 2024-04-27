@@ -1,10 +1,13 @@
 package dto;
 
+/*
+ * Klasse Kunde mit Parametern
+ */
 public class Kunde {
     private  Integer id;
     private String firma;
     private String strasse;
-    private Integer nummer;
+    private String nummer;
     private Integer postleitzahl;
     private String ort;
     private String abteilung;
@@ -37,11 +40,11 @@ public class Kunde {
         this.strasse = strasse;
     }
 
-    public Integer getNummer() {
+    public String getNummer() {
         return nummer;
     }
 
-    public void setNummer(Integer nummer) {
+    public void setNummer(String nummer) {
         this.nummer = nummer;
     }
 

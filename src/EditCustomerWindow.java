@@ -7,6 +7,8 @@ import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -19,6 +21,8 @@ public class EditCustomerWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -77,6 +81,29 @@ public class EditCustomerWindow extends JFrame {
 
         kundenTable = new JTable(kundenData, columnNames);
 
+        /*
+         * Tooltip für die Zellen in der Tabelle bei Mouseover.
+         */
+       kundenTable.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = kundenTable.rowAtPoint(point);
+                int col = kundenTable.columnAtPoint(point);
+
+                if (row >= 0) {
+                    Object value = kundenTable.getValueAt(row, col);
+                    kundenTable.setToolTipText((value != null ? value.toString() : null));
+                }
+
+            }
+        });
+
         // Tabelle auf die Spalten aufteilen
         JScrollPane scrollPane = new JScrollPane(kundenTable);
 
@@ -94,7 +121,7 @@ public class EditCustomerWindow extends JFrame {
         JButton closeButton = new JButton("Schließen");
 
         // Aktionen für die Buttons hinzufügen (Dummy-Implementierung)
-        saveButton.addActionListener(_ -> saveUser());
+        saveButton.addActionListener(_ -> saveCustomer());
         deleteButton.addActionListener(_ -> deleteCustomer());
         closeButton.addActionListener(_ -> close());
 
@@ -135,8 +162,8 @@ public class EditCustomerWindow extends JFrame {
         }
     }
 
-    private void saveUser() {
-        //TODO Prep.Statement User
+    private void saveCustomer() {
+        //TODO Prep.Statement Cutomer
         JOptionPane.showMessageDialog(this, "Datensatz GESPEICHERT!");
     }
 
