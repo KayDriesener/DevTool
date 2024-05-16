@@ -84,6 +84,15 @@ public class DbStatements {
         ps.setString(14, bemerkung);
         ps.execute();
     }
+    public void addDispo(boolean disponiert, int kn_referenz, int bdf_referenz, int fahrzeug_zm, int fahrzeug_t) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO dispo(disponiert, kn_referenz, bdf_referenz, fahrzeug_zm, fahrzeug_t) VALUE(?, ?, ?, ?, ?);");
+        ps.setBoolean(1, disponiert);
+        ps.setInt(2, kn_referenz);
+        ps.setInt(3, bdf_referenz);
+        ps.setInt(4, fahrzeug_zm);
+        ps.setInt(5, fahrzeug_t);
+        ps.execute();
+    }
     /*
      *  EDIT
      */

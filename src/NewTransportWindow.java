@@ -1,6 +1,7 @@
 import dto.Kunde;
 import dto.Shipping;
 
+import helpers.ComboBoxes;
 import helpers.Parsing;
 import helpers.Updates;
 import org.slf4j.Logger;
@@ -9,7 +10,6 @@ import sql.DbQueries;
 import sql.DbStatements;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class NewTransportWindow extends JFrame {
     JComboBox<String> shipperComboBox;
     JComboBox<String> recipientComboBox;
+    JComboBox<String> zugmaschiene;
+    JComboBox<String> trailer;
     JTable transportTable;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField knReferenceText;
@@ -68,7 +70,6 @@ public class NewTransportWindow extends JFrame {
         middleGroup.setAutoCreateGaps(true);
         middleGroup.setAutoCreateContainerGaps(true);
 
-
         /*
          * Erste Gruppe (Reihe)
          * Tooltip für Eingabefelder mit einer Formatierung wie Uhrzeit, Datum und gesperrten Eingaben
@@ -78,9 +79,10 @@ public class NewTransportWindow extends JFrame {
         knReferenceText = new JTextField();
         knReferenceText.setToolTipText("Wird bei der Disposition vergeben!");
         knReferenceText.setEditable(false);
-        JLabel shipperLabel = new JLabel("Absender:");
         shipperComboBox = new JComboBox<>();
-        populateShipperComboBox();
+        ComboBoxes.populateShipperComboBox(shipperComboBox);
+        zugmaschiene = new JComboBox<>();
+        ComboBoxes.populateZugmaschine(zugmaschiene);
         JLabel loadBegin = new JLabel("Beladung Start:");
         loadBeginTime = new JTextField();
         loadBeginTime.setToolTipText("HH:mm");
@@ -102,9 +104,10 @@ public class NewTransportWindow extends JFrame {
         JLabel bdf_reference = new JLabel("BDF Referenz:");
         bdf_referenceText = new JTextField();
         bdf_referenceText.setToolTipText("TA-Nummer");
-        JLabel recipient = new JLabel("Empfänger:");
         recipientComboBox = new JComboBox<>();
-        populateRecipientComboBox();
+        ComboBoxes.populateRecipientComboBox(recipientComboBox);
+        trailer = new JComboBox<>();
+        ComboBoxes.populateTrailer(trailer);
         JLabel dischargeBegin = new JLabel("Entladen Start:");
         dischargeBeginText = new JTextField();
         dischargeBeginText.setToolTipText("HH:mm");
@@ -187,17 +190,14 @@ public class NewTransportWindow extends JFrame {
             }
         });
 
-        // Größe anpassen
-        scrollPaneDataTransport.setPreferredSize(new Dimension(400, 200));
-
         //Erstellen des GroupLayouts
         middleGroup.setHorizontalGroup(
                 middleGroup.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(middleGroup.createSequentialGroup()
                                 .addComponent(knReferenz)
                                 .addComponent(knReferenceText)
-                                .addComponent(shipperLabel)
                                 .addComponent(shipperComboBox)
+                                .addComponent(zugmaschiene)
                                 .addComponent(loadBegin)
                                 .addComponent(loadBeginTime)
                                 .addComponent(loadEnd)
@@ -208,8 +208,8 @@ public class NewTransportWindow extends JFrame {
                         .addGroup(middleGroup.createSequentialGroup()
                                 .addComponent(bdf_reference)
                                 .addComponent(bdf_referenceText)
-                                .addComponent(recipient)
                                 .addComponent(recipientComboBox)
+                                .addComponent(trailer)
                                 .addComponent(dischargeBegin)
                                 .addComponent(dischargeBeginText)
                                 .addComponent(dischargeEnd)
@@ -228,12 +228,11 @@ public class NewTransportWindow extends JFrame {
 
         middleGroup.setVerticalGroup(
                 middleGroup.createSequentialGroup()
-                        .addGroup(middleGroup
-                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(knReferenz)
                                 .addComponent(knReferenceText)
-                                .addComponent(shipperLabel)
                                 .addComponent(shipperComboBox)
+                                .addComponent(zugmaschiene)
                                 .addComponent(loadBegin)
                                 .addComponent(loadBeginTime)
                                 .addComponent(loadEnd)
@@ -241,11 +240,10 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(pitches)
                                 .addComponent(pitchesText)
                                 .addComponent(liquid))
-                        .addGroup(middleGroup
-                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(bdf_reference)
                                 .addComponent(bdf_referenceText)
-                                .addComponent(recipient)
+                                .addComponent(trailer)
                                 .addComponent(recipientComboBox)
                                 .addComponent(dischargeBegin)
                                 .addComponent(dischargeBeginText)
@@ -254,21 +252,17 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(eupal)
                                 .addComponent(epalText)
                                 .addComponent(adrBox))
-                        .addGroup(middleGroup
-                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(date)
                                 .addComponent(printDate)
                                 .addComponent(comment)
                                 .addComponent(commentText)
                                 .addComponent(roundtrip))
-                        .addGroup(middleGroup
-                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(liquid))
-                        .addGroup(middleGroup
-                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(adrBox))
-                        .addGroup(middleGroup
-                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(roundtrip))
                         .addComponent(scrollPaneDataTransport));
 
@@ -282,7 +276,6 @@ public class NewTransportWindow extends JFrame {
         closeButton.addActionListener(_ -> close());
         saveButton.addActionListener(_ -> saveTransport());
         dispoButton.addActionListener(_ -> goDisposition());
-
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(saveButton);
@@ -338,48 +331,6 @@ public class NewTransportWindow extends JFrame {
     }
 
 
-    /*
-     *Abrufen der Kundendaten um die ComboBox zu füllen.
-     *In der dto.Kunde wurde die Methode toString mit return firma eingefügt um die Firmennamen anzuzeigen.
-     *Bei einem Fehler wird eine Fehlermeldung ausgegeben und das Programm wird weiter ausgeführt.
-     *Gleiches für die Methode populateShipperBox.
-     */
-    private void populateRecipientComboBox(){
-        try {
-            ArrayList<Kunde> recipientList = new DbQueries().getKunden();
-            if (recipientList != null && !recipientList.isEmpty()){
-                recipientComboBox.removeAllItems();
-                recipientComboBox.addItem("Empfänger wählen");
-
-                for (Kunde shipper : recipientList){
-                    recipientComboBox.addItem(String.valueOf(shipper));
-                }
-            }
-        } catch (Exception ex){
-            JOptionPane.showMessageDialog(this, STR."Fehler beim abrufen der Datensätze Empfänger!\n\{ex.getMessage()}");
-            log.error(STR."Fehler beim abrufen der Datensätze für Empfänger!\{ex.getMessage()}");
-        }
-    }
-
-    /*
-     * Befüllen der Combo boxen mit Date aus der shipperList, da alle Kunden als Empfänger und Versender fungieren.
-     */
-    private void populateShipperComboBox(){
-        try {
-            ArrayList<Kunde> shipperList = new DbQueries().getKunden();
-            if (shipperList != null && !shipperList.isEmpty()){
-                shipperComboBox.removeAllItems();
-                shipperComboBox.addItem("Absender wählen");
-
-                for (Kunde shipper : shipperList){
-                    shipperComboBox.addItem(String.valueOf(shipper));
-                }
-            }
-        } catch (Exception ex){
-            JOptionPane.showMessageDialog(this, STR."Fehler beim abrufen der Datensätze für Absender!\n\{ex.getMessage()}");
-            log.error(STR."Fehler beim abrufen der Datensätze für Absender!\{ex.getMessage()}");
-        }
-    }
 
     private void goDisposition() {
         new Disposition();

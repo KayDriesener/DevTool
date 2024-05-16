@@ -78,4 +78,9 @@ public class Fahrzeug {
     public void setKostenstelle(Integer kostenstelle) {
         this.kostenstelle = kostenstelle;
     }
+
+    @Override
+    public String toString() {
+        return kennzeichen;
+    }
 }

@@ -1,10 +1,20 @@
 package dto;
 
 public class Dispo {
+    private boolean disponiert;
     private int kn_Referenz;
     private int bdf_referenz;
     private int fahrzeugzm;
     private int fahrzeugt;
+
+
+    public boolean isDisponiert() {
+        return disponiert;
+    }
+
+    public void setDisponiert(int i) {
+        this.disponiert = disponiert;
+    }
 
     public int getKn_Referenz() {
         return kn_Referenz;

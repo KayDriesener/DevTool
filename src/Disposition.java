@@ -1,8 +1,14 @@
+import dto.Dispo;
+import dto.Shipping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sql.DbQueries;
+import sql.DbStatements;
 
 
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -39,12 +45,34 @@ public class Disposition extends JFrame {
         // Mittleres Panel mit GridLayout für die JTable
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        // Spaltenüberschriften
-        Object[][] dataTransport = {{false , "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"}};
-        Object[] columnNamesDispo = {"Auswahl", "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
+        ArrayList<Dispo> dispoList = null;
+        try {
+            dispoList = new DbQueries().getDispo();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Beim Abrufen der Dispositionen ist ein Fehler aufgetreten.");
+            log.error(e.getMessage());
+        }
+
+        /*
+         * Erstellen der Tabelle
+         */
+        Object[][] dataDispo = null;
+            if (dispoList != null){
+                int attributeCount = Dispo.class.getDeclaredFields().length;
+                dataDispo = new Object[dispoList.size()][attributeCount];
+                int cnt = 0;
+                for (Dispo dispo : dispoList){
+                    dataDispo[cnt][0] = dispo.isDisponiert();
+                    dataDispo[cnt][1] = dispo.getKn_Referenz();
+                    dataDispo[cnt][2] = dispo.getBdf_referenz();
+                    dataDispo[cnt][3] = dispo.getFahrzeugzm();
+                    dataDispo[cnt][4] = dispo.getFahrzeugt();
+                }
+            }
+        Object[] columnNamesDispo = {"Auswahl", "K&N Referenz", "BDF Referenz", "Zugmaschine", "Trailer"};
 
         // Erstellen des TableModels mit Checkbox-Renderer
-        DefaultTableModel model = new DefaultTableModel(dataTransport, columnNamesDispo) {
+        DefaultTableModel model = new DefaultTableModel(dataDispo, columnNamesDispo) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnIndex == 0 ? Boolean.class : Object.class;
@@ -72,7 +100,7 @@ public class Disposition extends JFrame {
         JButton dispoBtn = new JButton("Disponieren");
         JButton backButton = new JButton("Zurück");
         backButton.addActionListener(_ -> goBack());
-        dispoBtn.addActionListener(_ -> saveDispo());
+        //dispoBtn.addActionListener(_ -> saveDispo());
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(dispoBtn);
@@ -92,13 +120,20 @@ public class Disposition extends JFrame {
     }
 
     // Methode zum Speichern der Disposition
-    private void saveDispo() {
-        // LieferscheinNummernGenerator manager = new LieferscheinNummernGenerator();
-        String kNlieferscheinnummer = LieferscheinNummernGenerator.generiereNummer();
-        // Prep. Statement Transport speichern
+    /*
+     * Richtiges übergeben der Daten.
+     * Bei Auswahl der Checkbox sollen param's aus addDispo() an die Datenbank übergeben werden.
+     */
+    /*private void saveDispo() {
+        // boolean disponiert =
+        String kn_referenz = LieferscheinNummernGenerator.generiereNummer();
+        //String bdf_referenz =
+        //String fahrzeug_zm =
+        //String fahrzeug_t =
+        new DbStatements().addDispo(disponiert, kn_referenz, bdf_referenz, fahrzeug_zm, fahrzeug_t);
         JOptionPane.showMessageDialog(this, STR."Transport Angelegt mit der Referenz \{kNlieferscheinnummer}!");
     }
-
+    */
     // Methode zum Zurückkehren
     private void goBack() {
         new NewTransportWindow();

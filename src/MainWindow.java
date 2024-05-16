@@ -71,7 +71,7 @@ public class MainWindow extends JFrame {
         ImageIcon imageIcon = new ImageIcon("src/media/knt.jpg");
         JLabel imageLabel = new JLabel(imageIcon);
         rightPanel.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
-        rightPanel.add(imageLabel, BorderLayout.CENTER);
+        rightPanel.add(imageLabel);
 
         return rightPanel;
     }
@@ -196,6 +196,10 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(EditTransportWindow::new);
     }
 
+    private void openDisposition() throws  SQLException {
+        SwingUtilities.invokeLater(Disposition::new);
+    }
+
     private void openNewBillingWindow() {
         SwingUtilities.invokeLater(NewBillingWindow::new);
     }
@@ -211,13 +215,9 @@ public class MainWindow extends JFrame {
     private void openEditCustomerWindow() {
         SwingUtilities.invokeLater(EditCustomerWindow::new);
     }
-
     private void openLoginWindow() throws SQLException {
         MySqlConnector.dbConnection.close();
         SwingUtilities.invokeLater(LoginWindow::new);
-    }
-    private void openDisposition() throws  SQLException {
-        SwingUtilities.invokeLater(Disposition::new);
     }
 
 }

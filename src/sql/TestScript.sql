@@ -62,3 +62,13 @@ create table if not exists transport (
     rundlauf boolean,
     bemerkung varchar(255)
 );
+
+create table if not exists dispo (
+	kn_referenz int primary key,
+    bdf_referenz int, #fk
+    fahrzeug_zm int, #fk
+    fahrzeug_t int, #fk
+    foreign key (bdf_referenz) references transport(bdf_referenz),
+    foreign key (fahrzeug_zm) references fahrzeug_zm(id),
+    foreign key (fahrzeug_t) references fahrzeug_t(id)
+);

@@ -1,9 +1,6 @@
 package sql;
 
-import dto.Fahrzeug;
-import dto.Kunde;
-import dto.User;
-import dto.Shipping;
+import dto.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -127,6 +124,22 @@ public class DbQueries {
             shippingList.add(shipping);
         }
         return shippingList;
+    }
+
+    public ArrayList<Dispo> getDispo() throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT transport.kn_referenz, transport.bdf_referenz, transport.fahrzeug_t, transport.fahrzeug_zm FROM transport;");
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Dispo> dispoList = new ArrayList<>();
+        while (rs.next()){
+            Dispo dispo = new Dispo();
+            dispo.setDisponiert(1);
+            dispo.setKn_Referenz(2);
+            dispo.setBdf_referenz(3);
+            dispo.setFahrzeugzm(4);
+            dispo.setFahrzeugt(5);
+        }
+        return dispoList;
     }
 
 }
