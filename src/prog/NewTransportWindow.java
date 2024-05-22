@@ -1,4 +1,5 @@
-import dto.Kunde;
+package prog;
+
 import dto.Shipping;
 
 import helpers.ComboBoxes;
@@ -21,8 +22,6 @@ import java.util.ArrayList;
 public class NewTransportWindow extends JFrame {
     JComboBox<String> shipperComboBox;
     JComboBox<String> recipientComboBox;
-    JComboBox<String> zugmaschiene;
-    JComboBox<String> trailer;
     JTable transportTable;
     Logger log = LoggerFactory.getLogger(this.getClass());
     JTextField knReferenceText;
@@ -81,8 +80,6 @@ public class NewTransportWindow extends JFrame {
         knReferenceText.setEditable(false);
         shipperComboBox = new JComboBox<>();
         ComboBoxes.populateShipperComboBox(shipperComboBox);
-        zugmaschiene = new JComboBox<>();
-        ComboBoxes.populateZugmaschine(zugmaschiene);
         JLabel loadBegin = new JLabel("Beladung Start:");
         loadBeginTime = new JTextField();
         loadBeginTime.setToolTipText("HH:mm");
@@ -106,8 +103,6 @@ public class NewTransportWindow extends JFrame {
         bdf_referenceText.setToolTipText("TA-Nummer");
         recipientComboBox = new JComboBox<>();
         ComboBoxes.populateRecipientComboBox(recipientComboBox);
-        trailer = new JComboBox<>();
-        ComboBoxes.populateTrailer(trailer);
         JLabel dischargeBegin = new JLabel("Entladen Start:");
         dischargeBeginText = new JTextField();
         dischargeBeginText.setToolTipText("HH:mm");
@@ -137,7 +132,7 @@ public class NewTransportWindow extends JFrame {
 
         /*
          * Tabelle erstellen und die Daten aus der Tabelle abfragen.
-         * TRUE / FALSE-Werte werden mit ->? "Ja" : "Nein"<- umgeschrieben.
+         * TRUE / FALSE-Werte werden mit →? "Ja" : "Nein"← umgeschrieben.
          */
         Object[][] dataTransport = null;
         if (transportList != null) {
@@ -197,7 +192,6 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(knReferenz)
                                 .addComponent(knReferenceText)
                                 .addComponent(shipperComboBox)
-                                .addComponent(zugmaschiene)
                                 .addComponent(loadBegin)
                                 .addComponent(loadBeginTime)
                                 .addComponent(loadEnd)
@@ -209,7 +203,6 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(bdf_reference)
                                 .addComponent(bdf_referenceText)
                                 .addComponent(recipientComboBox)
-                                .addComponent(trailer)
                                 .addComponent(dischargeBegin)
                                 .addComponent(dischargeBeginText)
                                 .addComponent(dischargeEnd)
@@ -232,7 +225,6 @@ public class NewTransportWindow extends JFrame {
                                 .addComponent(knReferenz)
                                 .addComponent(knReferenceText)
                                 .addComponent(shipperComboBox)
-                                .addComponent(zugmaschiene)
                                 .addComponent(loadBegin)
                                 .addComponent(loadBeginTime)
                                 .addComponent(loadEnd)
@@ -243,7 +235,6 @@ public class NewTransportWindow extends JFrame {
                         .addGroup(middleGroup.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(bdf_reference)
                                 .addComponent(bdf_referenceText)
-                                .addComponent(trailer)
                                 .addComponent(recipientComboBox)
                                 .addComponent(dischargeBegin)
                                 .addComponent(dischargeBeginText)
@@ -304,8 +295,8 @@ public class NewTransportWindow extends JFrame {
         try {
             /*
              * Parsen der eingegebenen Daten, um diese mit der Datenbank zu verarbeiten.
-             * Methoden zum Parsen wurden in helpers.Parsing ausgelagert, um den Code übersichtlicher zu gestalten.
-             * Die Methode zum Aktualisieren der Tabelle nach dem Hinzufügen eines Datensatzes wurde in die helpers.Updates ausgelagert.
+             * Methoden zum Parsen wurden in helpers. Parsing ausgelagert, um den Code übersichtlicher zu gestalten.
+             * Die Methode zum Aktualisieren der Tabelle nach dem Hinzufügen eines Datensatzes wurde in die helpers. Updates ausgelagert.
              */
             Time lBegin = Parsing.parseTime(loadBeginTime.getText());
             Time lEnd = Parsing.parseTime(loadEndTime.getText());
@@ -333,7 +324,7 @@ public class NewTransportWindow extends JFrame {
 
 
     private void goDisposition() {
-        new Disposition();
+        new DispositionWindow();
         dispose();
     }
 
@@ -342,7 +333,4 @@ public class NewTransportWindow extends JFrame {
         dispose();
     }
 
-    public JTable getTransportTable() {
-        return transportTable;
-    }
 }

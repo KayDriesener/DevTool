@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class ComboBoxes {
     /*
-     *Abrufen der Datensätze um die ComboBoxen zu füllen.
-     *In den Klassen der dto's wurden die Methoden toString mit entsprechenden return eingefügt um die korrekten Datensätze anzuzeigen.
-     *Bei einem Fehler wird eine Fehlermeldung ausgegeben und das Programm wird weiter ausgeführt.
+     * Abrufen der Datensätze um die ComboBoxen zu füllen.
+     * In den Klassen der dto's wurden die Methoden toString mit entsprechenden return eingefügt, um die korrekten Datensätze anzuzeigen.
+     * Bei einem Fehler wird eine Fehlermeldung ausgegeben und das Programm wird weiter ausgeführt.
      */
     public static void populateRecipientComboBox(JComboBox<String> recipientComboBox){
         try {

@@ -1,9 +1,9 @@
+package prog;
+
 import dto.Dispo;
-import dto.Shipping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
-import sql.DbStatements;
 
 
 import java.awt.*;
@@ -13,11 +13,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-public class Disposition extends JFrame {
+public class DispositionWindow extends JFrame {
     Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Konstruktor für die Disposition-Klasse
-    public Disposition() {
+    public DispositionWindow() {
         // Einstellungen für das JFrame-Fenster
         setTitle("Disposition");
         setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -88,10 +88,8 @@ public class Disposition extends JFrame {
         JScrollPane scrollPaneDataDispo = new JScrollPane(tableDataDispo);
         middlePanel.add(scrollPaneDataDispo);
 
-        // Tabelle aus NewTransportWindow abrufen.
-        NewTransportWindow newTransportWindow = new NewTransportWindow();
-        JTable transportTable = newTransportWindow.getTransportTable();
-        new JScrollPane(transportTable);
+        // Tabelle aus prog.NewTransportWindow abrufen.
+        
 
         // Unteres Panel mit FlowLayout für die Buttons
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -118,6 +116,16 @@ public class Disposition extends JFrame {
         add(mainPanel);
         setVisible(true);
     }
+    /*
+     * JComboBox<String> zugmaschiene;
+     * JComboBox<String> trailer;
+     *
+     * zugmaschiene = new JComboBox<>();
+     * ComboBoxes.populateZugmaschine(zugmaschiene);
+     *
+     * trailer = new JComboBox<>();
+     * ComboBoxes.populateTrailer(trailer);
+     */
 
     // Methode zum Speichern der Disposition
     /*
@@ -126,7 +134,7 @@ public class Disposition extends JFrame {
      */
     /*private void saveDispo() {
         // boolean disponiert =
-        String kn_referenz = LieferscheinNummernGenerator.generiereNummer();
+        String kn_referenz = prog.LieferscheinNummernGenerator.generiereNummer();
         //String bdf_referenz =
         //String fahrzeug_zm =
         //String fahrzeug_t =

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /*
  * MySQL Connector.
- * Übergebene Parameter "Username" und "Password" aus der Klasse LoginWindow.
+ * Übergebene Parameter "Username" und "Password" aus der Klasse prog.LoginWindow.
  *
  */
 public class MySqlConnector {

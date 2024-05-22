@@ -1,3 +1,5 @@
+package prog;
+
 import sql.MySqlConnector;
 
 import java.awt.*;

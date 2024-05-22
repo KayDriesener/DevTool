@@ -1,3 +1,5 @@
+package prog;
+
 import sql.MySqlConnector;
 
 import java.awt.*;
@@ -18,7 +20,7 @@ public class MainWindow extends JFrame {
         setIconImage(icon.getImage());
 
         /*
-         * Erstellen des Menüs in der JTree (BaumStruktur) Variante um die Übersicht und Usability (Look and Feel) für den Nutzer zu gewährleisten.
+         * Erstellen des Menüs, angelehnt an SAP, in der JTree (BaumStruktur) Variante um die Übersicht und Usability (Look-and-Feel) für den Nutzer zu gewährleisten.
          */
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Hauptmenü");
         addCategory(rootNode, "User management", "Neuer User", "User bearbeiten");
@@ -49,8 +51,9 @@ public class MainWindow extends JFrame {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (selectedNode != null && selectedNode.isLeaf()) {
                 String category = selectedNode.getParent().toString();
+                String buttonText = selectedNode.toString();
                 try {
-                    openWindow(category, selectedNode.toString());
+                    openWindow(category, buttonText);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -61,12 +64,12 @@ public class MainWindow extends JFrame {
         setVisible(true);
     }
 
-    // TODO BORDERLAYOUT ÜBERARBEITEN!
+    // TODO BORDER-LAYOUT ÜBERARBEITEN!
     private JPanel createRightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
 
         /*
-         * Einfügen eines Bildes in das rechte Splitpane.
+         * Einfügen eines Bildes in das rechte Split-pane.
          */
         ImageIcon imageIcon = new ImageIcon("src/media/knt.jpg");
         JLabel imageLabel = new JLabel(imageIcon);
@@ -196,8 +199,8 @@ public class MainWindow extends JFrame {
         SwingUtilities.invokeLater(EditTransportWindow::new);
     }
 
-    private void openDisposition() throws  SQLException {
-        SwingUtilities.invokeLater(Disposition::new);
+    private void openDisposition() {
+        SwingUtilities.invokeLater(DispositionWindow::new);
     }
 
     private void openNewBillingWindow() {

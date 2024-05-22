@@ -1,3 +1,5 @@
+package prog;
+
 import dto.Fahrzeug;
 import helpers.Updates;
 import org.slf4j.Logger;
@@ -214,7 +216,7 @@ public class EditFahrzeugWindow extends JFrame {
                     new DbStatements().deleteFahrzeugT(fahrzeugId);
                 }
                 Updates.updateTableFahrzeugZM(tableZm);
-                Updates.updateTableFahrzeugZM(tableTrailer);
+                Updates.updateTableFahrzeugT(tableTrailer);
                 JOptionPane.showMessageDialog(this, "Fahrzeug erfolgreich gelöscht");
             } catch (Exception ex){
                 JOptionPane.showMessageDialog(this, "Ein Fehler ist beim Löschen des Fahrzeugs aufgetreten");

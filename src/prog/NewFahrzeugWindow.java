@@ -1,3 +1,5 @@
+package prog;
+
 import helpers.Parsing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,11 +8,7 @@ import sql.DbStatements;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.sql.Date;
-
 
 
 public class NewFahrzeugWindow extends JFrame {

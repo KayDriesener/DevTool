@@ -1,3 +1,5 @@
+package prog;
+
 import dto.Shipping;
 import helpers.Updates;
 import org.slf4j.Logger;
@@ -6,7 +8,6 @@ import sql.DbQueries;
 import sql.DbStatements;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;

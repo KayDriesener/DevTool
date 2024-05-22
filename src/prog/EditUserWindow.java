@@ -1,7 +1,11 @@
+package prog;
+
 import dto.User;
+import helpers.Updates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
+import sql.DbStatements;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +17,7 @@ import java.util.ArrayList;
 public class EditUserWindow extends JFrame {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
+    JTable usertable;
 
     public EditUserWindow() {
         setTitle("Edit User");
@@ -68,15 +73,14 @@ public class EditUserWindow extends JFrame {
          * muss mit der Anzahl der Attribute in der Datei User übereinstimmen!
          */
 
-        Object[] columnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
-
+        Object[] userColumnNames = {"ID", "Name", "Nachname", "EMail", "Username"};
         assert tableData != null;
-        JTable table = new JTable(tableData, columnNames);
+        usertable = new JTable(tableData, userColumnNames);
 
         /*
          * Tooltip für die Zellen in der Tabelle bei Mouseover.
          */
-        table.addMouseMotionListener(new MouseMotionListener() {
+        usertable.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
 
@@ -85,19 +89,19 @@ public class EditUserWindow extends JFrame {
             @Override
             public void mouseMoved(MouseEvent e) {
                 Point point = e.getPoint();
-                int row = table.rowAtPoint(point);
-                int col = table.columnAtPoint(point);
+                int row = usertable.rowAtPoint(point);
+                int col = usertable.columnAtPoint(point);
 
                 if (row >= 0) {
-                    Object value = table.getValueAt(row, col);
-                    table.setToolTipText((value != null ? value.toString() : null));
+                    Object value = usertable.getValueAt(row, col);
+                    usertable.setToolTipText((value != null ? value.toString() : null));
                 }
 
             }
         });
 
         // Tabelle auf die Spalten aufteilen
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(usertable);
         scrollPane.setPreferredSize(new Dimension(400, 200)); // Größe anpassen
 
         middlePanel.add(scrollPane);
@@ -131,8 +135,23 @@ public class EditUserWindow extends JFrame {
     }
 
     private void deleteUser() {
-        // TODO Prep.Stmt
-        JOptionPane.showMessageDialog(this, "Datensatz GELÖSCHT!");
+        int selectedRow = usertable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Bitte einen User zum Löschen auswählen!");
+            return;
+        }
+        int option = JOptionPane.showConfirmDialog(this, "Möchten Sie diesen User wirklich löschen?");
+        if (option == JOptionPane.YES_OPTION) {
+            try {
+                int id = (int) usertable.getValueAt(selectedRow, 0);
+                new DbStatements().deleteCustomer(id);
+                Updates.updateCustomerTable(usertable);
+                JOptionPane.showMessageDialog(this, "User erfolgreich gelöscht!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Ein Fehler ist beim Löschen der Userdaten aufgetreten");
+                log.error(STR."Fehler beim Löschen der Userdaten!\{ex.getMessage()}");
+            }
+        }
     }
 
     private void saveUser() {

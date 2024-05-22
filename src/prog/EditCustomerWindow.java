@@ -1,3 +1,5 @@
+package prog;
+
 import dto.Kunde;
 import helpers.Updates;
 import org.slf4j.Logger;
