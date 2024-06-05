@@ -106,9 +106,9 @@ public class DbQueries {
         ArrayList<Shipping> shippingList = new ArrayList<>();
         while (rs.next()) {
             Shipping shipping = new Shipping();
-            shipping.setBdf_referenz(rs.getInt(1));
+            shipping.setBdf_referenz(rs.getString(1));
             shipping.setDatum(rs.getDate(2));
-            shipping.setKn_referenz(rs.getInt(3));
+            shipping.setKn_referenz(rs.getString(3));
             shipping.setAbsender(rs.getString(4));
             shipping.setEmpfaenger(rs.getString(5));
             shipping.setBeladung_s(rs.getTime(6));
@@ -127,17 +127,18 @@ public class DbQueries {
     }
 
     public ArrayList<Dispo> getDispo() throws SQLException{
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT transport.kn_referenz, transport.bdf_referenz, transport.fahrzeug_t, transport.fahrzeug_zm FROM transport;");
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("SELECT kn_referenz, bdf_referenz, fahrzeug_t, fahrzeug_zm FROM transport;");
         ResultSet rs = ps.executeQuery();
 
         ArrayList<Dispo> dispoList = new ArrayList<>();
         while (rs.next()){
             Dispo dispo = new Dispo();
-            dispo.setDisponiert(1);
-            dispo.setKn_Referenz(2);
-            dispo.setBdf_referenz(3);
-            dispo.setFahrzeugzm(4);
-            dispo.setFahrzeugt(5);
+            dispo.setDisponiert(rs.getBoolean(1));
+            dispo.setKn_Referenz(rs.getString(2));
+            dispo.setBdf_referenz(rs.getString(3));
+            dispo.setFahrzeugzm(rs.getString(4));
+            dispo.setFahrzeugt(rs.getString(5));
+            dispoList.add(dispo);
         }
         return dispoList;
     }

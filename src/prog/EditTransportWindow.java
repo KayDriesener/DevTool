@@ -85,6 +85,7 @@ public class EditTransportWindow extends JFrame {
          * Übergabe der Transportdaten und den Tabellenüberschriften bei der Generierung der Tabelle.
          */
         Object[] columnNamesTransport = {"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
+        assert dataTransport != null;
         transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
 

@@ -1,10 +1,12 @@
 package prog;
 
 import dto.Dispo;
+import dto.Shipping;
+import helpers.ComboBoxes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sql.DbQueries;
-
+import sql.DbStatements;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -15,6 +17,7 @@ import javax.swing.table.TableCellRenderer;
 
 public class DispositionWindow extends JFrame {
     Logger log = LoggerFactory.getLogger(this.getClass());
+    JTable transportTable;
 
     // Konstruktor für die Disposition-Klasse
     public DispositionWindow() {
@@ -31,9 +34,9 @@ public class DispositionWindow extends JFrame {
         JPanel topPanel = new JPanel(new BorderLayout());
 
         /*
-        * Titel für das Dispositionsmanagement
-        * Labels dem "topPanel" hinzufügen
-        * Beim Hinzufügen wird das Layout mit übergeben
+         * Titel für das Dispositionsmanagement
+         * Labels dem "topPanel" hinzufügen
+         * Beim Hinzufügen wird das Layout mit übergeben
          */
         JLabel headline = new JLabel("DISPOSITIONSMANAGEMENT");
         headline.setFont(new Font("Arial", Font.BOLD, 20));
@@ -45,34 +48,43 @@ public class DispositionWindow extends JFrame {
         // Mittleres Panel mit GridLayout für die JTable
         JPanel middlePanel = new JPanel(new GridLayout(1, 1, 5, 5));
 
-        ArrayList<Dispo> dispoList = null;
+        ArrayList<Shipping> transportList = null;
         try {
-            dispoList = new DbQueries().getDispo();
+            transportList = new DbQueries().getShipping();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Beim Abrufen der Dispositionen ist ein Fehler aufgetreten.");
+            JOptionPane.showMessageDialog(this, "Beim Abrufen der Transportdaten ist ein Fehler aufgetreten.");
             log.error(e.getMessage());
         }
 
-        /*
-         * Erstellen der Tabelle
-         */
-        Object[][] dataDispo = null;
-            if (dispoList != null){
-                int attributeCount = Dispo.class.getDeclaredFields().length;
-                dataDispo = new Object[dispoList.size()][attributeCount];
-                int cnt = 0;
-                for (Dispo dispo : dispoList){
-                    dataDispo[cnt][0] = dispo.isDisponiert();
-                    dataDispo[cnt][1] = dispo.getKn_Referenz();
-                    dataDispo[cnt][2] = dispo.getBdf_referenz();
-                    dataDispo[cnt][3] = dispo.getFahrzeugzm();
-                    dataDispo[cnt][4] = dispo.getFahrzeugt();
-                }
+        Object[][] dataTransport = null;
+        if (transportList != null) {
+            int attributeCount = Shipping.class.getDeclaredFields().length;
+            dataTransport = new Object[transportList.size()][attributeCount];
+            int cnt = 0;
+            for (Shipping shipping : transportList) {
+                dataTransport[cnt][0] = shipping.isDisponiert();
+                dataTransport[cnt][1] = shipping.getBdf_referenz();
+                dataTransport[cnt][2] = shipping.getDatum();
+                dataTransport[cnt][3] = shipping.getKn_referenz();
+                dataTransport[cnt][4] = shipping.getAbsender();
+                dataTransport[cnt][5] = shipping.getEmpfaenger();
+                dataTransport[cnt][6] = shipping.getBeladung_s();
+                dataTransport[cnt][7] = shipping.getBeladung_e();
+                dataTransport[cnt][8] = shipping.getEntladen_s();
+                dataTransport[cnt][9] = shipping.getEntladen_e();
+                dataTransport[cnt][10] = shipping.getStellplaetze();
+                dataTransport[cnt][11] = shipping.getAnzahl();
+                dataTransport[cnt][12] = shipping.isLiquid() ? "Ja" : "Nein";
+                dataTransport[cnt][13] = shipping.isAdr() ? "Ja" : "Nein";
+                dataTransport[cnt][14] = shipping.isRundlauf() ? "Ja" : "Nein";
+                dataTransport[cnt][15] = shipping.getBemerkung();
+                cnt++;
             }
-        Object[] columnNamesDispo = {"Auswahl", "K&N Referenz", "BDF Referenz", "Zugmaschine", "Trailer"};
+        }
+        Object[] columnNamesTransport = {"Disponieren", "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
 
         // Erstellen des TableModels mit Checkbox-Renderer
-        DefaultTableModel model = new DefaultTableModel(dataDispo, columnNamesDispo) {
+        DefaultTableModel model = new DefaultTableModel(dataTransport, columnNamesTransport) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnIndex == 0 ? Boolean.class : Object.class;
@@ -80,16 +92,12 @@ public class DispositionWindow extends JFrame {
         };
 
 
-
         // Erstellen der JTable und Zuweisung des Checkbox-Renderers
-        JTable tableDataDispo = new JTable(model);
-        tableDataDispo.getColumnModel().getColumn(0).setCellRenderer(new CheckBoxRenderer());
-        tableDataDispo.setPreferredScrollableViewportSize(new Dimension(400, 200));
-        JScrollPane scrollPaneDataDispo = new JScrollPane(tableDataDispo);
+        transportTable = new JTable(model);
+        transportTable.getColumnModel().getColumn(0).setCellRenderer(new CheckBoxRenderer());
+        transportTable.setPreferredScrollableViewportSize(new Dimension(400, 200));
+        JScrollPane scrollPaneDataDispo = new JScrollPane(transportTable);
         middlePanel.add(scrollPaneDataDispo);
-
-        // Tabelle aus prog.NewTransportWindow abrufen.
-        
 
         // Unteres Panel mit FlowLayout für die Buttons
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -98,7 +106,7 @@ public class DispositionWindow extends JFrame {
         JButton dispoBtn = new JButton("Disponieren");
         JButton backButton = new JButton("Zurück");
         backButton.addActionListener(_ -> goBack());
-        //dispoBtn.addActionListener(_ -> saveDispo());
+        dispoBtn.addActionListener(_ -> dispoTransport());
 
         // Dem bottomPanel zuweisen
         bottomPanel.add(dispoBtn);
@@ -116,32 +124,52 @@ public class DispositionWindow extends JFrame {
         add(mainPanel);
         setVisible(true);
     }
-    /*
-     * JComboBox<String> zugmaschiene;
-     * JComboBox<String> trailer;
-     *
-     * zugmaschiene = new JComboBox<>();
-     * ComboBoxes.populateZugmaschine(zugmaschiene);
-     *
-     * trailer = new JComboBox<>();
-     * ComboBoxes.populateTrailer(trailer);
-     */
 
-    // Methode zum Speichern der Disposition
-    /*
-     * Richtiges übergeben der Daten.
-     * Bei Auswahl der Checkbox sollen param's aus addDispo() an die Datenbank übergeben werden.
-     */
-    /*private void saveDispo() {
-        // boolean disponiert =
-        String kn_referenz = prog.LieferscheinNummernGenerator.generiereNummer();
-        //String bdf_referenz =
-        //String fahrzeug_zm =
-        //String fahrzeug_t =
-        new DbStatements().addDispo(disponiert, kn_referenz, bdf_referenz, fahrzeug_zm, fahrzeug_t);
-        JOptionPane.showMessageDialog(this, STR."Transport Angelegt mit der Referenz \{kNlieferscheinnummer}!");
+    //Dispo-Methode
+    private void  dispoTransport(){
+        ArrayList<Integer> selectedRows = new ArrayList<>();
+        for (int i = 0; i < transportTable.getRowCount(); i++){
+            Boolean isSelected = (Boolean) transportTable.getValueAt(i, 0);
+            if (isSelected != null && isSelected){
+                selectedRows.add(i);
+            }
+        }
+        if (selectedRows.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Bitte mindestens einen Transport auswählen!");
+            return;
+        }
+        JComboBox<String> zmComboBox = new JComboBox<>();
+        JComboBox<String> tComboBox = new JComboBox<>();
+        ComboBoxes.populateZugmaschine(zmComboBox);
+        ComboBoxes.populateTrailer(tComboBox);
+
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel("Zugmaschiene"));
+        panel.add(zmComboBox);
+        panel.add(new JLabel("Trailer"));
+        panel.add(tComboBox);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Zugmaschiene und Trailer auswählen!", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION){
+            String zugmaschiene = (String) zmComboBox.getSelectedItem();
+            String trailer = (String) tComboBox.getSelectedItem();
+
+            for (int row : selectedRows){
+                String knReferenz = (String) transportTable.getValueAt(row, 3);
+                String bdfReferenz = (String) transportTable.getValueAt(row, 1);
+
+                Dispo dispo = new Dispo();
+                try {
+                    new DbStatements().addDispo(dispo);
+                    JOptionPane.showMessageDialog(this, "Dispo gespeichert");
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Ein unerwarteter Fehler ist aufgetreten!");
+                    log.error(e.getMessage());
+                }
+            }
+        }
     }
-    */
+
     // Methode zum Zurückkehren
     private void goBack() {
         new NewTransportWindow();
@@ -156,7 +184,21 @@ public class DispositionWindow extends JFrame {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setSelected(value != null && (Boolean) value);
+            if (isSelected){
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(table.getBackground() );
+            }
+
+            if (value instanceof Boolean){
+                setSelected((Boolean) value);
+            } else if (value instanceof Integer){
+                setSelected(((Integer) value) != 0);
+            } else {
+                setSelected(false);
+            }
             return this;
         }
     }

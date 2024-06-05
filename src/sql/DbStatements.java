@@ -1,5 +1,7 @@
 package sql;
 
+import dto.Dispo;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -66,29 +68,30 @@ public class DbStatements {
         ps.setInt(7, kostenstelle);
         ps.execute();
     }
-    public void addShipping(int bdf_referenz, Date datum, String absender, String empfaenger, Time beladung_s, Time beladung_e, Time entladen_s, Time entladen_e, int stellplaetze, int anzahl, boolean liquid, boolean adr, boolean rundlauf, String bemerkung) throws SQLException {
-        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO transport (bdf_referenz, datum, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-        ps.setInt(1, bdf_referenz);
-        ps.setDate(2, (java.sql.Date) datum);
-        ps.setString(3, absender);
-        ps.setString(4, empfaenger);
-        ps.setTime(5, beladung_s);
-        ps.setTime(6, beladung_e);
-        ps.setTime(7, entladen_s);
-        ps.setTime(8, entladen_e);
-        ps.setInt(9, stellplaetze);
-        ps.setInt(10, anzahl);
-        ps.setBoolean(11, liquid);
-        ps.setBoolean(12, adr);
-        ps.setBoolean(13, rundlauf);
-        ps.setString(14, bemerkung);
+    public void addShipping(boolean disponiert, String bdf_referenz, Date datum, String absender, String empfaenger, Time beladung_s, Time beladung_e, Time entladen_s, Time entladen_e, int stellplaetze, int anzahl, boolean liquid, boolean adr, boolean rundlauf, String bemerkung) throws SQLException {
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO transport (disponiert, bdf_referenz, datum, absender, empfaenger, beladung_s, beladung_e, entladen_s, entladen_e, stellplaetze, anzahl, liquid, adr, rundlauf, bemerkung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        ps.setBoolean(1, disponiert);
+        ps.setString(2, bdf_referenz);
+        ps.setDate(3, (java.sql.Date) datum);
+        ps.setString(4, absender);
+        ps.setString(5, empfaenger);
+        ps.setTime(6, beladung_s);
+        ps.setTime(7, beladung_e);
+        ps.setTime(8, entladen_s);
+        ps.setTime(9, entladen_e);
+        ps.setInt(10, stellplaetze);
+        ps.setInt(11, anzahl);
+        ps.setBoolean(12, liquid);
+        ps.setBoolean(13, adr);
+        ps.setBoolean(14, rundlauf);
+        ps.setString(15, bemerkung);
         ps.execute();
     }
-    public void addDispo(boolean disponiert, int kn_referenz, int bdf_referenz, int fahrzeug_zm, int fahrzeug_t) throws SQLException{
+    public void addDispo(boolean disponiert, String kn_referenz, String bdf_referenz, int fahrzeug_zm, int fahrzeug_t) throws SQLException{
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO dispo(disponiert, kn_referenz, bdf_referenz, fahrzeug_zm, fahrzeug_t) VALUE(?, ?, ?, ?, ?);");
         ps.setBoolean(1, disponiert);
-        ps.setInt(2, kn_referenz);
-        ps.setInt(3, bdf_referenz);
+        ps.setString(2, kn_referenz);
+        ps.setString(3, bdf_referenz);
         ps.setInt(4, fahrzeug_zm);
         ps.setInt(5, fahrzeug_t);
         ps.execute();
@@ -137,6 +140,16 @@ public class DbStatements {
         PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("DELETE FROM kunde WHERE id = ?");
         ps.setInt(1, id);
         ps.executeUpdate();
+    }
+
+    public void addDispo(Dispo dispo) throws SQLException{
+        PreparedStatement ps = MySqlConnector.dbConnection.prepareStatement("INSERT INTO dispo(disponiert, kn_referenz, bdf_referenz, fahrzeug_zm, fahrzeug_t) VALUE(?, ?, ?, ?, ?);");
+        ps.setBoolean(1, dispo.isDisponiert());
+        ps.setString(2, dispo.getKn_Referenz());
+        ps.setString(3, dispo.getBdf_referenz());
+        ps.setString(4, dispo.getFahrzeugzm());
+        ps.setString(5, dispo.getFahrzeugt());
+        ps.execute();
     }
 }
 

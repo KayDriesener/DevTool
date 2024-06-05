@@ -11,6 +11,7 @@ import sql.DbQueries;
 import sql.DbStatements;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -37,6 +38,7 @@ public class NewTransportWindow extends JFrame {
     JTextField commentText;
     JCheckBox roundtrip;
     JTextField printDate;
+    private boolean disponiert;
 
     public NewTransportWindow() {
         setTitle("Neuer Transport");
@@ -140,27 +142,29 @@ public class NewTransportWindow extends JFrame {
             dataTransport = new Object[transportList.size()][attributeCount];
             int cnt = 0;
             for (Shipping shipping : transportList) {
-                dataTransport[cnt][0] = shipping.getBdf_referenz();
-                dataTransport[cnt][1] = shipping.getDatum();
-                dataTransport[cnt][2] = shipping.getKn_referenz();
-                dataTransport[cnt][3] = shipping.getAbsender();
-                dataTransport[cnt][4] = shipping.getEmpfaenger();
-                dataTransport[cnt][5] = shipping.getBeladung_s();
-                dataTransport[cnt][6] = shipping.getBeladung_e();
-                dataTransport[cnt][7] = shipping.getEntladen_s();
-                dataTransport[cnt][8] = shipping.getEntladen_e();
-                dataTransport[cnt][9] = shipping.getStellplaetze();
-                dataTransport[cnt][10] = shipping.getAnzahl();
-                dataTransport[cnt][11] = shipping.isLiquid() ? "Ja" : "Nein";
-                dataTransport[cnt][12] = shipping.isAdr() ? "Ja" : "Nein";
-                dataTransport[cnt][13] = shipping.isRundlauf() ? "Ja" : "Nein";
-                dataTransport[cnt][14] = shipping.getBemerkung();
+                dataTransport[cnt][0] = shipping.isDisponiert() ? "Ja" : "Nein";
+                dataTransport[cnt][1] = shipping.getBdf_referenz();
+                dataTransport[cnt][2] = shipping.getDatum();
+                dataTransport[cnt][3] = shipping.getKn_referenz();
+                dataTransport[cnt][4] = shipping.getAbsender();
+                dataTransport[cnt][5] = shipping.getEmpfaenger();
+                dataTransport[cnt][6] = shipping.getBeladung_s();
+                dataTransport[cnt][7] = shipping.getBeladung_e();
+                dataTransport[cnt][8] = shipping.getEntladen_s();
+                dataTransport[cnt][9] = shipping.getEntladen_e();
+                dataTransport[cnt][10] = shipping.getStellplaetze();
+                dataTransport[cnt][11] = shipping.getAnzahl();
+                dataTransport[cnt][12] = shipping.isLiquid() ? "Ja" : "Nein";
+                dataTransport[cnt][13] = shipping.isAdr() ? "Ja" : "Nein";
+                dataTransport[cnt][14] = shipping.isRundlauf() ? "Ja" : "Nein";
+                dataTransport[cnt][15] = shipping.getBemerkung();
                 cnt++;
             }
         }
-        Object[] columnNamesTransport = {"BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
+        Object[] columnNamesTransport = {"Disponiert", "BDF Referenz", "Datum", "K&N Referenz", "Absender", "Empfänger", "Beladung Start", "Ende", "Entladen Start", "Ende", "Stellplätze (EP)", "Anzahl EPal", "LQ", "ADR", "Rundlauf", "Bemerkung"};
         transportTable = new JTable(dataTransport, columnNamesTransport);
         JScrollPane scrollPaneDataTransport = new JScrollPane(transportTable);
+        middlePanel.add(scrollPaneDataTransport);
 
         /*
          * Tooltip für die Zellen in der Tabelle bei Mouseover.
@@ -302,7 +306,7 @@ public class NewTransportWindow extends JFrame {
             Time lEnd = Parsing.parseTime(loadEndTime.getText());
             int pitches = Integer.parseInt(pitchesText.getText());
             boolean isliquid = liquid.isSelected();
-            int bdfRef = Integer.parseInt(bdf_referenceText.getText());
+            String bdfRef = bdf_referenceText.getText();
             Time dcBegin = Parsing.parseTime(dischargeBeginText.getText());
             Time dcEnd = Parsing.parseTime(dischargeEndText.getText());
             int epal = Integer.parseInt(epalText.getText());
@@ -312,12 +316,37 @@ public class NewTransportWindow extends JFrame {
             Date date = Parsing.parseDate(printDate.getText());
 
             // Aufrufen des Statements zum Übergeben der Daten an die Datenbank incl. Update funktion und Fehlerbehandlung
-            new DbStatements().addShipping(bdfRef, date, selectedOptionShipper, selectedOptionRecipient, lBegin, lEnd, dcBegin, dcEnd, pitches, epal, isliquid, isAdr, isRoundtrip, comment);
+            new DbStatements().addShipping(disponiert, bdfRef, date, selectedOptionShipper, selectedOptionRecipient, lBegin, lEnd, dcBegin, dcEnd, pitches, epal, isliquid, isAdr, isRoundtrip, comment);
             Updates.updateTransportTable(transportTable);
             JOptionPane.showMessageDialog(this, "Transport angelegt!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, STR."Ein unerwarteter Fehler ist aufgetreten!\{ex.getMessage()}");
             log.error(STR."Ein unerwarteter Fehler ist aufgetreten!\{ex.getMessage()}");
+        }
+    }
+    static class CheckBoxRenderer extends JCheckBox implements TableCellRenderer {
+        CheckBoxRenderer() {
+            setHorizontalAlignment(JCheckBox.CENTER);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected){
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(table.getBackground() );
+            }
+
+            if (value instanceof Boolean){
+                setSelected((Boolean) value);
+            } else if (value instanceof Integer){
+                setSelected(((Integer) value) != 0);
+            } else {
+                setSelected(false);
+            }
+            return this;
         }
     }
 

@@ -7,9 +7,10 @@ import java.sql.Time;
  * Klasse Shipping mit Parametern.
  */
 public class Shipping {
-    private int bdf_referenz;
+    private boolean disponiert;
+    private String bdf_referenz;
     private Date datum;
-    private int kn_referenz;
+    private String kn_referenz;
     private String absender;
     private String empfaenger;
     private Time beladung_s;
@@ -23,19 +24,28 @@ public class Shipping {
     private  boolean rundlauf;
     private String bemerkung;
 
+
     public String getBemerkung() {
         return bemerkung;
+    }
+
+    public boolean isDisponiert() {
+        return disponiert;
+    }
+
+    public void setDisponiert(boolean disponiert) {
+        this.disponiert = disponiert;
     }
 
     public void setBemerkung(String bemerkung) {
         this.bemerkung = bemerkung;
     }
 
-    public int getBdf_referenz() {
+    public String getBdf_referenz() {
         return bdf_referenz;
     }
 
-    public void setBdf_referenz(int bdf_referenz) {
+    public void setBdf_referenz(String bdf_referenz) {
         this.bdf_referenz = bdf_referenz;
     }
 
@@ -47,11 +57,11 @@ public class Shipping {
         this.datum = datum;
     }
 
-    public int getKn_referenz() {
+    public String getKn_referenz() {
         return kn_referenz;
     }
 
-    public void setKn_referenz(int kn_referenz) {
+    public void setKn_referenz(String kn_referenz) {
         this.kn_referenz = kn_referenz;
     }
 

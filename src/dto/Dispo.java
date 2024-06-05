@@ -2,49 +2,50 @@ package dto;
 
 public class Dispo {
     private boolean disponiert;
-    private int kn_Referenz;
-    private int bdf_referenz;
-    private int fahrzeugzm;
-    private int fahrzeugt;
+    private String kn_Referenz;
+    private String bdf_referenz;
+    private String fahrzeugzm;
+    private String fahrzeugt;
 
+    public Dispo() {
+    }
 
     public boolean isDisponiert() {
         return disponiert;
     }
 
-    public void setDisponiert(int i) {
-        this.disponiert = disponiert;
+    public void setDisponiert(boolean i) {
     }
 
-    public int getKn_Referenz() {
+    public String getKn_Referenz() {
         return kn_Referenz;
     }
 
-    public void setKn_Referenz(int kn_Referenz) {
+    public void setKn_Referenz(String kn_Referenz) {
         this.kn_Referenz = kn_Referenz;
     }
 
-    public int getBdf_referenz() {
+    public String getBdf_referenz() {
         return bdf_referenz;
     }
 
-    public void setBdf_referenz(int bdf_referenz) {
+    public void setBdf_referenz(String bdf_referenz) {
         this.bdf_referenz = bdf_referenz;
     }
 
-    public int getFahrzeugzm() {
+    public String getFahrzeugzm() {
         return fahrzeugzm;
     }
 
-    public void setFahrzeugzm(int fahrzeugzm) {
+    public void setFahrzeugzm(String fahrzeugzm) {
         this.fahrzeugzm = fahrzeugzm;
     }
 
-    public int getFahrzeugt() {
+    public String getFahrzeugt() {
         return fahrzeugt;
     }
 
-    public void setFahrzeugt(int fahrzeugt) {
+    public void setFahrzeugt(String fahrzeugt) {
         this.fahrzeugt = fahrzeugt;
     }
 }
