@@ -16,7 +16,7 @@ public class MainWindow extends JFrame {
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        ImageIcon icon = new ImageIcon("");
         setIconImage(icon.getImage());
 
         /*
@@ -71,7 +71,7 @@ public class MainWindow extends JFrame {
         /*
          * Einfügen eines Bildes in das rechte Split-pane.
          */
-        ImageIcon imageIcon = new ImageIcon("src/media/knt.jpg");
+        ImageIcon imageIcon = new ImageIcon("");
         JLabel imageLabel = new JLabel(imageIcon);
         rightPanel.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
         rightPanel.add(imageLabel);

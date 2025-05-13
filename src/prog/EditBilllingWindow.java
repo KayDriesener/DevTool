@@ -20,7 +20,7 @@ public class EditBilllingWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        ImageIcon icon = new ImageIcon("");
         setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout

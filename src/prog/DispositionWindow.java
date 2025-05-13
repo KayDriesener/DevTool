@@ -27,7 +27,7 @@ public class DispositionWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
-        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        ImageIcon icon = new ImageIcon("");
         setIconImage(icon.getImage());
 
         // Oberstes Panel mit BorderLayout für den Titel

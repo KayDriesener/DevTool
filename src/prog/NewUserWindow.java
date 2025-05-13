@@ -22,7 +22,7 @@ public class NewUserWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        ImageIcon icon = new ImageIcon("");
         setIconImage(icon.getImage());
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5)); // Unbegrenzte Zeilen, 2 Spalten, Abstand zwischen den Zellen: 5 Pixel

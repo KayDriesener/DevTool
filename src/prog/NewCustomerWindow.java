@@ -27,7 +27,7 @@ public class NewCustomerWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        ImageIcon icon = new ImageIcon("src/media/kunIco.jpg");
+        ImageIcon icon = new ImageIcon("");
         setIconImage(icon.getImage());
 
         // Unbegrenzte Zeilen -----, 2 Spalten |||, Abstand zwischen den Zellen: 5 Pixel ↔
